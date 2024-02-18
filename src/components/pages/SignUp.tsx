@@ -43,7 +43,7 @@ export default function Auth() {
           <InputField id='email' label='Email' variant='standard' type="email"/>
           <InputField id='password' label='Contraseña' variant='standard' type='password'/>
         </Stack>
-          <Button sx={{width: '100%', my: 4}} onClick={handleLogin}>Crear Cuenta</Button>
+          <Button sx={{width: '100%', my: 4}}>Crear Cuenta</Button>
           <Typography>
             Ya tienes una cuenta? <Link to='/'>Iniciar Sesión</Link>
           </Typography>
