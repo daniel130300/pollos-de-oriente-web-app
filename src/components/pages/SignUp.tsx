@@ -6,28 +6,36 @@ import Button from '../atoms/Button';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useFormik } from 'formik';
-import { object, string } from 'yup';
+import * as yup from 'yup';
+import FormHelperText from '@mui/material/FormHelperText';
 
-const userSchema = object().shape({
-  email: string().email().required(),
-  password: string().required().min(8, 'Password must be at least 8 characters').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/, 'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character')
+const userSchema = yup.object().shape({
+  email: yup.string().email('El correo debe ser valido').required('El correo es un campo requerido'),
+  password: yup.string().required().min(8, 'La contraseña debe contener al menos 8 caracteres').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/, 'La contraseña debe contener al menos una letra mayuscula, una letra minuscula, un numero y un caracter especial')
 });
 
-export default function Auth() {
+export const SignUp: React.FC = () => {
+
+  const [loading, setLoading] = useState(false);
+  const [signUpError, setSignUpError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
-    validationSchema: userSchema, // Our Yup schema
+    validationSchema: userSchema,
     onSubmit: async (values) => {
+      setLoading(true);
       const { error } = await supabase.auth.signUp({ email: values.email, password: values.password })
       if (error) {
-        alert(error.message)
+       setSignUpError(error.message)
       }
+      setLoading(false);
+      navigate({to: '/'});
     },
     enableReinitialize: true
   })
@@ -38,16 +46,38 @@ export default function Auth() {
         <Typography variant='h4' sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           Crear Cuenta
         </Typography>
-
         <Stack spacing={3}>
-          <InputField id='email' label='Email' variant='standard' type="email"/>
-          <InputField id='password' label='Contraseña' variant='standard' type='password'/>
-        </Stack>
-          <Button sx={{width: '100%', my: 4}}>Crear Cuenta</Button>
+          <InputField 
+            id='email' 
+            label='Correo' 
+            type="email"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            error={
+              formik.touched.email && Boolean(formik.errors.email)
+            }
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <InputField 
+            id='password' 
+            label='Contraseña' 
+            type='password'
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            error={
+              formik.touched.password && Boolean(formik.errors.password)
+            }
+            helperText={formik.touched.password && formik.errors.password}
+          />
+          {signUpError && <FormHelperText error>{signUpError}</FormHelperText>}
+          <Button disabled={loading} onClick={() => formik.handleSubmit()}>{!loading ? 'Crear Cuenta' : 'Cargando...'}</Button>
           <Typography>
             Ya tienes una cuenta? <Link to='/'>Iniciar Sesión</Link>
           </Typography>
+        </Stack>
       </Card>
     </Box>
   )
 }
+
+export default SignUp;
