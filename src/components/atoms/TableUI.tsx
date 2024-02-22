@@ -74,7 +74,7 @@ const TableUI: FC<TableProps> = ({
           />
         )}
       </Box>
-      <Box style={{ overflowX: "auto" }}>
+      <Box style={{ overflowX: "auto", minHeight: 600 }}>
         <MuiTable>
           {!isFetching && (
             <TableHead>

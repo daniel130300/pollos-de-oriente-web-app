@@ -7,7 +7,7 @@ import Link from '@mui/material/Link';
 
 export const SignIn: React.FC = () => {
 
-  const { formik, submitLoading, signInError } = useSignIn();
+  const { formik, submitLoading } = useSignIn();
 
   return (
     <AuthFormTemplate 
@@ -15,7 +15,6 @@ export const SignIn: React.FC = () => {
       submitButtonText='Iniciar Sesión'
       onSubmit={formik.handleSubmit}
       submitLoading={submitLoading}
-      errorText={signInError}
     >
       <InputField 
         id='email' 

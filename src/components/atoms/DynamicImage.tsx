@@ -3,16 +3,16 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
 type SkeletonSize = {
-  xs?: string;
-  sm?: string;
-  md?: string;
-  lg?: string;
-  xl?: string;
+  xs?: string | number;
+  sm?: string | number;
+  md?: string | number;
+  lg?: string | number;
+  xl?: string | number;
 };
 
 export interface DynamicCardMediaProps
   extends React.HTMLProps<HTMLImageElement> {
-  loadingHeight: SkeletonSize;
+  loadingHeight?: SkeletonSize;
   loadingWidth?: SkeletonSize;
   maxHeight?: string;
 }
@@ -20,7 +20,7 @@ export interface DynamicCardMediaProps
 export const AppDynamicImage: React.FC<DynamicCardMediaProps> = ({
   src,
   alt,
-  loadingHeight,
+  loadingHeight = '100%',
   loadingWidth = '100%',
   maxHeight,
   ...rest

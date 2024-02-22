@@ -7,7 +7,6 @@ import { useSnackbar } from 'notistack';
 
 const useSignUp = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [signUpError, setSignUpError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar(); 
 
@@ -28,7 +27,7 @@ const useSignUp = () => {
       setSubmitLoading(false);
 
       if (error) {
-        setSignUpError(error.message);
+        enqueueSnackbar('Error creando cuenta', {variant: 'error'})
         return;
       }
       enqueueSnackbar('Antes de iniciar sesión, deberás verificar el correo utilizado al momento de crear tu cuenta')
@@ -37,7 +36,7 @@ const useSignUp = () => {
     enableReinitialize: true
   });
 
-  return { formik, submitLoading, signUpError };
+  return { formik, submitLoading };
 };
 
 export default useSignUp;

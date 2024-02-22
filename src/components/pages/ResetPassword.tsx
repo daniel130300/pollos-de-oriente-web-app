@@ -7,7 +7,7 @@ import Link from '@mui/material/Link'
 
 export const ResetPassword = () => {
 
-  const { formik, submitLoading, resetPasswordError } = useResetPassword();
+  const { formik, submitLoading } = useResetPassword();
 
   return (
     <AuthFormTemplate
@@ -15,7 +15,6 @@ export const ResetPassword = () => {
       submitButtonText="Reestablecer Contraseña"
       onSubmit={formik.handleSubmit}
       submitLoading={submitLoading}
-      errorText={resetPasswordError}
     >
       <InputField
         id='email' 

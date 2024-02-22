@@ -49,7 +49,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+      <Container maxWidth={false}>
         <Toolbar disableGutters>
           <Logo/>
           <Typography
@@ -106,7 +106,7 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           <Typography
-            variant="h5"
+            variant="h1"
             noWrap
             component="a"
             href="#app-bar-with-responsive-menu"

@@ -3,10 +3,10 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useNavigate } from '@tanstack/react-router';
 import { supabase } from '../supabaseClient';
+import { enqueueSnackbar } from 'notistack';
 
 const useSignIn = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [signInError, setSignInError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const userSchema = yup.object().shape({
@@ -25,7 +25,7 @@ const useSignIn = () => {
       setSubmitLoading(false);
 
       if (error) {
-        setSignInError(error.message);
+        enqueueSnackbar('Error iniciando sesión', {variant: 'error'})
         return;
       }
 
@@ -34,7 +34,7 @@ const useSignIn = () => {
     enableReinitialize: true
   });
 
-  return { formik, submitLoading, signInError };
+  return { formik, submitLoading };
 };
 
 export default useSignIn;

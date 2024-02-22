@@ -7,7 +7,6 @@ import { useSnackbar } from 'notistack';
 
 const useResetPassword = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [resetPasswordError, setResetPasswordError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar(); 
 
@@ -27,7 +26,7 @@ const useResetPassword = () => {
       setSubmitLoading(false);
 
       if (error) {
-        setResetPasswordError(error.message);
+        enqueueSnackbar('Error enviando correo para reestablecer la contraseña', {variant: 'error'})
         return;
       }
 
@@ -37,7 +36,7 @@ const useResetPassword = () => {
     enableReinitialize: true
   });
 
-  return { formik, submitLoading, resetPasswordError };
+  return { formik, submitLoading };
 };
 
 export default useResetPassword;

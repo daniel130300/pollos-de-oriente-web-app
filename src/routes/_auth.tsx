@@ -2,6 +2,7 @@ import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { supabase } from '../supabaseClient';
 import { Session } from '@supabase/supabase-js';
 import ResponsiveAppBar from '../components/templates/AppBar';
+import Box from '@mui/material/Box';
 
 export const Route = createFileRoute('/_auth')({
   beforeLoad: async () => {
@@ -18,9 +19,11 @@ export const Route = createFileRoute('/_auth')({
     }
   },
   component: () => (
-    <>
+    <Box sx={{height: '100vh'}}>
       <ResponsiveAppBar />
-      <Outlet />
-    </>
+      <Box sx={{p: 4, height: '-webkit-fill-available'}}>
+        <Outlet />
+      </Box>
+    </Box>
   )
 })

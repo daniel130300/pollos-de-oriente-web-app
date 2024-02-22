@@ -7,7 +7,7 @@ import Link from '@mui/material/Link';
 
 export const SignUp: React.FC = () => {
 
-  const { formik, submitLoading, signUpError } = useSignUp();
+  const { formik, submitLoading } = useSignUp();
 
   return (
     <AuthFormTemplate
@@ -15,7 +15,6 @@ export const SignUp: React.FC = () => {
       submitButtonText='Crear Cuenta'
       onSubmit={formik.handleSubmit}
       submitLoading={submitLoading}
-      errorText={signUpError}
     >
       <InputField 
         id='email' 
