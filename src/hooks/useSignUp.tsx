@@ -3,11 +3,13 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useNavigate } from '@tanstack/react-router';
 import { supabase } from '../supabaseClient';
+import { useSnackbar } from 'notistack';
 
 const useSignUp = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [signUpError, setSignUpError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar(); 
 
   const userSchema = yup.object().shape({
     email: yup.string().email('El correo debe ser valido').required('El correo es un campo requerido'),
@@ -23,13 +25,14 @@ const useSignUp = () => {
     onSubmit: async (values) => {
       setSubmitLoading(true);
       const { error } = await supabase.auth.signUp({ email: values.email, password: values.password })
+      setSubmitLoading(false);
+
       if (error) {
         setSignUpError(error.message);
+        return;
       }
-      setSubmitLoading(false);
-      if (!error) {
-        navigate({to: '/signin'});
-      }
+      enqueueSnackbar('Antes de iniciar sesión, deberás verificar el correo utilizado al momento de crear tu cuenta')
+      navigate({to: '/signin'});
     },
     enableReinitialize: true
   });

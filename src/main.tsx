@@ -7,6 +7,7 @@ import '../index.css'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
+import { SnackbarProvider } from 'notistack'
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -21,7 +22,9 @@ declare module '@tanstack/react-router' {
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
+      <SnackbarProvider autoHideDuration={2000}>
+        <RouterProvider router={router} />
+      </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>
 )

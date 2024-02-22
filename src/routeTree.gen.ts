@@ -24,7 +24,7 @@ const NoauthSigninLazyImport = createFileRoute('/_no_auth/signin')()
 const NoauthResetPasswordLazyImport = createFileRoute(
   '/_no_auth/reset-password',
 )()
-const AuthHomeLazyImport = createFileRoute('/_auth/home')()
+const AuthProductsLazyImport = createFileRoute('/_auth/products')()
 
 // Create/Update Routes
 
@@ -64,10 +64,12 @@ const NoauthResetPasswordLazyRoute = NoauthResetPasswordLazyImport.update({
   import('./routes/_no_auth/reset-password.lazy').then((d) => d.Route),
 )
 
-const AuthHomeLazyRoute = AuthHomeLazyImport.update({
-  path: '/home',
+const AuthProductsLazyRoute = AuthProductsLazyImport.update({
+  path: '/products',
   getParentRoute: () => AuthRoute,
-} as any).lazy(() => import('./routes/_auth/home.lazy').then((d) => d.Route))
+} as any).lazy(() =>
+  import('./routes/_auth/products.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -85,8 +87,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoauthImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/home': {
-      preLoaderRoute: typeof AuthHomeLazyImport
+    '/_auth/products': {
+      preLoaderRoute: typeof AuthProductsLazyImport
       parentRoute: typeof AuthImport
     }
     '/_no_auth/reset-password': {
@@ -108,7 +110,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
-  AuthRoute.addChildren([AuthHomeLazyRoute]),
+  AuthRoute.addChildren([AuthProductsLazyRoute]),
   NoauthRoute.addChildren([
     NoauthResetPasswordLazyRoute,
     NoauthSigninLazyRoute,

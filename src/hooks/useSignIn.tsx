@@ -22,13 +22,14 @@ const useSignIn = () => {
     onSubmit: async (values) => {
       setSubmitLoading(true);
       const { error } = await supabase.auth.signInWithPassword({ email: values.email, password: values.password })
+      setSubmitLoading(false);
+
       if (error) {
         setSignInError(error.message);
+        return;
       }
-      setSubmitLoading(false);
-      if (!error) {
-        navigate({to: '/home'});
-      }
+
+      navigate({to: '/products'});
     },
     enableReinitialize: true
   });

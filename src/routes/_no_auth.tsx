@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_no_auth')({
     const session = await sessionPromise;
     
     if (session) {
-      throw redirect({ to: '/home' });
+      throw redirect({ to: '/products' });
     }
   }
 })
