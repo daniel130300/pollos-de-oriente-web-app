@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FormHelperText from '@mui/material/FormHelperText';
 import React from 'react';
+import Logo from '../atoms/Logo';
 
 interface AuthFormTemplateProps {
   title: string;
@@ -25,8 +26,9 @@ export const AuthFormTemplate: React.FC<AuthFormTemplateProps> = ({
 }) => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%'}}>
-      <Card sx={{width: '100%', maxWidth: 400, p: 8}}>
-        <Typography variant='h4' sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      <Card sx={{width: '100%', maxWidth: {xs: 260, sm: 400}, p: {xs: 4, sm: 8}}}>
+        <Logo sx={{ width: 80, height: 80, mb: 2, mx: 'auto' }}/>
+        <Typography variant='h4' sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4}}>
           {title}
         </Typography>
         <Stack spacing={3}>

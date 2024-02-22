@@ -16,11 +16,14 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as NoauthImport } from './routes/_no_auth'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
-import { Route as NoauthSignupImport } from './routes/_no_auth.signup'
-import { Route as NoauthSigninImport } from './routes/_no_auth.signin'
 
 // Create Virtual Routes
 
+const NoauthSignupLazyImport = createFileRoute('/_no_auth/signup')()
+const NoauthSigninLazyImport = createFileRoute('/_no_auth/signin')()
+const NoauthResetPasswordLazyImport = createFileRoute(
+  '/_no_auth/reset-password',
+)()
 const AuthHomeLazyImport = createFileRoute('/_auth/home')()
 
 // Create/Update Routes
@@ -40,20 +43,31 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const NoauthSignupLazyRoute = NoauthSignupLazyImport.update({
+  path: '/signup',
+  getParentRoute: () => NoauthRoute,
+} as any).lazy(() =>
+  import('./routes/_no_auth/signup.lazy').then((d) => d.Route),
+)
+
+const NoauthSigninLazyRoute = NoauthSigninLazyImport.update({
+  path: '/signin',
+  getParentRoute: () => NoauthRoute,
+} as any).lazy(() =>
+  import('./routes/_no_auth/signin.lazy').then((d) => d.Route),
+)
+
+const NoauthResetPasswordLazyRoute = NoauthResetPasswordLazyImport.update({
+  path: '/reset-password',
+  getParentRoute: () => NoauthRoute,
+} as any).lazy(() =>
+  import('./routes/_no_auth/reset-password.lazy').then((d) => d.Route),
+)
+
 const AuthHomeLazyRoute = AuthHomeLazyImport.update({
   path: '/home',
   getParentRoute: () => AuthRoute,
-} as any).lazy(() => import('./routes/_auth.home.lazy').then((d) => d.Route))
-
-const NoauthSignupRoute = NoauthSignupImport.update({
-  path: '/signup',
-  getParentRoute: () => NoauthRoute,
-} as any)
-
-const NoauthSigninRoute = NoauthSigninImport.update({
-  path: '/signin',
-  getParentRoute: () => NoauthRoute,
-} as any)
+} as any).lazy(() => import('./routes/_auth/home.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -71,17 +85,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoauthImport
       parentRoute: typeof rootRoute
     }
-    '/_no_auth/signin': {
-      preLoaderRoute: typeof NoauthSigninImport
-      parentRoute: typeof NoauthImport
-    }
-    '/_no_auth/signup': {
-      preLoaderRoute: typeof NoauthSignupImport
-      parentRoute: typeof NoauthImport
-    }
     '/_auth/home': {
       preLoaderRoute: typeof AuthHomeLazyImport
       parentRoute: typeof AuthImport
+    }
+    '/_no_auth/reset-password': {
+      preLoaderRoute: typeof NoauthResetPasswordLazyImport
+      parentRoute: typeof NoauthImport
+    }
+    '/_no_auth/signin': {
+      preLoaderRoute: typeof NoauthSigninLazyImport
+      parentRoute: typeof NoauthImport
+    }
+    '/_no_auth/signup': {
+      preLoaderRoute: typeof NoauthSignupLazyImport
+      parentRoute: typeof NoauthImport
     }
   }
 }
@@ -91,7 +109,11 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   AuthRoute.addChildren([AuthHomeLazyRoute]),
-  NoauthRoute.addChildren([NoauthSigninRoute, NoauthSignupRoute]),
+  NoauthRoute.addChildren([
+    NoauthResetPasswordLazyRoute,
+    NoauthSigninLazyRoute,
+    NoauthSignupLazyRoute,
+  ]),
 ])
 
 /* prettier-ignore-end */

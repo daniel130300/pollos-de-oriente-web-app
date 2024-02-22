@@ -1,8 +1,9 @@
 import InputField from '../atoms/InputField'
 import Typography from '@mui/material/Typography';
-import { Link } from '@tanstack/react-router';
+import { Link as RouterLink } from '@tanstack/react-router';
 import useSignUp from '../../hooks/useSignUp';
 import AuthFormTemplate from '../templates/AuthFormTemplate';
+import Link from '@mui/material/Link';
 
 export const SignUp: React.FC = () => {
 
@@ -39,7 +40,7 @@ export const SignUp: React.FC = () => {
         helperText={formik.touched.password && formik.errors.password}
       />
       <Typography>
-        Ya tienes una cuenta? <Link to='/'>Iniciar Sesión</Link>
+        Ya tienes una cuenta? <Link component={RouterLink} to='/'>Iniciar Sesión</Link>
       </Typography>
     </AuthFormTemplate>
   )
