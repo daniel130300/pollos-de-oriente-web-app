@@ -1,7 +1,6 @@
 import { FC, memo, useMemo } from "react";
-import { Box, Paper, Table as MuiTable, TableHead, TableCell, TableBody, TableRow, TablePagination, TextField, Skeleton } from "@mui/material";
+import { Box, Paper, Table as MuiTable, TableHead, TableCell, TableBody, TableRow, TablePagination, Skeleton } from "@mui/material";
 import { Cell, ColumnDef, flexRender, getCoreRowModel, Row, useReactTable } from "@tanstack/react-table";
-import { debounce } from "../../utils/debounce";
 
 interface TableProps {
   data: any[];
@@ -14,9 +13,7 @@ interface TableProps {
   handleChangePage: (page: number) => void;
   rowsPerPage: number;
   handleChangeRowsPerPage: (e: any) => void;
-  handleSearch?: () => void;
   onClickRow?: (cell: Cell<any, unknown>, row: Row<any>) => void;
-  searchLabel?: string;
   emptyText?: string;
   handleRow?: () => void;
   recordsCount: number | undefined | null;
@@ -30,13 +27,11 @@ const TableUI: FC<TableProps> = ({
   skeletonCount = 10,
   skeletonHeight = 26,
   headerComponent,
-  handleSearch,
   onClickRow,
   page,
   handleChangePage,
   rowsPerPage,
   handleChangeRowsPerPage,
-  searchLabel = "Search",
   emptyText,
   handleRow,
   recordsCount,
@@ -63,16 +58,6 @@ const TableUI: FC<TableProps> = ({
     <Paper elevation={2} style={{ padding: "0 0 1rem 0" }}>
       <Box paddingX="1rem">
         {memoisedHeaderComponent && <Box>{memoisedHeaderComponent}</Box>}
-        {handleSearch && (
-          <TextField
-            onChange={debounce(handleSearch, 1000)}
-            size="small"
-            label={searchLabel}
-            margin="normal"
-            variant="outlined"
-            fullWidth
-          />
-        )}
       </Box>
       <Box style={{ overflowX: "auto", minHeight: 600 }}>
         <MuiTable>
@@ -134,6 +119,8 @@ const TableUI: FC<TableProps> = ({
           page={page}
           onPageChange={(_, page) => handleChangePage(page)}
           onRowsPerPageChange={(e) => handleChangeRowsPerPage(+e.target.value)}
+          labelRowsPerPage="Filas por pagina"
+          labelDisplayedRows={({ from, to, count }) => `${from} al ${to} ${count !== -1 ? `de ${count} registros` : `más que ${to}`}`}
         />
       )}
     </Paper>

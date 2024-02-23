@@ -1,4 +1,4 @@
-import { styled } from '@mui/material/styles';
+import { SxProps, styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React from 'react';
@@ -18,11 +18,13 @@ const VisuallyHiddenInput = styled('input')({
 interface InputFileUploadProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
+  sx?: SxProps
 }
 
 export const InputFileUpload: React.FC<InputFileUploadProps> = ({ 
   onChange, 
-  label = 'Subir Archivo'
+  label = 'Subir Archivo',
+  sx= {}
 }) => {
   return (
     <label>
@@ -30,6 +32,7 @@ export const InputFileUpload: React.FC<InputFileUploadProps> = ({
         component="span"
         variant="contained"
         startIcon={<CloudUploadIcon />}
+        sx={sx}
       >
         {label}
       </Button>

@@ -1,12 +1,18 @@
-import { useState, ChangeEvent } from "react";
-import Grid from "@mui/material/Grid";
+import { ChangeEvent } from "react";
 import Card from "@mui/material/Card";
 import InputFileUpload from "../atoms/ImageUpload";
 import DynamicImage from "../atoms/DynamicImage";
-import Box from "@mui/material/Box";
+import { Button, Stack } from "@mui/material";
 
-const ImageUploadCard = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+interface ImageUploadCardProps {
+  file: File | null;
+  setSelectedFile: (file: File | null) => void;
+}
+
+const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
+  file,
+  setSelectedFile
+}) => {
 
   const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -21,26 +27,22 @@ const ImageUploadCard = () => {
     }
   };
 
-  const renderUploadedState = () => (
-    <Grid container direction="column" alignItems="center">
-      <Grid item>
-        <DynamicImage
-          height={300}
-          src={selectedFile ? URL.createObjectURL(selectedFile) : '/src/assets/placeholder-image.jpeg'}
-          alt="Uploaded"
-          loadingHeight={{ sm: 300 }}
-        />
-      </Grid>
-      <InputFileUpload onChange={handleUploadClick} label="Subir Imagen" />
-    </Grid>
-  );
-
   return (
-    <div>
-      <Card sx={{p: 4}}>
-        {renderUploadedState()}
-      </Card>
-    </div>
+    <Card sx={{p: 4}}>
+      <DynamicImage
+        src={file ? URL.createObjectURL(file) : '/src/assets/placeholder-image.jpeg'}
+        alt="Uploaded"
+        height="250px"
+      />
+      <Stack spacing={2} direction={"row"} mt={4} justifyContent={"center"}>
+        <InputFileUpload onChange={handleUploadClick} label="Subir Imagen"/>
+        {file && (
+          <Button onClick={() => setSelectedFile(null)} color="error" variant="contained">
+            Eliminar Imagen
+          </Button>
+        )}
+      </Stack>
+    </Card>
   );
 };
 

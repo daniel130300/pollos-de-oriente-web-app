@@ -19,7 +19,7 @@ export const Route = createFileRoute('/_auth')({
     }
   },
   component: () => (
-    <Box sx={{height: '100vh'}}>
+    <Box sx={{height: '100%'}}>
       <ResponsiveAppBar />
       <Box sx={{p: 4, height: '-webkit-fill-available'}}>
         <Outlet />

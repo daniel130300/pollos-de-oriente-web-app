@@ -2,27 +2,12 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 
-type SkeletonSize = {
-  xs?: string | number;
-  sm?: string | number;
-  md?: string | number;
-  lg?: string | number;
-  xl?: string | number;
-};
 
-export interface DynamicCardMediaProps
-  extends React.HTMLProps<HTMLImageElement> {
-  loadingHeight?: SkeletonSize;
-  loadingWidth?: SkeletonSize;
-  maxHeight?: string;
-}
-
-export const AppDynamicImage: React.FC<DynamicCardMediaProps> = ({
+export const DynamicImage: React.FC<React.HTMLProps<HTMLImageElement>> = ({
   src,
   alt,
-  loadingHeight = '100%',
-  loadingWidth = '100%',
-  maxHeight,
+  height,
+  width,
   ...rest
 }) => {
   const [loading, setLoading] = useState(true);
@@ -35,17 +20,15 @@ export const AppDynamicImage: React.FC<DynamicCardMediaProps> = ({
     <Box
       sx={{
         position: "relative",
-        height: "100%",
-        maxHeight: maxHeight || "inherit",
-        overflow: "hidden",
+        height: "100%"
       }}
     >
       {loading && (
         <Skeleton
           variant="rectangular"
           sx={{
-            height: loadingHeight,
-            width: loadingWidth
+            height,
+            width
           }}
           animation="wave"
         />
@@ -54,10 +37,11 @@ export const AppDynamicImage: React.FC<DynamicCardMediaProps> = ({
         src={src}
         alt={alt}
         style={{
-          width: rest.width ? rest.width : "100%",
-          height: rest.height ? rest.height : "100%",
           objectFit: "cover",
           display: loading ? "none" : "block",
+          margin: "auto",
+          height: height,
+          width: width
         }}
         onLoad={handleImageLoad}
         {...rest}
@@ -66,4 +50,4 @@ export const AppDynamicImage: React.FC<DynamicCardMediaProps> = ({
   );
 };
 
-export default AppDynamicImage;
+export default DynamicImage;
