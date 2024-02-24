@@ -54,6 +54,7 @@ const theme = createTheme({
     },
     button: {
       fontSize: '0.875rem', // Equivalent to 14px
+      textTransform: 'none'
     },
     caption: {
       fontSize: '0.75rem', // Equivalent to 12px

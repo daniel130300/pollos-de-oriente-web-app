@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useNavigate } from '@tanstack/react-router';
 import { supabase } from '../supabaseClient';
 import { useSnackbar } from 'notistack';
+import { useMutation } from 'react-query';
 
 const useSignUp = () => {
-  const [submitLoading, setSubmitLoading] = useState(false);
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar(); 
 
@@ -15,6 +14,27 @@ const useSignUp = () => {
     password: yup.string().required('La contraseña es un campo requerido').min(6, 'La contraseña debe tener al menos 6 caracteres'),
   });
 
+  const {
+    mutate,
+    isLoading
+  } = useMutation(
+    async (values: any) => {
+      const { error } = await supabase.auth.signUp(values);
+      if (error) {
+        throw new Error('Error creando cuenta');
+      }
+    },
+    {
+      onSuccess: () => {
+        enqueueSnackbar('Antes de iniciar sesión, deberás verificar el correo utilizado al momento de crear tu cuenta', { variant: 'info' });
+        navigate({to: '/signin'});
+      },
+      onError: () => {
+        enqueueSnackbar('Error creando cuenta', { variant: 'error' });
+      },
+    }
+  );
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -22,21 +42,12 @@ const useSignUp = () => {
     },
     validationSchema: userSchema,
     onSubmit: async (values) => {
-      setSubmitLoading(true);
-      const { error } = await supabase.auth.signUp({ email: values.email, password: values.password })
-      setSubmitLoading(false);
-
-      if (error) {
-        enqueueSnackbar('Error creando cuenta', {variant: 'error'})
-        return;
-      }
-      enqueueSnackbar('Antes de iniciar sesión, deberás verificar el correo utilizado al momento de crear tu cuenta')
-      navigate({to: '/signin'});
+      mutate(values)
     },
     enableReinitialize: true
   });
 
-  return { formik, submitLoading };
+  return { formik, isLoading };
 };
 
 export default useSignUp;

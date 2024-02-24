@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 export const Route = createFileRoute('/_auth')({
   beforeLoad: async () => {
     const sessionPromise = new Promise<Session | null>((resolve) => {
-      supabase.auth.onAuthStateChange((event, session) => {
+      supabase.auth.onAuthStateChange((_, session) => {
         resolve(session);
       });
     });
@@ -19,11 +19,11 @@ export const Route = createFileRoute('/_auth')({
     }
   },
   component: () => (
-    <Box sx={{height: '100%'}}>
+    <>
       <ResponsiveAppBar />
-      <Box sx={{p: 4, height: '-webkit-fill-available'}}>
+      <Box sx={{p: 4}}>
         <Outlet />
       </Box>
-    </Box>
+    </>
   )
 })

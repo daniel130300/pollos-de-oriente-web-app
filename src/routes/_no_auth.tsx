@@ -5,7 +5,7 @@ import { Session } from '@supabase/supabase-js';
 export const Route = createFileRoute('/_no_auth')({
   beforeLoad: async() => {
     const sessionPromise = new Promise<Session | null>((resolve) => {
-      supabase.auth.onAuthStateChange((event, session) => {
+      supabase.auth.onAuthStateChange((_, session) => {
         resolve(session);
       });
     });

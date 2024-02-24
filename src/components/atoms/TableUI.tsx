@@ -119,8 +119,8 @@ const TableUI: FC<TableProps> = ({
           page={page}
           onPageChange={(_, page) => handleChangePage(page)}
           onRowsPerPageChange={(e) => handleChangeRowsPerPage(+e.target.value)}
-          labelRowsPerPage="Filas por pagina"
-          labelDisplayedRows={({ from, to, count }) => `${from} al ${to} ${count !== -1 ? `de ${count} registros` : `más que ${to}`}`}
+          labelRowsPerPage="Registros por pagina"
+          labelDisplayedRows={({ from, to, count }) => `Del ${from} al ${to} ${count !== -1 ? `de ${count} registros` : `más que ${to}`}`}
         />
       )}
     </Paper>

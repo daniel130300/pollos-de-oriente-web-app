@@ -11,14 +11,14 @@ export const Route = createLazyFileRoute('/_no_auth/signin')({
 })
 
 function SignIn() {
-  const { formik, submitLoading } = useSignIn();
+  const { formik, isLoading } = useSignIn();
 
   return (
     <AuthFormTemplate 
       title="Iniciar Sesión"
       submitButtonText='Iniciar Sesión'
       onSubmit={formik.handleSubmit}
-      submitLoading={submitLoading}
+      submitLoading={isLoading}
     >
       <InputField 
         id='email' 

@@ -21,7 +21,8 @@ function AddProduct () {
   const {
     formik,
     selectedFile,
-    handleFileSelect 
+    handleFileSelect,
+    isLoading
   } = useProductForm();
 
   return (
@@ -29,7 +30,7 @@ function AddProduct () {
       <Grid item xs={6} mx="auto">
       <Typography variant="h1" mb={2}>Agregar Producto</Typography>
       <Stack spacing={3} mb={4}>
-        <ImageUploadCard file={selectedFile} setSelectedFile={handleFileSelect}/> {/* Pass the handleFileSelect function */}
+        <ImageUploadCard file={selectedFile} setSelectedFile={handleFileSelect}/>
         <InputField 
           id="name"
           label="Nombre" 
@@ -77,7 +78,7 @@ function AddProduct () {
           helperText={formik.touched.purchase_price && formik.errors.purchase_price}
         />
       </Stack>
-      <Button onClick={() => formik.handleSubmit()}>Agregar Producto</Button>
+      <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Agregar Producto</Button>
       </Grid>
     </Grid>
   );

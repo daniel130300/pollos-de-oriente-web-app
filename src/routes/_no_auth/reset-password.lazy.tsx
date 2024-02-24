@@ -12,14 +12,14 @@ export const Route = createLazyFileRoute('/_no_auth/reset-password')({
 
 function ResetPassword () {
 
-  const { formik, submitLoading } = useResetPassword();
+  const { formik, isLoading } = useResetPassword();
 
   return (
     <AuthFormTemplate
       title="Reestablecer Contraseña"
       submitButtonText="Reestablecer Contraseña"
       onSubmit={formik.handleSubmit}
-      submitLoading={submitLoading}
+      submitLoading={isLoading}
     >
       <InputField
         id='email' 

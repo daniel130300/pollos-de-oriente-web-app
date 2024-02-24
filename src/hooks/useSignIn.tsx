@@ -1,13 +1,33 @@
-import { useState } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useNavigate } from '@tanstack/react-router';
-import { supabase } from '../supabaseClient';
+
 import { enqueueSnackbar } from 'notistack';
+import { useMutation } from 'react-query';
+import { supabase } from '../supabaseClient';
 
 const useSignIn = () => {
-  const [submitLoading, setSubmitLoading] = useState(false);
   const navigate = useNavigate();
+
+  const {
+    isLoading, 
+    mutate
+  } = useMutation(
+    async (values: any) => {
+      const { error } = await supabase.auth.signInWithPassword(values);
+      if (error) {
+        throw error;
+      }
+    },
+    {
+      onSuccess: () => {
+        navigate({to: '/products'});
+      },
+      onError: () => {
+        enqueueSnackbar('Error iniciando sesión', { variant: 'error' });
+      },
+    }
+  );
 
   const userSchema = yup.object().shape({
     email: yup.string().email('El correo debe ser valido').required('El correo es un campo requerido')
@@ -20,21 +40,12 @@ const useSignIn = () => {
     },
     validationSchema: userSchema,
     onSubmit: async (values) => {
-      setSubmitLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email: values.email, password: values.password })
-      setSubmitLoading(false);
-
-      if (error) {
-        enqueueSnackbar('Error iniciando sesión', {variant: 'error'})
-        return;
-      }
-
-      navigate({to: '/products'});
+      mutate(values);
     },
     enableReinitialize: true
   });
 
-  return { formik, submitLoading };
+  return { formik, isLoading };
 };
 
 export default useSignIn;

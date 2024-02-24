@@ -30,7 +30,7 @@ export const AuthFormTemplate: React.FC<AuthFormTemplateProps> = ({
         </Typography>
         <Stack spacing={3}>
           {children}
-          <Button disabled={submitLoading} onClick={onSubmit}>{!submitLoading ? submitButtonText : 'Cargando...'}</Button>
+          <Button onClick={onSubmit} isLoading={submitLoading}>{submitButtonText}</Button>
         </Stack>
       </Card>
     </Box>
