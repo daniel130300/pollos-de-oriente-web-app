@@ -60,7 +60,7 @@ function Products() {
             endIcon={<AddCircleIcon/>} 
             sx={{mx: "auto", mb: 2}} 
             component={Link} 
-            to='/add-product'
+            to='/products/add-product'
           >
             Agregar Producto
           </Button>

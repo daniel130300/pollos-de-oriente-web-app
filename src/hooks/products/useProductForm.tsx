@@ -13,7 +13,8 @@ interface Product {
   sale_price: number | string;
   purchase_price: number | string;
   product_image: File | null;
-  image_id: string | null;
+  bucket_id: string | null;
+  file_name: string | null
 }
 
 const useProductForm = () => {
@@ -59,8 +60,9 @@ const useProductForm = () => {
           if (imageError) {
             throw imageError;
           }
-          
-          values.image_id = (image as any).id
+
+          values.bucket_id = 'uploads'
+          values.file_name = image.path
         }
   
         const { product_image, ...rest } = values;
@@ -90,7 +92,8 @@ const useProductForm = () => {
       sale_price: '',
       purchase_price: '',
       product_image: null,
-      image_id: ''
+      bucket_id: null,
+      file_name: null
     },
     validationSchema: productSchema,
     onSubmit: async (values) => {

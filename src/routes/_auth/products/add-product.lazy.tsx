@@ -7,6 +7,7 @@ import ImageUploadCard from '../../../components/molecules/ImageUpload';
 import InputField from '../../../components/atoms/InputField';
 import { Button } from '../../../components/atoms/Button';
 import SelectField from '../../../components/atoms/SelectField';
+import ReturnButton from '../../../components/molecules/ReturnButton';
 
 export const Route = createLazyFileRoute('/_auth/products/add-product')({
   component: AddProduct
@@ -28,6 +29,7 @@ function AddProduct () {
   return (
     <Grid container>
       <Grid item xs={6} mx="auto">
+        <ReturnButton to='/products' params={{}}/>
         <Typography variant="h1" mb={2}>Agregar Producto</Typography>
         <Stack spacing={3} mb={4}>
           <ImageUploadCard file={selectedFile} setSelectedFile={handleFileSelect}/>
