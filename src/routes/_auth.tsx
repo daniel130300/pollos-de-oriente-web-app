@@ -19,11 +19,11 @@ export const Route = createFileRoute('/_auth')({
     }
   },
   component: () => (
-    <>
+    <Box sx={{minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
       <ResponsiveAppBar />
-      <Box sx={{p: 4}}>
+      <Box sx={{flex: '1 1 auto', p: 4, position: 'relative'}}>
         <Outlet />
       </Box>
-    </>
+    </Box>
   )
 })
