@@ -13,7 +13,7 @@ interface SelectItem {
 interface SelectFieldProps extends SelectProps {
   noneOption?: boolean;
   selectItems: SelectItem[]
-  helperText: any;
+  helperText: string | false | undefined;
 }
 
 export const SelectField: React.FC<SelectFieldProps> = ({

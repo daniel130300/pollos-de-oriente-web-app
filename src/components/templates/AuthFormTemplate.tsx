@@ -10,7 +10,7 @@ interface AuthFormTemplateProps {
   title: string;
   submitButtonText: string;
   onSubmit: () => void; 
-  submitLoading: boolean; 
+  submitLoading: boolean;
   children: React.ReactNode
 }
 

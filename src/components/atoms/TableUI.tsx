@@ -12,10 +12,10 @@ interface TableProps {
   page: number;
   handleChangePage: (page: number) => void;
   rowsPerPage: number;
-  handleChangeRowsPerPage: (e: any) => void;
+  handleChangeRowsPerPage: (newRowsPerPage: number) => void;
   onClickRow?: (cell: Cell<any, unknown>, row: Row<any>) => void;
   emptyText?: string;
-  handleRow?: () => void;
+  handleRow?: (rowId?: string) => void;
   recordsCount: number | undefined | null;
   recordsCountLoading?: boolean;
 }
@@ -77,7 +77,7 @@ const TableUI: FC<TableProps> = ({
           <TableBody>
             {!isFetching ? (
               getRowModel()?.rows.map((row) => (
-                <TableRow key={row.id} onClick={handleRow}>
+                <TableRow key={row.id} onClick={() => handleRow?.(row.original.id)} sx={{cursor: 'pointer'}}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell onClick={() => onClickRow?.(cell, row)} key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

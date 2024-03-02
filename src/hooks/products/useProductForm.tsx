@@ -3,9 +3,18 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from '@tanstack/react-router';
-import { generateFilename } from '../utils/generateFileName';
-import { supabase } from '../supabaseClient';
-import { useMutation } from 'react-query';
+import { generateFilename } from '../../utils/generateFileName';
+import { supabase } from '../../supabaseClient';
+import { useMutation } from '@tanstack/react-query';
+
+interface Product {
+  name: string;
+  unity: string;
+  sale_price: number | string;
+  purchase_price: number | string;
+  product_image: File | null;
+  image_id: string | null;
+}
 
 const useProductForm = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -35,38 +44,35 @@ const useProductForm = () => {
   });
 
   const {
-    isLoading,
+    isPending,
     mutate
   } = useMutation(
-    async (values: any) => {
-      if (values.product_image) {
-        const image_file_name = generateFilename(values.name, values.product_image);
-
-        const { data: image, error: imageError } = await supabase.storage
-          .from('uploads')
-          .upload(image_file_name, values.product_image);
-
-        if (imageError) {
-          throw imageError;
-        }
-        
-        values.image_id = (image as any).id
-      }
-
-      const { product_image, ...rest } = values;
-
-      const { error: createProductError } = await supabase
-        .from('products')
-        .insert([rest])
-        .select();
-
-      if (createProductError) {
-        throw createProductError;
-      }
-
-      return 'Producto creado exitosamente';
-    },
     {
+      mutationFn: async(values: Product) => {
+        if (values.product_image) {
+          const image_file_name = generateFilename(values.name, values.product_image);
+  
+          const { data: image, error: imageError } = await supabase.storage
+            .from('uploads')
+            .upload(image_file_name, values.product_image);
+  
+          if (imageError) {
+            throw imageError;
+          }
+          
+          values.image_id = (image as any).id
+        }
+  
+        const { product_image, ...rest } = values;
+  
+        await supabase
+          .from('products')
+          .insert([rest])
+          .select()
+          .throwOnError();
+  
+        return 'Producto creado exitosamente';
+      },
       onSuccess: (data) => {
         enqueueSnackbar(data, { variant: 'success' });
         navigate({ to: '/' });
@@ -77,13 +83,13 @@ const useProductForm = () => {
     }
   );
 
-  const formik = useFormik({
+  const formik = useFormik<Product>({
     initialValues: {
       name: '',
       unity: '',
       sale_price: '',
       purchase_price: '',
-      product_image: undefined,
+      product_image: null,
       image_id: ''
     },
     validationSchema: productSchema,
@@ -104,7 +110,7 @@ const useProductForm = () => {
     formik,
     selectedFile,
     handleFileSelect,
-    isLoading
+    isLoading: isPending
   };
 };
 

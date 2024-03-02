@@ -1,37 +1,43 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
-import usePagination from '../../hooks/usePagination';
-import useProductData from '../../hooks/useProductData';
+import usePagination from '../../../hooks/common/usePagination';
+import useProductData from '../../../hooks/products/useGetProducts';
 import { Box, Stack, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import Button from '../../components/atoms/Button';
-import { InputField } from '../../components/atoms/InputField';
-import TableUI from '../../components/atoms/TableUI';
-import { formatTimestamp } from '../../utils/formatTimestamp';
+import Button from '../../../components/atoms/Button';
+import { InputField } from '../../../components/atoms/InputField';
+import TableUI from '../../../components/atoms/TableUI';
+import { formatTimestamp } from '../../../utils/formatTimestamp';
+import { useNavigate } from '@tanstack/react-router';
 
-export const Route = createLazyFileRoute('/_auth/products')({
+export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products
 })
 
 const columns: ColumnDef<any, any>[] = [
-  { accessorKey: "id", header: "Id", cell: (product: any) => <span>{product.row.original.id}</span> },
-  { accessorKey: "name", header: "Name", cell: (product: any) => <span>{product.row.original.name}</span>},
-  { accessorKey: "unity", header: "Unidad", cell: (product: any) => <span>{product.row.original.unity}</span> },
-  { accessorKey: "sale_price", header: "Precio de Venta", cell: (product: any) => <span>{product.row.original.sale_price}</span> },
-  { accessorKey: "purchase_price", header: "Precio de Compra", cell: (product: any) => <span>{product.row.original.purchase_price}</span> },
-  { accessorKey: "created_at", header: "Creado", cell: (product: any) => <span>{formatTimestamp(product.row.original.created_at)}</span> },
-  { accessorKey: "updated_at", header: "Actualizado", cell: (product: any) => <span>{formatTimestamp(product.row.original.updated_at)}</span> },
+  { accessorKey: "id", header: "Id", cell: (product) => <span>{product.row.original.id}</span> },
+  { accessorKey: "name", header: "Name", cell: (product) => <span>{product.row.original.name}</span>},
+  { accessorKey: "unity", header: "Unidad", cell: (product) => <span>{product.row.original.unity}</span> },
+  { accessorKey: "sale_price", header: "Precio de Venta", cell: (product) => <span>{product.row.original.sale_price}</span> },
+  { accessorKey: "purchase_price", header: "Precio de Compra", cell: (product) => <span>{product.row.original.purchase_price}</span> },
+  { accessorKey: "created_at", header: "Creado", cell: (product) => <span>{formatTimestamp(product.row.original.created_at)}</span> },
+  { accessorKey: "updated_at", header: "Actualizado", cell: (product) => <span>{formatTimestamp(product.row.original.updated_at)}</span> },
 ];
 
 function Products() {
+  const navigate = useNavigate();
   const { 
     page, 
     handleChangePage,
     rowsPerPage, 
     handleChangeRowsPerPage
   } = usePagination();
+
+  const handleRow = (id?: string) => {
+    if(id) navigate({ to: '/products/$id', params: { id } })
+  }
 
   const [search, setSearch] = useState('');
   const { products, productsIsLoading, productsCount, productsCountIsLoading } = useProductData({page, rowsPerPage, search});
@@ -71,6 +77,7 @@ function Products() {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         recordsCount={productsCount}
         recordsCountLoading={productsCountIsLoading}
+        handleRow={handleRow}
       />
     </>
   );

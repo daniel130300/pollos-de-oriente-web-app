@@ -1,7 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from '@tanstack/react-router';
-import useSignUp from '../../hooks/useSignUp';
+import useSignUp from '../../hooks/auth/useSignUp';
 import Link from '@mui/material/Link';
 import AuthFormTemplate from '../../components/templates/AuthFormTemplate';
 import InputField from '../../components/atoms/InputField';

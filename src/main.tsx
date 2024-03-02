@@ -4,14 +4,17 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { ThemeProvider } from '@emotion/react'
 import theme from './theme'
 import '../index.css'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 import { SnackbarProvider } from 'notistack'
 
 // Create a new router instance
-const router = createRouter({ routeTree })
+const router = createRouter({ 
+  routeTree
+})
+
 const queryClient = new QueryClient()
 
 // Register the router instance for type safety

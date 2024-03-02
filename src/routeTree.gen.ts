@@ -24,8 +24,14 @@ const NoauthSigninLazyImport = createFileRoute('/_no_auth/signin')()
 const NoauthResetPasswordLazyImport = createFileRoute(
   '/_no_auth/reset-password',
 )()
-const AuthProductsLazyImport = createFileRoute('/_auth/products')()
-const AuthAddProductLazyImport = createFileRoute('/_auth/add-product')()
+const AuthProductsIndexLazyImport = createFileRoute('/_auth/products/')()
+const AuthProfileUpdatePasswordLazyImport = createFileRoute(
+  '/_auth/profile/update-password',
+)()
+const AuthProductsAddProductLazyImport = createFileRoute(
+  '/_auth/products/add-product',
+)()
+const AuthProductsIdLazyImport = createFileRoute('/_auth/products/$id')()
 
 // Create/Update Routes
 
@@ -65,18 +71,35 @@ const NoauthResetPasswordLazyRoute = NoauthResetPasswordLazyImport.update({
   import('./routes/_no_auth/reset-password.lazy').then((d) => d.Route),
 )
 
-const AuthProductsLazyRoute = AuthProductsLazyImport.update({
-  path: '/products',
+const AuthProductsIndexLazyRoute = AuthProductsIndexLazyImport.update({
+  path: '/products/',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() =>
-  import('./routes/_auth/products.lazy').then((d) => d.Route),
+  import('./routes/_auth/products/index.lazy').then((d) => d.Route),
 )
 
-const AuthAddProductLazyRoute = AuthAddProductLazyImport.update({
-  path: '/add-product',
+const AuthProfileUpdatePasswordLazyRoute =
+  AuthProfileUpdatePasswordLazyImport.update({
+    path: '/profile/update-password',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/profile/update-password.lazy').then((d) => d.Route),
+  )
+
+const AuthProductsAddProductLazyRoute = AuthProductsAddProductLazyImport.update(
+  {
+    path: '/products/add-product',
+    getParentRoute: () => AuthRoute,
+  } as any,
+).lazy(() =>
+  import('./routes/_auth/products/add-product.lazy').then((d) => d.Route),
+)
+
+const AuthProductsIdLazyRoute = AuthProductsIdLazyImport.update({
+  path: '/products/$id',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() =>
-  import('./routes/_auth/add-product.lazy').then((d) => d.Route),
+  import('./routes/_auth/products/$id.lazy').then((d) => d.Route),
 )
 
 // Populate the FileRoutesByPath interface
@@ -95,14 +118,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoauthImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/add-product': {
-      preLoaderRoute: typeof AuthAddProductLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/products': {
-      preLoaderRoute: typeof AuthProductsLazyImport
-      parentRoute: typeof AuthImport
-    }
     '/_no_auth/reset-password': {
       preLoaderRoute: typeof NoauthResetPasswordLazyImport
       parentRoute: typeof NoauthImport
@@ -115,6 +130,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoauthSignupLazyImport
       parentRoute: typeof NoauthImport
     }
+    '/_auth/products/$id': {
+      preLoaderRoute: typeof AuthProductsIdLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/products/add-product': {
+      preLoaderRoute: typeof AuthProductsAddProductLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/profile/update-password': {
+      preLoaderRoute: typeof AuthProfileUpdatePasswordLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/products/': {
+      preLoaderRoute: typeof AuthProductsIndexLazyImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -122,7 +153,12 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
-  AuthRoute.addChildren([AuthAddProductLazyRoute, AuthProductsLazyRoute]),
+  AuthRoute.addChildren([
+    AuthProductsIdLazyRoute,
+    AuthProductsAddProductLazyRoute,
+    AuthProfileUpdatePasswordLazyRoute,
+    AuthProductsIndexLazyRoute,
+  ]),
   NoauthRoute.addChildren([
     NoauthResetPasswordLazyRoute,
     NoauthSigninLazyRoute,
