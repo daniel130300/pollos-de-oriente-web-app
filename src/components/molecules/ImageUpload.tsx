@@ -32,7 +32,7 @@ const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
       <DynamicImage
         src={file ? URL.createObjectURL(file) : '/src/assets/placeholder-image.jpeg'}
         alt="Uploaded"
-        height="250px"
+        height="100px"
       />
       <Stack spacing={2} direction={"row"} mt={4} justifyContent={"center"}>
         <InputFileUpload onChange={handleUploadClick} label="Subir Imagen"/>
