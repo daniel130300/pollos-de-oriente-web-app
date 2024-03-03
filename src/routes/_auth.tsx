@@ -1,7 +1,7 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
-import { supabase } from '../supabaseClient';
 import { Session } from '@supabase/supabase-js';
-import VerticalAppBar from '../components/templates/VerticalAppBar';
+import VerticalAppBar from 'src/components/templates/VerticalAppBar';
+import { supabase } from 'src/supabaseClient';
 
 export const Route = createFileRoute('/_auth')({
   beforeLoad: async () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Button from '../atoms/Button';
+import Button from 'src/components/atoms/Button';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -10,9 +10,9 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { supabase } from '../../supabaseClient';
+import { supabase } from 'src/supabaseClient';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { Logo } from '../atoms/Logo';
+import { Logo } from 'src/components/atoms/Logo';
 import Box from '@mui/material/Box';
 
 function ResponsiveAppBar() {

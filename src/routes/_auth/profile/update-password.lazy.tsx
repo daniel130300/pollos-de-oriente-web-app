@@ -1,8 +1,8 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { Grid, Stack, Typography } from "@mui/material";
-import InputField from '../../../components/atoms/InputField';
-import useUpdatePassword from '../../../hooks/auth/useUpdatePassword';
-import Button from '../../../components/atoms/Button';
+import InputField from 'src/components/atoms/InputField';
+import useUpdatePassword from 'src/hooks/auth/useUpdatePassword';
+import Button from 'src/components/atoms/Button';
 
 export const Route = createLazyFileRoute('/_auth/profile/update-password')({
   component: UpdatePassword

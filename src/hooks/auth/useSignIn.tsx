@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import { useNavigate } from '@tanstack/react-router';
 import { enqueueSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
-import { supabase } from '../../supabaseClient';
+import { supabase } from 'src/supabaseClient';
 
 interface SignInValues {
   email: string;

@@ -1,15 +1,15 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
-import usePagination from '../../../hooks/common/usePagination';
-import useProductData from '../../../hooks/products/useGetProducts';
+import usePagination from 'src/hooks/common/usePagination';
+import useProductData from 'src/hooks/products/useGetProducts';
 import { Box, Stack, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import Button from '../../../components/atoms/Button';
-import { InputField } from '../../../components/atoms/InputField';
-import TableUI from '../../../components/atoms/TableUI';
-import { formatTimestamp } from '../../../utils/formatTimestamp';
+import Button from 'src/components/atoms/Button';
+import { InputField } from 'src/components/atoms/InputField';
+import TableUI from 'src/components/atoms/TableUI';
+import { formatTimestamp } from 'src/utils/formatTimestamp';
 import { useNavigate } from '@tanstack/react-router';
 
 export const Route = createLazyFileRoute('/_auth/products/')({

@@ -1,11 +1,12 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
-import useGetProduct from '../../../hooks/products/useGetProduct';
+import useGetProduct from 'src/hooks/products/useGetProduct';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import Loader from '../../../components/atoms/Loader';
+import Loader from 'src/components/atoms/Loader';
 import Box from '@mui/material/Box';
-import ReturnButton from '../../../components/molecules/ReturnButton';
+import ReturnButton from 'src/components/molecules/ReturnButton';
+import { formatTimestamp } from 'src/utils/formatTimestamp';
 
 export const Route = createLazyFileRoute('/_auth/products/$id')({
   component: ProductComponent,
@@ -16,6 +17,8 @@ function ProductComponent() {
   const { product, productIsLoading } = useGetProduct({ id });
 
   if (productIsLoading) return <Loader />;
+
+  console.log('PRODUCT', product);
 
   return (
     <Grid container>
@@ -28,6 +31,8 @@ function ProductComponent() {
           <Typography variant='body1'>Name: {product.name}</Typography>
           <Typography variant='body1'>Purchase Price: {product.purchase_price}</Typography>
           <Typography variant='body1'>Sale Price: {product.sale_price}</Typography>
+          <Typography variant='body1'>Purchase Price: {product.purchase_price}</Typography>
+          <Typography variant='body1'>Creado: {formatTimestamp(product.created_at)}</Typography>
         </Stack>
       </Grid>
     </Grid>

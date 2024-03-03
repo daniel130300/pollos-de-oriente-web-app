@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -18,8 +17,8 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { supabase } from '../../supabaseClient';
-import Logo from '../atoms/Logo';
+import { supabase } from 'src/supabaseClient';
+import Logo from 'src/components/atoms/Logo';
 import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';

@@ -3,8 +3,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from '@tanstack/react-router';
-import { generateFilename } from '../../utils/generateFileName';
-import { supabase } from '../../supabaseClient';
+import { generateFilename } from 'src/utils/generateFileName';
+import { supabase } from 'src/supabaseClient';
 import { useMutation } from '@tanstack/react-query';
 
 interface Product {

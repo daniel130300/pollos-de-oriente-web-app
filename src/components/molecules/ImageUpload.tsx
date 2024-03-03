@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import Card from "@mui/material/Card";
-import InputFileUpload from "../atoms/ImageUpload";
-import DynamicImage from "../atoms/DynamicImage";
+import InputFileUpload from "src/components/atoms/ImageUpload";
+import DynamicImage from "src/components/atoms/DynamicImage";
 import { Button, Stack } from "@mui/material";
 
 interface ImageUploadCardProps {

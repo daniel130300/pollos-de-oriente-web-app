@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { supabase } from '../supabaseClient';
 import { Session } from '@supabase/supabase-js';
+import { supabase } from 'src/supabaseClient';
 
 export const Route = createFileRoute('/_no_auth')({
   beforeLoad: async() => {

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '../../supabaseClient';
+import { supabase } from 'src/supabaseClient';
 import { enqueueSnackbar } from 'notistack';
 
 interface UseGetProductProps {

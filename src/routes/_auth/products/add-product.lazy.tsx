@@ -2,12 +2,12 @@ import { createLazyFileRoute } from '@tanstack/react-router'
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import useProductForm from "../../../hooks/products/useProductForm";
-import ImageUploadCard from '../../../components/molecules/ImageUpload';
-import InputField from '../../../components/atoms/InputField';
-import { Button } from '../../../components/atoms/Button';
-import SelectField from '../../../components/atoms/SelectField';
-import ReturnButton from '../../../components/molecules/ReturnButton';
+import useProductForm from "src/hooks/products/useProductForm";
+import ImageUploadCard from 'src/components/molecules/ImageUpload';
+import InputField from 'src/components/atoms/InputField';
+import { Button } from 'src/components/atoms/Button';
+import SelectField from 'src/components/atoms/SelectField';
+import ReturnButton from 'src/components/molecules/ReturnButton';
 
 export const Route = createLazyFileRoute('/_auth/products/add-product')({
   component: AddProduct

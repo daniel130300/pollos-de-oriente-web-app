@@ -1,10 +1,10 @@
 import Stack from '@mui/material/Stack';
-import Button from '../atoms/Button';
+import Button from 'src/components/atoms/Button';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React from 'react';
-import Logo from '../atoms/Logo';
+import Logo from 'src/components/atoms/Logo';
 
 interface AuthFormTemplateProps {
   title: string;
