@@ -24,7 +24,13 @@ const useSignUp = () => {
     isPending
   } = useMutation({
     mutationFn: async(values: SignUpValues) => {
-      const { error } = await supabase.auth.signUp(values);
+      const { error } = await supabase.auth.signUp({
+        email: values.email, 
+        password: values.password,
+        options: {
+          emailRedirectTo: import.meta.env.VITE_SUPABASE_SIGNUP_EMAIL_REDIRECT_TO_URL
+        }
+      });
       if (error) {
         throw error;
       }
