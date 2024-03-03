@@ -8,5 +8,5 @@ export default defineConfig({
   plugins: [react(), TanStackRouterVite()],
   resolve: {
     alias: [{ find: 'src', replacement: path.resolve(__dirname, 'src') }],
-  },
+  }
 })
