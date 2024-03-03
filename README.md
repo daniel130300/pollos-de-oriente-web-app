@@ -1,30 +1,95 @@
-# React + TypeScript + Vite
+# Pollos de Oriente - Sistema de Inventario
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bienvenido al repositorio del proyecto para el sistema de inventario de Pollos de Oriente. Este proyecto utiliza React, TypeScript y Vite para ofrecer una experiencia de usuario moderna y eficiente, facilitando la gestión del inventario, ítems del menú, descuentos, productos expirados, y más.
 
-Currently, two official plugins are available:
+## Acerca del Proyecto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+El sistema de inventario de Pollos de Oriente está diseñado para ayudar al restaurante a gestionar de manera eficiente sus operaciones diarias. Con este sistema, el restaurante puede:
 
-## Expanding the ESLint configuration
+- Administrar el inventario de productos.
+- Gestionar ítems del menú y descuentos.
+- Controlar productos expirados.
+- Y mucho más.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tecnologías Utilizadas
 
-- Configure the top-level `parserOptions` property like this:
+Este proyecto se basa en las siguientes tecnologías:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- **React**: Para la construcción de la interfaz de usuario. [React](https://reactjs.org/)
+- **TypeScript**: Añadiendo tipado estático para mejorar el desarrollo y mantenimiento del código. [TypeScript](https://www.typescriptlang.org/)
+- **Vite**: Proporcionando un entorno de desarrollo rápido con Hot Module Replacement (HMR). [Vite](https://vitejs.dev/)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Además, utilizamos las siguientes dependencias y sus versiones:
+
+- **@emotion/react** y **@emotion/styled**: Para estilos CSS-in-JS. [Emotion](https://emotion.sh/docs/introduction)
+- **@mui/material**, **@mui/icons-material**, **@mui/lab**: Componentes de UI de Material-UI. [MUI](https://mui.com/)
+- **@supabase/supabase-js**: Cliente de JavaScript para interactuar con Supabase. [Supabase](https://supabase.com/)
+- **@tanstack/react-query**, **@tanstack/react-router**, **@tanstack/react-table**, **@tanstack/router-devtools**: Herramientas para la gestión de estados, enrutamiento y tablas en React. [TanStack](https://tanstack.com/)
+- **formik**: Construcción de formularios en React. [Formik](https://formik.org/)
+- **notistack**: Notificaciones snackbar. [Notistack](https://iamhosseindhv.com/notistack)
+- **yup**: Constructor de esquemas para análisis y validación de valores. [Yup](https://github.com/jquense/yup)
+- **zustand**: Estado global para React. [Zustand](https://github.com/pmndrs/zustand)
+
+## Configuración del Proyecto
+
+Para comenzar a trabajar con este proyecto, sigue estos pasos:
+
+1. Clona el repositorio.
+2. Instala las dependencias con `npm install`.
+3. Inicia el servidor de desarrollo con `npm run dev`.
+
+## Colaboradores
+
+Este proyecto es posible gracias a la contribución de:
+
+- [@daniel130300](https://github.com/daniel130300)
+- [@JG20108](https://github.com/JG20108)
+
+---
+
+# Pollos de Oriente - Inventory System
+
+Welcome to the project repository for the Pollos de Oriente inventory system. This project uses React, TypeScript, and Vite to provide a modern and efficient user experience, facilitating the management of inventory, menu items, discounts, expired products, and more.
+
+## About the Project
+
+The Pollos de Oriente inventory system is designed to help the restaurant efficiently manage its daily operations. With this system, the restaurant can:
+
+- Manage product inventory.
+- Manage menu items and discounts.
+- Control expired products.
+- And much more.
+
+## Technologies Used
+
+This project is based on the following technologies:
+
+- **React**: For building the user interface. [React](https://reactjs.org/)
+- **TypeScript**: Adding static typing to improve code development and maintenance. [TypeScript](https://www.typescriptlang.org/)
+- **Vite**: Providing a fast development environment with Hot Module Replacement (HMR). [Vite](https://vitejs.dev/)
+
+In addition, we use the following dependencies and their versions:
+
+- **@emotion/react** and **@emotion/styled**: For CSS-in-JS styles. [Emotion](https://emotion.sh/docs/introduction)
+- **@mui/material**, **@mui/icons-material**, **@mui/lab**: UI components from Material-UI. [MUI](https://mui.com/)
+- **@supabase/supabase-js**: JavaScript client to interact with Supabase. [Supabase](https://supabase.com/)
+- **@tanstack/react-query**, **@tanstack/react-router**, **@tanstack/react-table**, **@tanstack/router-devtools**: Tools for state management, routing, and tables in React. [TanStack](https://tanstack.com/)
+- **formik**: For building forms in React. [Formik](https://formik.org/)
+- **notistack**: Snackbar notifications. [Notistack](https://iamhosseindhv.com/notistack)
+- **yup**: Schema builder for value parsing and validation. [Yup](https://github.com/jquense/yup)
+- **zustand**: Global state for React. [Zustand](https://github.com/pmndrs/zustand)
+
+## Project Setup
+
+To start working with this project, follow these steps:
+
+1. Clone the repository.
+2. Install dependencies with `npm install`.
+3. Start the development server with `npm run dev`.
+
+## Contributors
+
+This project is made possible by the contributions of:
+
+- [@daniel130300](https://github.com/daniel130300)
+- [@JG20108](https://github.com/JG20108)
