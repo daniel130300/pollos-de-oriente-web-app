@@ -1,6 +1,10 @@
 import { FC, memo, useMemo } from "react";
 import { Box, Paper, Table as MuiTable, TableHead, TableCell, TableBody, TableRow, TablePagination, Skeleton } from "@mui/material";
 import { Cell, ColumnDef, flexRender, getCoreRowModel, Row, useReactTable } from "@tanstack/react-table";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Tooltip from '@mui/material/Tooltip';
 
 interface TableProps {
   data: any[];
@@ -15,7 +19,9 @@ interface TableProps {
   handleChangeRowsPerPage: (newRowsPerPage: number) => void;
   onClickRow?: (cell: Cell<any, unknown>, row: Row<any>) => void;
   emptyText?: string;
-  handleRow?: (rowId?: string) => void;
+  handleViewRow?: (rowId?: string) => void;
+  handleEditRow?: (rowId?: string) => void;
+  handleDeleteRow?: (rowId?: string) => void;
   recordsCount: number | undefined | null;
   recordsCountLoading?: boolean;
 }
@@ -33,7 +39,9 @@ const TableUI: FC<TableProps> = ({
   rowsPerPage,
   handleChangeRowsPerPage,
   emptyText,
-  handleRow,
+  handleViewRow,
+  handleEditRow,
+  handleDeleteRow,
   recordsCount,
   recordsCountLoading = false,
 }) => {
@@ -54,6 +62,37 @@ const TableUI: FC<TableProps> = ({
 
   const noDataFound = !isFetching && (!memoizedData || memoizedData.length === 0);
 
+  const renderActionsColumn = (row: Row<any>) => (
+    <TableCell>
+      {handleViewRow && (
+        <Tooltip title="Ver" sx={{cursor: 'pointer'}}>
+          <RemoveRedEyeIcon 
+            onClick={() => handleViewRow(row.original.id)} 
+            color="info"
+          />
+        </Tooltip>
+      )}
+
+      {handleEditRow && (
+        <Tooltip title="Editar" sx={{cursor: 'pointer'}}>
+          <EditIcon 
+            onClick={() => handleEditRow(row.original.id)} 
+            color="primary"
+          />
+        </Tooltip>
+      )}
+
+      {handleDeleteRow && (
+        <Tooltip title="Delete" sx={{cursor: 'pointer'}}>
+          <DeleteIcon 
+            onClick={() => handleDeleteRow(row.original.id)} 
+            color="error"
+          />
+        </Tooltip>
+      )}
+    </TableCell>
+  );
+
   return (
     <Paper elevation={2} style={{ padding: "0 0 1rem 0" }}>
       <Box paddingX="1rem">
@@ -70,6 +109,7 @@ const TableUI: FC<TableProps> = ({
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableCell>
                   ))}
+                  {(handleViewRow || handleEditRow || handleDeleteRow) && <TableCell>Acciones</TableCell>}
                 </TableRow>
               ))}
             </TableHead>
@@ -77,12 +117,13 @@ const TableUI: FC<TableProps> = ({
           <TableBody>
             {!isFetching ? (
               getRowModel()?.rows.map((row) => (
-                <TableRow key={row.id} onClick={() => handleRow?.(row.original.id)} sx={{cursor: 'pointer'}}>
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell onClick={() => onClickRow?.(cell, row)} key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
+                  {(handleViewRow || handleEditRow || handleDeleteRow) && renderActionsColumn(row)}
                 </TableRow>
               ))
             ) : (

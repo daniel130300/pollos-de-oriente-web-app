@@ -23,7 +23,7 @@ const columns: ColumnDef<any, any>[] = [
   { accessorKey: "sale_price", header: "Precio de Venta", cell: (product) => <span>{product.row.original.sale_price}</span> },
   { accessorKey: "purchase_price", header: "Precio de Compra", cell: (product) => <span>{product.row.original.purchase_price}</span> },
   { accessorKey: "created_at", header: "Creado", cell: (product) => <span>{formatTimestamp(product.row.original.created_at)}</span> },
-  { accessorKey: "updated_at", header: "Actualizado", cell: (product) => <span>{formatTimestamp(product.row.original.updated_at)}</span> },
+  { accessorKey: "updated_at", header: "Actualizado", cell: (product) => <span>{formatTimestamp(product.row.original.updated_at)}</span> }
 ];
 
 function Products() {
@@ -35,7 +35,7 @@ function Products() {
     handleChangeRowsPerPage
   } = usePagination();
 
-  const handleRow = (id?: string) => {
+  const handleViewRow = (id?: string) => {
     if(id) navigate({ to: '/products/$id', params: { id } })
   }
 
@@ -49,8 +49,10 @@ function Products() {
         <Stack spacing={2} direction={{xs:'column', sm: 'row'}} justifyContent="flex-end">
           <InputField 
             id="search" 
+            name="search"
             label='Buscar por nombre de producto' 
-            type="text" variant='outlined' 
+            type="text" 
+            variant='outlined'
             size='small' 
             sx={{minWidth: '300px'}}
             value={search}
@@ -77,7 +79,7 @@ function Products() {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         recordsCount={productsCount}
         recordsCountLoading={productsCountIsLoading}
-        handleRow={handleRow}
+        handleViewRow={handleViewRow}
       />
     </>
   );

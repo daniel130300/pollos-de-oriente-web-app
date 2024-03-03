@@ -45,7 +45,7 @@ const useGetProducts = ({ page, rowsPerPage, search = '' }: UseGetProductsProps)
       placeholderData: keepPreviousData,
       throwOnError: () => {
         enqueueSnackbar('Error obteniendo el listado de productos', { variant: 'error' });
-        return false;
+        return true;
       }
     }
   );
@@ -56,7 +56,7 @@ const useGetProducts = ({ page, rowsPerPage, search = '' }: UseGetProductsProps)
       queryFn: () => getProductsCount({ search }),
       throwOnError: () => {
         enqueueSnackbar('Error obteniendo el conteo de productos', { variant: 'error' });
-        return false;
+        return true;
       }
     }
   );

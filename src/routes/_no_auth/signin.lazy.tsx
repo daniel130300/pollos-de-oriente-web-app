@@ -21,26 +21,18 @@ function SignIn() {
       submitLoading={isLoading}
     >
       <InputField 
-        id='email' 
+        id='email'
+        name="email"
         label='Correo' 
         type="email"
-        onChange={formik.handleChange}
-        value={formik.values.email}
-        error={
-          formik.touched.email && Boolean(formik.errors.email)
-        }
-        helperText={formik.touched.email && formik.errors.email}
+        formik={formik}
       />
       <InputField 
-        id='password' 
+        id='password'
+        name='password' 
         label='Contraseña' 
         type='password'
-        onChange={formik.handleChange}
-        value={formik.values.password}
-        error={
-          formik.touched.password && Boolean(formik.errors.password)
-        }
-        helperText={formik.touched.password && formik.errors.password}
+        formik={formik}
       />
       <Typography align='right'>
         <Link component={RouterLink} to='/reset-password'>Se te olvido tu contraseña?</Link>

@@ -12,8 +12,8 @@ const useGetProduct = ({ id }: UseGetProductProps) => {
 
     if(data.bucket_id && data.file_name) {
       const { data: image } = supabase.storage.from(data.bucket_id).getPublicUrl(data.file_name)
-
-      data.imagePublicUrl = image.publicUrl;
+      
+      data.imagePublicUrl = image?.publicUrl;
     }
 
     return data;
@@ -24,7 +24,7 @@ const useGetProduct = ({ id }: UseGetProductProps) => {
     queryFn: () => getProduct({ id }),
     throwOnError: () => { 
       enqueueSnackbar('Error obteniendo el detalle del producto', {variant: 'error'}) 
-      return false;
+      return true;
     }
   });
 

@@ -18,26 +18,18 @@ function UpdatePassword () {
       <Typography variant="h1" mb={2}>Cambiar Contraseña</Typography>
         <Stack spacing={3} mb={4}>
           <InputField
-            id='password' 
+            id='password'
+            name="password"
             label='Password' 
             type="password"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-            error={
-              formik.touched.password && Boolean(formik.errors.password)
-            }
-            helperText={formik.touched.password && formik.errors.password}
+            formik={formik}
           />
           <InputField
-            id='confirmPassword' 
+            id='confirmPassword'
+            name="confirmPassword"
             label='Confirm Password' 
             type="password"
-            onChange={formik.handleChange}
-            value={formik.values.confirmPassword}
-            error={
-              formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)
-            }
-            helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+            formik={formik}
           />
         </Stack>
         <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Cambiar Contraseña</Button>

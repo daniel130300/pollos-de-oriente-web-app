@@ -22,15 +22,11 @@ function ResetPassword () {
       submitLoading={isLoading}
     >
       <InputField
-        id='email' 
+        id='email'
+        name="email"
         label='Correo' 
         type="email"
-        onChange={formik.handleChange}
-        value={formik.values.email}
-        error={
-          formik.touched.email && Boolean(formik.errors.email)
-        }
-        helperText={formik.touched.email && formik.errors.email}
+        formik={formik}
       />
       <Typography align='left'>
         Regresar a <Link component={RouterLink} to='/signin'>Iniciar Sesión</Link>

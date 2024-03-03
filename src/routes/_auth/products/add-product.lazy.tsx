@@ -35,14 +35,10 @@ function AddProduct () {
           <ImageUploadCard file={selectedFile} setSelectedFile={handleFileSelect}/>
           <InputField 
             id="name"
-            label="Nombre" 
+            name="name"
+            label="Nombre"
             type="text"
-            onChange={formik.handleChange}
-            value={formik.values.name}
-            error={
-              formik.touched.name && Boolean(formik.errors.name)
-            }
-            helperText={formik.touched.name && formik.errors.name}
+            formik={formik}
           />
           <SelectField 
             id="unity" 
@@ -50,34 +46,21 @@ function AddProduct () {
             name="unity"
             label="Unidad" 
             selectItems={selectItems} 
-            onChange={formik.handleChange}
-            value={formik.values.unity}
-            error={
-              formik.touched.unity && Boolean(formik.errors.unity)
-            }
-            helperText={formik.touched.unity && formik.errors.unity}
+            formik={formik}
           />
           <InputField 
-            id="sale_price" 
+            id="sale_price"
+            name="sale_price"
             label="Precio de Venta" 
             type="number"
-            onChange={formik.handleChange}
-            value={formik.values.sale_price}
-            error={
-              formik.touched.sale_price && Boolean(formik.errors.sale_price)
-            }
-            helperText={formik.touched.sale_price && formik.errors.sale_price}
+            formik={formik}
           />
           <InputField 
-            id="purchase_price" 
+            id="purchase_price"
+            name="purchase_price"
             label="Precio de Compra" 
             type="number"
-            onChange={formik.handleChange}
-            value={formik.values.purchase_price}
-            error={
-              formik.touched.purchase_price && Boolean(formik.errors.purchase_price)
-            }
-            helperText={formik.touched.purchase_price && formik.errors.purchase_price}
+            formik={formik}
           />
         </Stack>
         <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Agregar Producto</Button>
