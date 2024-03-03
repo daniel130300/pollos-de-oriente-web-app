@@ -30,7 +30,7 @@ const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
   return (
     <Card sx={{p: 4}}>
       <DynamicImage
-        src={file ? URL.createObjectURL(file) : '/src/assets/placeholder-image.jpeg'}
+        src={file ? URL.createObjectURL(file) : '/placeholder-image.jpeg'}
         alt="Uploaded"
         height="100px"
       />
