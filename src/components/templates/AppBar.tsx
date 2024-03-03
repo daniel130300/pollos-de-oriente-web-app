@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { supabase } from '../../supabaseClient';
-import { useNavigate } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { Logo } from '../atoms/Logo';
 import Box from '@mui/material/Box';
 
@@ -41,7 +41,14 @@ function ResponsiveAppBar() {
     navigate({to: '/signin'})
   }
 
-  const pages = ['Productos', 'Combos', 'Tiendas', 'Ventas', 'Compras'];
+  const pages = [
+    {title: 'Productos', href: '/products'}, 
+    {title: 'Tiendas', href: ''},
+    {title: 'Combos', href: ''},
+    {title: 'Ventas', href: ''},
+    {title: 'Compras', href: ''}
+  ];
+  
   const settings = [
     {title: 'Perfil', onClick: handleCloseUserMenu},
     {title: 'Cerrar Sesión', onClick: handleLogOut}
@@ -98,8 +105,8 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.title} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center" component={Link} to={page.href}>{page.title}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -122,12 +129,14 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.title}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
                 variant='outlined'
+                component={Link}
+                to={page.href}
               >
-                {page}
+                {page.title}
               </Button>
             ))}
           </Box>
