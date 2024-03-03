@@ -4,6 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { supabase } from 'src/supabaseClient';
 import { useSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
+import { authForm, authEnqueue } from 'src/localization';
 
 const useUpdatePassword = () => {
   const navigate = useNavigate();
@@ -18,19 +19,19 @@ const useUpdatePassword = () => {
       }
     },
     onSuccess: () => {
-      enqueueSnackbar('Contraseña actualizada exitosamente', { variant: 'success' });
+      enqueueSnackbar(authEnqueue.success.passwordUpdate, { variant: 'success' });
       navigate({to: '/products'});
     },
     onError: () => {
-      enqueueSnackbar('Error actualizando la contraseña', { variant: 'error' });
+      enqueueSnackbar(authEnqueue.errors.passwordUpdate, { variant: 'error' });
     },
   });
 
   const updatePasswordSchema = yup.object().shape({
-    password: yup.string().required('La contraseña es un campo requerido').min(6, 'La contraseña debe tener al menos 6 caracteres'),
+    password: yup.string().required(authForm.password.required).min(6, authForm.password.min(6)),
     confirmPassword: yup.string()
-        .oneOf([yup.ref('password')], 'Las contraseñas deben coincidir')
-        .required('Es necesario confirmar la contraseña')
+        .oneOf([yup.ref('password')], authForm.confirmPassword.oneOf)
+        .required(authForm.confirmPassword.required)
   });
 
   const formik = useFormik({

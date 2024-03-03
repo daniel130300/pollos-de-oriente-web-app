@@ -6,6 +6,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { generateFilename } from 'src/utils/generateFileName';
 import { supabase } from 'src/supabaseClient';
 import { useMutation } from '@tanstack/react-query';
+import { productForm, productEnqueue } from 'src/localization';
 
 interface Product {
   name: string;
@@ -17,26 +18,27 @@ interface Product {
   file_name: string | null
 }
 
-const useProductForm = () => {
+const useAddProduct = () => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const productSchema = yup.object().shape({
-    name: yup.string().required('El nombre es un campo requerido'),
-    unity: yup.string().required('La unidad es un campo requerido'),
+    name: yup.string().required(productForm.name.required),
+    unity: yup.string().required(productForm.unity.required),
     sale_price: yup
       .number()
-      .typeError('El precio de venta debe ser un número')
-      .required('El precio de venta es un campo requerido')
-      .min(0, 'El precio de venta debe ser mayor o igual a 0'),
+      .typeError(productForm.sale_price.typeError)
+      .required(productForm.sale_price.required)
+      .min(0, productForm.sale_price.min(0)),
     purchase_price: yup
       .number()
-      .typeError('El precio de compra debe ser un número')
-      .required('El precio de compra es un campo requerido')
-      .min(0, 'El precio de compra debe ser mayor o igual a 0'),
+      .typeError(productForm.purchase_price.typeError)
+      .required(productForm.purchase_price.required)
+      .min(0, productForm.purchase_price.min(0)),
     product_image: yup
       .mixed()
-      .test('fileType', 'La imagen debe ser un archivo de imagen válido', (value: any) => {
+      .test('fileType', productForm.product_image, (value: any) => {
         if (!value) return true;
         if (typeof value === 'string') return true;
         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
@@ -72,15 +74,13 @@ const useProductForm = () => {
           .insert([rest])
           .select()
           .throwOnError();
-  
-        return 'Producto creado exitosamente';
       },
-      onSuccess: (data) => {
-        enqueueSnackbar(data, { variant: 'success' });
+      onSuccess: () => {
+        enqueueSnackbar(productEnqueue.success.create, { variant: 'success' });
         navigate({ to: '/' });
       },
       onError: () => {
-        enqueueSnackbar('Error creando el producto', { variant: 'error' });
+        enqueueSnackbar(productEnqueue.errors.create, { variant: 'error' });
       }
     }
   );
@@ -102,8 +102,6 @@ const useProductForm = () => {
     enableReinitialize: true
   });
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
     formik.setFieldValue('product_image', file);
@@ -117,4 +115,4 @@ const useProductForm = () => {
   };
 };
 
-export default useProductForm;
+export default useAddProduct;

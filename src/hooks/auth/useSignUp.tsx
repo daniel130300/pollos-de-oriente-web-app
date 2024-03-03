@@ -4,6 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { supabase } from 'src/supabaseClient';
 import { useSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
+import { authForm, authEnqueue } from 'src/localization';
 
 interface SignUpValues {
   email: string;
@@ -15,8 +16,8 @@ const useSignUp = () => {
   const { enqueueSnackbar } = useSnackbar(); 
 
   const signUpSchema = yup.object().shape({
-    email: yup.string().email('El correo debe ser valido').required('El correo es un campo requerido'),
-    password: yup.string().required('La contraseña es un campo requerido').min(6, 'La contraseña debe tener al menos 6 caracteres'),
+    email: yup.string().email(authForm.email.valid).required(authForm.email.required),
+    password: yup.string().required(authForm.password.required).min(6, authForm.password.min(6)),
   });
 
   const {
@@ -36,11 +37,11 @@ const useSignUp = () => {
       }
     },
     onSuccess: () => {
-      enqueueSnackbar('Antes de iniciar sesión, deberás verificar el correo utilizado al momento de crear tu cuenta', { variant: 'info' });
+      enqueueSnackbar(authEnqueue.success.signup, { variant: 'success' });
       navigate({to: '/signin'});
     },
     onError: () => {
-      enqueueSnackbar('Error creando cuenta', { variant: 'error' });
+      enqueueSnackbar(authEnqueue.errors.signup, { variant: 'error' });
     }
   });
 

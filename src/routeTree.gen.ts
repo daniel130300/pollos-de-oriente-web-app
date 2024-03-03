@@ -32,6 +32,9 @@ const AuthProductsAddProductLazyImport = createFileRoute(
   '/_auth/products/add-product',
 )()
 const AuthProductsIdLazyImport = createFileRoute('/_auth/products/$id')()
+const AuthProductsIdEditLazyImport = createFileRoute(
+  '/_auth/products/$id/edit',
+)()
 
 // Create/Update Routes
 
@@ -102,6 +105,13 @@ const AuthProductsIdLazyRoute = AuthProductsIdLazyImport.update({
   import('./routes/_auth/products/$id.lazy').then((d) => d.Route),
 )
 
+const AuthProductsIdEditLazyRoute = AuthProductsIdEditLazyImport.update({
+  path: '/products/$id/edit',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/products_/$id/edit.lazy').then((d) => d.Route),
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -146,6 +156,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProductsIndexLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/products/$id/edit': {
+      preLoaderRoute: typeof AuthProductsIdEditLazyImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -158,6 +172,7 @@ export const routeTree = rootRoute.addChildren([
     AuthProductsAddProductLazyRoute,
     AuthProfileUpdatePasswordLazyRoute,
     AuthProductsIndexLazyRoute,
+    AuthProductsIdEditLazyRoute,
   ]),
   NoauthRoute.addChildren([
     NoauthResetPasswordLazyRoute,

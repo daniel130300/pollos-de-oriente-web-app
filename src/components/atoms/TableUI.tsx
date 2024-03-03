@@ -1,5 +1,5 @@
 import { FC, memo, useMemo } from "react";
-import { Box, Paper, Table as MuiTable, TableHead, TableCell, TableBody, TableRow, TablePagination, Skeleton } from "@mui/material";
+import { Box, Paper, Table as MuiTable, TableHead, TableCell, TableBody, TableRow, TablePagination, Skeleton, Stack } from "@mui/material";
 import { Cell, ColumnDef, flexRender, getCoreRowModel, Row, useReactTable } from "@tanstack/react-table";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,9 +19,9 @@ interface TableProps {
   handleChangeRowsPerPage: (newRowsPerPage: number) => void;
   onClickRow?: (cell: Cell<any, unknown>, row: Row<any>) => void;
   emptyText?: string;
-  handleViewRow?: (rowId?: string) => void;
-  handleEditRow?: (rowId?: string) => void;
-  handleDeleteRow?: (rowId?: string) => void;
+  handleViewRow?: (rowId: string) => void;
+  handleEditRow?: (rowId: string) => void;
+  handleDeleteRow?: (rowId: string) => void;
   recordsCount: number | undefined | null;
   recordsCountLoading?: boolean;
 }
@@ -64,32 +64,34 @@ const TableUI: FC<TableProps> = ({
 
   const renderActionsColumn = (row: Row<any>) => (
     <TableCell>
-      {handleViewRow && (
-        <Tooltip title="Ver" sx={{cursor: 'pointer'}}>
-          <RemoveRedEyeIcon 
-            onClick={() => handleViewRow(row.original.id)} 
-            color="info"
-          />
-        </Tooltip>
-      )}
+      <Stack direction='row' spacing={1}>
+        {handleViewRow && (
+          <Tooltip title="Ver" sx={{cursor: 'pointer'}}>
+            <RemoveRedEyeIcon 
+              onClick={() => handleViewRow(row.original.id)} 
+              color="info"
+            />
+          </Tooltip>
+        )}
 
-      {handleEditRow && (
-        <Tooltip title="Editar" sx={{cursor: 'pointer'}}>
-          <EditIcon 
-            onClick={() => handleEditRow(row.original.id)} 
-            color="primary"
-          />
-        </Tooltip>
-      )}
+        {handleEditRow && (
+          <Tooltip title="Editar" sx={{cursor: 'pointer'}}>
+            <EditIcon 
+              onClick={() => handleEditRow(row.original.id)} 
+              color="primary"
+            />
+          </Tooltip>
+        )}
 
-      {handleDeleteRow && (
-        <Tooltip title="Delete" sx={{cursor: 'pointer'}}>
-          <DeleteIcon 
-            onClick={() => handleDeleteRow(row.original.id)} 
-            color="error"
-          />
-        </Tooltip>
-      )}
+        {handleDeleteRow && (
+          <Tooltip title="Delete" sx={{cursor: 'pointer'}}>
+            <DeleteIcon 
+              onClick={() => handleDeleteRow(row.original.id)} 
+              color="error"
+            />
+          </Tooltip>
+        )}
+      </Stack>
     </TableCell>
   );
 

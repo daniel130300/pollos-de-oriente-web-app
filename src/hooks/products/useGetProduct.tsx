@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from 'src/supabaseClient';
 import { enqueueSnackbar } from 'notistack';
+import { productEnqueue } from 'src/localization';
 
 interface UseGetProductProps {
   id: string;
@@ -23,7 +24,7 @@ const useGetProduct = ({ id }: UseGetProductProps) => {
     queryKey: ['product', {id}],
     queryFn: () => getProduct({ id }),
     throwOnError: () => { 
-      enqueueSnackbar('Error obteniendo el detalle del producto', {variant: 'error'}) 
+      enqueueSnackbar(productEnqueue.errors.detail, {variant: 'error'}) 
       return true;
     }
   });

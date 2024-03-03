@@ -33,7 +33,7 @@ declare module '@tanstack/react-router' {
 
 const StyledSnackbarProvider = styled(SnackbarProvider)`
   &.SnackbarItem-contentRoot {
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-family: inherit; 
   }
 `;
 

@@ -4,13 +4,14 @@ import { useNavigate } from '@tanstack/react-router';
 import { supabase } from 'src/supabaseClient';
 import { useSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
+import { authForm, authEnqueue } from 'src/localization'
 
 const useResetPassword = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar(); 
 
   const resetPasswordSchema = yup.object().shape({
-    email: yup.string().email('El correo debe ser valido').required('El correo es un campo requerido')
+    email: yup.string().email(authForm.email.valid).required(authForm.email.required)
   });
 
   const { 
@@ -26,10 +27,10 @@ const useResetPassword = () => {
     },
     onSuccess: () => {
       navigate({to: '/signin'});
-      enqueueSnackbar('Si tu correo existe, se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña.', { variant: 'success' });
+      enqueueSnackbar(authEnqueue.success.passwordReset, { variant: 'success' });
     },
     onError: () => {
-      enqueueSnackbar('Error enviando correo para reestablecer tu contraseña', { variant: 'error' });
+      enqueueSnackbar(authEnqueue.errors.passwordReset, { variant: 'error' });
     },
   });
 

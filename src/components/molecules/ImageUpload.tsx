@@ -7,11 +7,13 @@ import { Button, Stack } from "@mui/material";
 interface ImageUploadCardProps {
   file: File | null;
   setSelectedFile: (file: File | null) => void;
+  defaultSrc?: string;
 }
 
 const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
   file,
-  setSelectedFile
+  setSelectedFile,
+  defaultSrc = '/placeholder-image.jpeg'
 }) => {
 
   const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +32,7 @@ const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
   return (
     <Card sx={{p: 4}}>
       <DynamicImage
-        src={file ? URL.createObjectURL(file) : '/placeholder-image.jpeg'}
+        src={file ? URL.createObjectURL(file) : defaultSrc}
         alt="Uploaded"
         height="100px"
       />

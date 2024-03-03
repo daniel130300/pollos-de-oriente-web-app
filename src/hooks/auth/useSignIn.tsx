@@ -4,6 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { enqueueSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
 import { supabase } from 'src/supabaseClient';
+import { authEnqueue, authForm } from 'src/localization';
 
 interface SignInValues {
   email: string;
@@ -27,12 +28,12 @@ const useSignIn = () => {
       navigate({to: '/products'});
     },
     onError: () => {
-      enqueueSnackbar('Error iniciando sesión', { variant: 'error' });
+      enqueueSnackbar(authEnqueue.errors.login, { variant: 'error' });
     },
   });
 
   const signInSchema = yup.object().shape({
-    email: yup.string().email('El correo debe ser valido').required('El correo es un campo requerido')
+    email: yup.string().email(authForm.email.valid).required(authForm.email.required)
   });
 
   const formik = useFormik<SignInValues>({

@@ -35,8 +35,12 @@ function Products() {
     handleChangeRowsPerPage
   } = usePagination();
 
-  const handleViewRow = (id?: string) => {
-    if(id) navigate({ to: '/products/$id', params: { id } })
+  const handleViewRow = (id: string) => {
+    navigate({ to: '/products/$id', params: { id } })
+  }
+
+  const handleEditRow = (id: string) => {
+    navigate({ to: '/products/$id/edit', params: { id } })
   }
 
   const [search, setSearch] = useState('');
@@ -80,6 +84,7 @@ function Products() {
         recordsCount={productsCount}
         recordsCountLoading={productsCountIsLoading}
         handleViewRow={handleViewRow}
+        handleEditRow={handleEditRow}
       />
     </>
   );

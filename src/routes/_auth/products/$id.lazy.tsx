@@ -23,12 +23,10 @@ function ProductComponent() {
     <Grid container>
       <Grid item xs={6} mx="auto">
         <ReturnButton to='/products' params={{}}/>
+        <Typography variant="h1" mb={2}>Detalle del Producto</Typography>
         <Card sx={{p: 4}}>
-          <Box display='flex' justifyContent='space-between' alignItems='center' mb={2}>
-            <Typography variant="h1">Detalle del Producto</Typography>
-          </Box>
           <Stack spacing={3}>
-            <Box component="img" src={product.imagePublicUrl} sx={{maxWidht: 50, maxHeight: 50, objectFit: 'contain'}}/>
+            {product.imagePublicUrl && <Box component="img" src={product.imagePublicUrl} sx={{maxWidht: 50, maxHeight: 50, objectFit: 'contain'}}/>}
             <Typography variant='body1'>Id: {product.id}</Typography>
             <Typography variant='body1'>Nombre: {product.name}</Typography>
             <Typography variant='body1'>Precio Venta: {product.sale_price}</Typography>
