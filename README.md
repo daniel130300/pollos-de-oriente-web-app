@@ -1,17 +1,17 @@
-# Pollos de Oriente - Sistema de Inventario
+# 🍗 Pollos de Oriente - Sistema de Inventario 🍗
 
-Bienvenido al repositorio del proyecto para el sistema de inventario de Pollos de Oriente. Este proyecto utiliza React, TypeScript y Vite para ofrecer una experiencia de usuario moderna y eficiente, facilitando la gestión del inventario, ítems del menú, descuentos, productos expirados, y más.
+Bienvenido al repositorio del proyecto para el sistema de inventario de **Pollos de Oriente**. Este proyecto utiliza React, TypeScript y Vite para ofrecer una experiencia de usuario moderna y eficiente, facilitando la gestión del inventario, ítems del menú, descuentos, productos expirados, y más.
 
-## Acerca del Proyecto
+## 📖 Acerca del Proyecto
 
 El sistema de inventario de Pollos de Oriente está diseñado para ayudar al restaurante a gestionar de manera eficiente sus operaciones diarias. Con este sistema, el restaurante puede:
 
-- Administrar el inventario de productos.
-- Gestionar ítems del menú y descuentos.
-- Controlar productos expirados.
+- 📦 Administrar el inventario de productos.
+- 🍽 Gestionar ítems del menú y descuentos.
+- 🚫 Controlar productos expirados.
 - Y mucho más.
 
-## Tecnologías Utilizadas
+## 💻 Tecnologías Utilizadas
 
 Este proyecto se basa en las siguientes tecnologías:
 
@@ -30,7 +30,7 @@ Además, utilizamos las siguientes dependencias y sus versiones:
 - **yup**: Constructor de esquemas para análisis y validación de valores. [Yup](https://github.com/jquense/yup)
 - **zustand**: Estado global para React. [Zustand](https://github.com/pmndrs/zustand)
 
-## Configuración del Proyecto
+## 🚀 Configuración del Proyecto
 
 Para comenzar a trabajar con este proyecto, sigue estos pasos:
 
@@ -38,29 +38,34 @@ Para comenzar a trabajar con este proyecto, sigue estos pasos:
 2. Instala las dependencias con `npm install`.
 3. Inicia el servidor de desarrollo con `npm run dev`.
 
-## Colaboradores
+## 👥 Colaboradores
 
 Este proyecto es posible gracias a la contribución de:
 
-- [@daniel130300](https://github.com/daniel130300)
-- [@JG20108](https://github.com/JG20108)
+- [@daniel130300](https://github.com/daniel130300) 🌟
+- [@JG20108](https://github.com/JG20108) 🌟
+
+## 📋 Agile Scrum Board
+
+Para ver el progreso del proyecto y las tareas actuales, visita nuestro tablero Agile Scrum en Notion:
+- [Tablero Agile Scrum de Pollos de Oriente](https://www.notion.so/pollos-de-oriente-web-3eb7cb7049de4963a1fb09d1ef34e8fa?pvs=4)
 
 ---
 
-# Pollos de Oriente - Inventory System
+# 🍗 Pollos de Oriente - Inventory System 🍗
 
 Welcome to the project repository for the Pollos de Oriente inventory system. This project uses React, TypeScript, and Vite to provide a modern and efficient user experience, facilitating the management of inventory, menu items, discounts, expired products, and more.
 
-## About the Project
+## 📖 About the Project
 
 The Pollos de Oriente inventory system is designed to help the restaurant efficiently manage its daily operations. With this system, the restaurant can:
 
-- Manage product inventory.
-- Manage menu items and discounts.
-- Control expired products.
+- 📦 Manage product inventory.
+- 🍽 Manage menu items and discounts.
+- 🚫 Control expired products.
 - And much more.
 
-## Technologies Used
+## 💻 Technologies Used
 
 This project is based on the following technologies:
 
@@ -79,7 +84,7 @@ In addition, we use the following dependencies and their versions:
 - **yup**: Schema builder for value parsing and validation. [Yup](https://github.com/jquense/yup)
 - **zustand**: Global state for React. [Zustand](https://github.com/pmndrs/zustand)
 
-## Project Setup
+## 🚀 Project Setup
 
 To start working with this project, follow these steps:
 
@@ -87,9 +92,14 @@ To start working with this project, follow these steps:
 2. Install dependencies with `npm install`.
 3. Start the development server with `npm run dev`.
 
-## Contributors
+## 👥 Contributors
 
 This project is made possible by the contributions of:
 
-- [@daniel130300](https://github.com/daniel130300)
-- [@JG20108](https://github.com/JG20108)
+- [@daniel130300](https://github.com/daniel130300) 🌟
+- [@JG20108](https://github.com/JG20108) 🌟
+
+## 📋 Agile Scrum Board
+
+To see the project's progress and current tasks, visit our Agile Scrum board on Notion:
+- [Pollos de Oriente Agile Scrum Board](https://www.notion.so/pollos-de-oriente-web-3eb7cb7049de4963a1fb09d1ef34e8fa?pvs=4)
