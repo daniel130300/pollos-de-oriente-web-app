@@ -15,13 +15,15 @@ export const authEnqueue = {
 export const productEnqueue = {
   errors: {
     create: 'Error creando el producto',
-    edit: 'Error editando el product',
+    edit: 'Error editando el producto',
     list: 'Error obteniendo el listado de productos',
     count: 'Error obteniendo el conteo de productos',
-    detail: 'Error obteniendo el detalle del producto'
+    detail: 'Error obteniendo el detalle del producto',
+    imageDelete: 'Error eliminando la imagen del producto'
   },
   success: {
     create: 'Producto creado exitosamente',
-    edit: 'Product editado exitosamente'
+    edit: 'Producto editado exitosamente',
+    imageDelete: 'Imagen del producto eliminada exitosamente'
   }
 }

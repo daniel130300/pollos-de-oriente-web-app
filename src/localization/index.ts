@@ -1,7 +1,7 @@
 export { 
   authEnqueue, 
   productEnqueue 
-} from './enqueue';
+} from './snackbar';
 
 export { 
   authForm, 

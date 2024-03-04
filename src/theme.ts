@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
@@ -16,8 +16,20 @@ const theme = createTheme({
     },
   },
   typography: {
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
     h1: {
-      fontSize: '2.5rem', // Equivalent to 40px
+      fontSize: '2.25rem', // Equivalent to 36px
       fontWeight: 500,
     },
     h2: {
@@ -32,19 +44,11 @@ const theme = createTheme({
       fontSize: '1.5rem', // Equivalent to 24px
       fontWeight: 500,
     },
-    h5: {
-      fontSize: '1.25rem', // Equivalent to 20px
-      fontWeight: 500,
-    },
-    h6: {
-      fontSize: '1rem', // Equivalent to 16px
-      fontWeight: 500,
-    },
     subtitle1: {
-      fontSize: '1rem', // Equivalent to 16px
+      fontSize: '1.25rem', // Equivalent to 16px
     },
     subtitle2: {
-      fontSize: '0.875rem', // Equivalent to 14px
+      fontSize: '1rem', // Equivalent to 14px
     },
     body1: {
       fontSize: '1rem', // Equivalent to 16px
@@ -53,7 +57,7 @@ const theme = createTheme({
       fontSize: '0.875rem', // Equivalent to 14px
     },
     button: {
-      fontSize: '0.875rem', // Equivalent to 14px
+      fontSize: '1rem', // Equivalent to 16px
       textTransform: 'none'
     },
     caption: {
@@ -65,4 +69,4 @@ const theme = createTheme({
   }
 });
 
-export default theme;
+export default responsiveFontSizes(theme);

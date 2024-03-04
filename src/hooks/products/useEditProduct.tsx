@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { productForm, productEnqueue } from 'src/localization';
+import { supabase } from 'src/supabaseClient';
 
 interface Product {
   name: string;
@@ -50,11 +51,19 @@ const useEditProduct = ({id}: {id: string}) => {
   } = useMutation(
     {
       mutationFn: async(values: Product) => {
-       // add logic here to handle edit
+
+        const { product_image, ...rest } = values;
+
+        await supabase
+        .from('products')
+        .update(rest)
+        .eq('id', id)
+        .select()
+        .throwOnError()
       },
       onSuccess: () => {
         enqueueSnackbar(productEnqueue.success.edit, { variant: 'success' });
-        navigate({ to: '/' });
+        navigate({ to: '/products' });
       },
       onError: () => {
         enqueueSnackbar(productEnqueue.errors.edit, { variant: 'error' });

@@ -10,6 +10,8 @@ import ReturnButton from 'src/components/molecules/ReturnButton';
 import useGetProduct from 'src/hooks/products/useGetProduct';
 import Loader from 'src/components/atoms/Loader';
 import useEditProduct from 'src/hooks/products/useEditProduct';
+import ImageUploadCard from 'src/components/molecules/ImageUploadCard';
+import useDeleteFile from 'src/hooks/common/useDeleteFile';
 
 export const Route = createLazyFileRoute('/_auth/products/$id/edit')({
   component: EditProduct
@@ -24,10 +26,20 @@ function EditProduct () {
   const { id } = Route.useParams();
 
   const { product, productIsLoading, productIsError } = useGetProduct({id})
-  const { formik, isLoading } = useEditProduct({id})
+  const { formik, isLoading, selectedFile, handleFileSelect } = useEditProduct({id})
+  const { mutate, isLoading: deleteImageIsLoading } = useDeleteFile();
+
+  const handleDeleteImage = () => {
+    mutate({
+      id: product.id, 
+      from: 'products', 
+      bucket_id: product.bucket_id, 
+      file_name: product.file_name
+    })
+  }
 
   useEffect(() => {
-    if (!productIsLoading && !productIsError) {
+    if (product && !productIsLoading && !productIsError) {
       formik.setValues({
         name: product.name,
         purchase_price: product.purchase_price,
@@ -38,20 +50,24 @@ function EditProduct () {
         file_name: product.file_name
       })
     }
-  }, [productIsError, productIsLoading])
+  }, [product, productIsError, productIsLoading])
 
-  if (productIsLoading) return <Loader/>
+  if (productIsLoading) return <Loader type='cover'/>
 
   return (
     <Grid container>
-      <Grid item xs={6} mx="auto">
+      <Grid item xs={10} sm={8} md={6} mx="auto">
         <ReturnButton to='/products' params={{}}/>
         <Typography variant="h1" mb={2}>Editar Producto</Typography>
         <Stack spacing={3} mb={4}>
-          {/* <ImageUploadCard 
-            file={selectedFile} 
-            setSelectedFile={handleFileSelect}
-          /> */}
+          {deleteImageIsLoading ? <Loader/> : (
+            <ImageUploadCard
+              file={selectedFile} 
+              setSelectedFile={handleFileSelect}
+              src={product.imagePublicUrl}
+              handleDelete={handleDeleteImage}
+            />
+          )}
           <InputField 
             id="name"
             name="name"

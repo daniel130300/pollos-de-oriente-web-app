@@ -60,7 +60,7 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           <Logo/>
           <Typography
-            variant="h6"
+            variant="h1"
             noWrap
             component="a"
             sx={{

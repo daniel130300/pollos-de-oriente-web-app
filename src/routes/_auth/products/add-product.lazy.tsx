@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import useAddProduct from "src/hooks/products/useAddProduct";
-import ImageUploadCard from 'src/components/molecules/ImageUpload';
+import ImageUploadCard from 'src/components/molecules/ImageUploadCard';
 import InputField from 'src/components/atoms/InputField';
 import { Button } from 'src/components/atoms/Button';
 import SelectField from 'src/components/atoms/SelectField';

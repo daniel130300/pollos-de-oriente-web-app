@@ -2,6 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { supabase } from 'src/supabaseClient';
 import { enqueueSnackbar } from 'notistack';
 import { productEnqueue } from 'src/localization';
+import { API_KEYS } from 'src/query/keys/queryConfig';
 
 interface UseGetProductsProps {
   page: number;
@@ -41,7 +42,7 @@ const useGetProducts = ({ page, rowsPerPage, search = '' }: UseGetProductsProps)
 
   const { isLoading: productsIsLoading, isError: productsIsError, data: products } = useQuery(
     {
-      queryKey: ['products', {page, rowsPerPage, search}],
+      queryKey: [API_KEYS.FETCH_PRODUCTS, {page, rowsPerPage, search}],
       queryFn: () => getProducts({page, rowsPerPage, search}),
       placeholderData: keepPreviousData,
       throwOnError: () => {
@@ -53,7 +54,7 @@ const useGetProducts = ({ page, rowsPerPage, search = '' }: UseGetProductsProps)
   
   const { isLoading: productsCountIsLoading, isError: productsCountIsError, data: productsCount } = useQuery(
     {
-      queryKey: ['productsCount', search],
+      queryKey: [API_KEYS.FETCH_PRODUCTS_COUNT, search],
       queryFn: () => getProductsCount({ search }),
       throwOnError: () => {
         enqueueSnackbar(productEnqueue.errors.count, { variant: 'error' });

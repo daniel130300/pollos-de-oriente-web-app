@@ -4,7 +4,8 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { ThemeProvider } from '@emotion/react'
 import theme from './theme'
 import '../index.css'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './query/queryClient'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
@@ -14,14 +15,6 @@ import { styled } from '@mui/material'
 // Create a new router instance
 const router = createRouter({ 
   routeTree
-})
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: { 
-      retry: false
-    }
-  }
 })
 
 // Register the router instance for type safety

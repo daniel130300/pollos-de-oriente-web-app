@@ -11,6 +11,7 @@ import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
 import { formatTimestamp } from 'src/utils/formatTimestamp';
 import { useNavigate } from '@tanstack/react-router';
+import { parseToCurrency } from 'src/utils/parseToCurrency';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products
@@ -20,8 +21,8 @@ const columns: ColumnDef<any, any>[] = [
   { accessorKey: "id", header: "Id", cell: (product) => <span>{product.row.original.id}</span> },
   { accessorKey: "name", header: "Name", cell: (product) => <span>{product.row.original.name}</span>},
   { accessorKey: "unity", header: "Unidad", cell: (product) => <span>{product.row.original.unity}</span> },
-  { accessorKey: "sale_price", header: "Precio de Venta", cell: (product) => <span>{product.row.original.sale_price}</span> },
-  { accessorKey: "purchase_price", header: "Precio de Compra", cell: (product) => <span>{product.row.original.purchase_price}</span> },
+  { accessorKey: "sale_price", header: "Precio de Venta", cell: (product) => <span>{parseToCurrency(product.row.original.sale_price)}</span> },
+  { accessorKey: "purchase_price", header: "Precio de Compra", cell: (product) => <span>{parseToCurrency(product.row.original.purchase_price)}</span> },
   { accessorKey: "created_at", header: "Creado", cell: (product) => <span>{formatTimestamp(product.row.original.created_at)}</span> },
   { accessorKey: "updated_at", header: "Actualizado", cell: (product) => <span>{formatTimestamp(product.row.original.updated_at)}</span> }
 ];

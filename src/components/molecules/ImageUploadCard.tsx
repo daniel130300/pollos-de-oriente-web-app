@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import Card from "@mui/material/Card";
-import InputFileUpload from "src/components/atoms/ImageUpload";
+import InputFileUpload from "src/components/atoms/InputFileUpload";
 import DynamicImage from "src/components/atoms/DynamicImage";
 import { Button, Stack } from "@mui/material";
 
@@ -8,12 +8,20 @@ interface ImageUploadCardProps {
   file: File | null;
   setSelectedFile: (file: File | null) => void;
   defaultSrc?: string;
+  src?: string;
+  uploadText?: string;
+  deleteText?: string;
+  handleDelete?: () => void;
 }
 
 const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
   file,
   setSelectedFile,
-  defaultSrc = '/placeholder-image.jpeg'
+  defaultSrc = '/placeholder-image.jpeg',
+  src,
+  uploadText = 'Subir Imagen',
+  deleteText = 'Eliminar Imagen',
+  handleDelete
 }) => {
 
   const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
@@ -29,19 +37,31 @@ const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
     }
   };
 
+  const handleDeleteClick = () => {
+    if (file) {
+      setSelectedFile(null);
+      return;
+    }
+
+    if (handleDelete) {
+      handleDelete();
+      return;
+    }
+  };
+
   return (
     <Card sx={{p: 4}}>
       <DynamicImage
-        src={file ? URL.createObjectURL(file) : defaultSrc}
+        src={file ? URL.createObjectURL(file) : src || defaultSrc}
         alt="Uploaded"
         height="100px"
       />
       <Stack spacing={2} direction={"row"} mt={4} justifyContent={"center"}>
-        <InputFileUpload onChange={handleUploadClick} label="Subir Imagen"/>
-        {file && (
-          <Button onClick={() => setSelectedFile(null)} color="error" variant="contained">
-            Eliminar Imagen
-          </Button>
+        <InputFileUpload onChange={handleUploadClick} label={uploadText}/>
+        {(file || src) && (
+          <Button onClick={handleDeleteClick} color="error" variant="contained">
+            {deleteText}
+         </Button>
         )}
       </Stack>
     </Card>
