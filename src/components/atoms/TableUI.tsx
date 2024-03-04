@@ -69,7 +69,7 @@ const TableUI: FC<TableProps> = ({
           <Tooltip title="Ver" sx={{cursor: 'pointer'}}>
             <RemoveRedEyeIcon 
               onClick={() => handleViewRow(row.original.id)} 
-              color="info"
+              color="action"
             />
           </Tooltip>
         )}

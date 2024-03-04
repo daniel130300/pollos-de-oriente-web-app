@@ -12,6 +12,7 @@ import TableUI from 'src/components/atoms/TableUI';
 import { formatTimestamp } from 'src/utils/formatTimestamp';
 import { useNavigate } from '@tanstack/react-router';
 import { parseToCurrency } from 'src/utils/parseToCurrency';
+import { useModalStore } from 'src/components/zustand/useModalStore';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products
@@ -35,6 +36,7 @@ function Products() {
     rowsPerPage, 
     handleChangeRowsPerPage
   } = usePagination();
+  const { handleOpen } = useModalStore();
 
   const handleViewRow = (id: string) => {
     navigate({ to: '/products/$id', params: { id } })
@@ -42,6 +44,10 @@ function Products() {
 
   const handleEditRow = (id: string) => {
     navigate({ to: '/products/$id/edit', params: { id } })
+  }
+
+  const handleDeleteRow = (id: string) => {
+    handleOpen()
   }
 
   const [search, setSearch] = useState('');
@@ -86,6 +92,7 @@ function Products() {
         recordsCountLoading={productsCountIsLoading}
         handleViewRow={handleViewRow}
         handleEditRow={handleEditRow}
+        handleDeleteRow={handleDeleteRow}
       />
     </>
   );
