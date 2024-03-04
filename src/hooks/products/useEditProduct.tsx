@@ -6,6 +6,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { productForm, productEnqueue } from 'src/localization';
 import { supabase } from 'src/supabaseClient';
+import { generateFilename } from 'src/utils/generateFileName';
 
 interface Product {
   name: string;
@@ -51,6 +52,20 @@ const useEditProduct = ({id}: {id: string}) => {
   } = useMutation(
     {
       mutationFn: async(values: Product) => {
+        if (values.product_image) {
+          const image_file_name = generateFilename(values.name, values.product_image);
+  
+          const { data: image, error: imageError } = await supabase.storage
+            .from('uploads')
+            .upload(image_file_name, values.product_image);
+  
+          if (imageError) {
+            throw imageError;
+          }
+
+          values.bucket_id = 'uploads'
+          values.file_name = image.path
+        }
 
         const { product_image, ...rest } = values;
 

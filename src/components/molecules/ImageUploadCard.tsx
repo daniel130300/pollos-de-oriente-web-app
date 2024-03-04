@@ -12,6 +12,7 @@ interface ImageUploadCardProps {
   uploadText?: string;
   deleteText?: string;
   handleDelete?: () => void;
+  loading?: boolean;
 }
 
 const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
@@ -21,7 +22,8 @@ const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
   src,
   uploadText = 'Subir Imagen',
   deleteText = 'Eliminar Imagen',
-  handleDelete
+  handleDelete,
+  loading = false
 }) => {
 
   const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
@@ -54,7 +56,7 @@ const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
       <DynamicImage
         src={file ? URL.createObjectURL(file) : src || defaultSrc}
         alt="Uploaded"
-        height="100px"
+        loading={loading}
       />
       <Stack spacing={2} direction={"row"} mt={4} justifyContent={"center"}>
         <InputFileUpload onChange={handleUploadClick} label={uploadText}/>

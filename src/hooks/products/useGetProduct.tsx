@@ -21,7 +21,12 @@ const useGetProduct = ({ id }: UseGetProductProps) => {
     return data;
   };
 
-  const { isLoading: productIsLoading, data: product, isError: productIsError } = useQuery({
+  const { 
+    isLoading: productIsLoading, 
+    isFetching: productIsFetching,
+    data: product, 
+    isError: productIsError,
+  } = useQuery({
     queryKey: [API_KEYS.FETCH_PRODUCT, {id}],
     queryFn: () => getProduct({ id }),
     throwOnError: () => { 
@@ -32,6 +37,7 @@ const useGetProduct = ({ id }: UseGetProductProps) => {
 
   return { 
     productIsLoading, 
+    productIsFetching,
     productIsError,
     product
   };

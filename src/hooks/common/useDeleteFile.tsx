@@ -2,16 +2,19 @@ import { useSnackbar } from 'notistack';
 import { supabase } from 'src/supabaseClient';
 import { useMutation } from '@tanstack/react-query';
 import { productEnqueue } from 'src/localization';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface deleteFile {
   id: string;
-  from: string;
+  tableName: string;
   bucket_id: string;
   file_name: string;
+  invalidators?: string[];
 }
 
 const useDeleteFile = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const queryClient = useQueryClient();
 
   const {
     isPending,
@@ -29,14 +32,16 @@ const useDeleteFile = () => {
         }
 
         await supabase
-        .from(values.from)
-        .update({bucket_id: '', file_name: ''})
+        .from(values.tableName)
+        .update({bucket_id: null, file_name: null})
         .eq('id', values.id)
         .select()
         .throwOnError()
 
+        return values;
       },
-      onSuccess: () => {
+      onSuccess: (data) => {
+        if (data.invalidators) queryClient.invalidateQueries({queryKey: data.invalidators})
         enqueueSnackbar(productEnqueue.success.imageDelete, { variant: 'success' });
       },
       onError: () => {

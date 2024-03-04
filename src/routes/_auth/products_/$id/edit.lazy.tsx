@@ -12,6 +12,7 @@ import Loader from 'src/components/atoms/Loader';
 import useEditProduct from 'src/hooks/products/useEditProduct';
 import ImageUploadCard from 'src/components/molecules/ImageUploadCard';
 import useDeleteFile from 'src/hooks/common/useDeleteFile';
+import { API_KEYS } from 'src/query/keys/queryConfig';
 
 export const Route = createLazyFileRoute('/_auth/products/$id/edit')({
   component: EditProduct
@@ -24,22 +25,22 @@ const selectItems = [
 
 function EditProduct () {
   const { id } = Route.useParams();
-
-  const { product, productIsLoading, productIsError } = useGetProduct({id})
+  const { product, productIsLoading, productIsError, productIsFetching } = useGetProduct({id})
   const { formik, isLoading, selectedFile, handleFileSelect } = useEditProduct({id})
   const { mutate, isLoading: deleteImageIsLoading } = useDeleteFile();
 
   const handleDeleteImage = () => {
     mutate({
       id: product.id, 
-      from: 'products', 
+      tableName: 'products', 
       bucket_id: product.bucket_id, 
-      file_name: product.file_name
+      file_name: product.file_name,
+      invalidators: [API_KEYS.FETCH_PRODUCT]
     })
   }
 
   useEffect(() => {
-    if (product && !productIsLoading && !productIsError) {
+    if (!productIsLoading && !productIsError) {
       formik.setValues({
         name: product.name,
         purchase_price: product.purchase_price,
@@ -60,21 +61,19 @@ function EditProduct () {
         <ReturnButton to='/products' params={{}}/>
         <Typography variant="h1" mb={2}>Editar Producto</Typography>
         <Stack spacing={3} mb={4}>
-          {deleteImageIsLoading ? <Loader/> : (
-            <ImageUploadCard
-              file={selectedFile} 
-              setSelectedFile={handleFileSelect}
-              src={product.imagePublicUrl}
-              handleDelete={handleDeleteImage}
-            />
-          )}
+          <ImageUploadCard
+            file={selectedFile} 
+            setSelectedFile={handleFileSelect}
+            src={product.imagePublicUrl}
+            handleDelete={handleDeleteImage}
+            loading={deleteImageIsLoading || productIsFetching}
+          />
           <InputField 
             id="name"
             name="name"
             label="Nombre"
             type="text"
             formik={formik}
-            defaultValue={product.name}
           />
           <SelectField 
             id="unity" 
@@ -83,7 +82,6 @@ function EditProduct () {
             label="Unidad" 
             selectItems={selectItems} 
             formik={formik}
-            defaultValue={product.unity}
           />
           <InputField 
             id="sale_price"
@@ -91,7 +89,6 @@ function EditProduct () {
             label="Precio de Venta" 
             type="number"
             formik={formik}
-            defaultValue={product.sale_price}
           />
           <InputField 
             id="purchase_price"
@@ -99,7 +96,6 @@ function EditProduct () {
             label="Precio de Compra" 
             type="number"
             formik={formik}
-            defaultValue={product.purchase_price}
           />
         </Stack>
         <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Editar Producto</Button>

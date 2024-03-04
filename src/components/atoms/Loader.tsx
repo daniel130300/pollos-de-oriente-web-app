@@ -20,7 +20,7 @@ export const Loader: React.FC<LoaderProps> = ({
     case 'default':
     default:
       return (
-        <Box>
+        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <CircularProgress {...rest}/>
         </Box>
       );
