@@ -1,7 +1,7 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
 import { Session } from '@supabase/supabase-js';
-import VerticalAppBar from 'src/components/templates/VerticalAppBar';
 import { supabase } from 'src/supabaseClient';
+import AppTemplate from 'src/components/templates/AppTemplate';
 
 export const Route = createFileRoute('/_auth')({
   beforeLoad: async () => {
@@ -18,8 +18,8 @@ export const Route = createFileRoute('/_auth')({
     }
   },
   component: () => (
-    <VerticalAppBar>
+    <AppTemplate>
       <Outlet />
-    </VerticalAppBar>
+    </AppTemplate>
   )
 })

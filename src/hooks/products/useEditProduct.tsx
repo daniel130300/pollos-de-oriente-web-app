@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
-import { productForm, productEnqueue } from 'src/localization';
+import { productFormsValidations, productSnackbarMessages } from 'src/constants';
 import { supabase } from 'src/supabaseClient';
 import { generateFilename } from 'src/utils/generateFileName';
 
@@ -24,21 +24,21 @@ const useEditProduct = ({id}: {id: string}) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const productSchema = yup.object().shape({
-    name: yup.string().required(productForm.name.required),
-    unity: yup.string().required(productForm.unity.required),
+    name: yup.string().required(productFormsValidations.name.required),
+    unity: yup.string().required(productFormsValidations.unity.required),
     sale_price: yup
       .number()
-      .typeError(productForm.sale_price.typeError)
-      .required(productForm.sale_price.required)
-      .min(0, productForm.sale_price.min(0)),
+      .typeError(productFormsValidations.sale_price.typeError)
+      .required(productFormsValidations.sale_price.required)
+      .min(0, productFormsValidations.sale_price.min(0)),
     purchase_price: yup
       .number()
-      .typeError(productForm.purchase_price.typeError)
-      .required(productForm.purchase_price.required)
-      .min(0, productForm.purchase_price.min(0)),
+      .typeError(productFormsValidations.purchase_price.typeError)
+      .required(productFormsValidations.purchase_price.required)
+      .min(0, productFormsValidations.purchase_price.min(0)),
     product_image: yup
       .mixed()
-      .test('fileType', productForm.product_image, (value: any) => {
+      .test('fileType', productFormsValidations.product_image, (value: any) => {
         if (!value) return true;
         if (typeof value === 'string') return true;
         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
@@ -69,19 +69,20 @@ const useEditProduct = ({id}: {id: string}) => {
 
         const { product_image, ...rest } = values;
 
-        await supabase
-        .from('products')
-        .update(rest)
-        .eq('id', id)
-        .select()
-        .throwOnError()
+        const { data} = await supabase
+                              .from('products')
+                              .update(rest)
+                              .eq('id', id)
+                              .select()
+                              .throwOnError()
+        return data;
       },
       onSuccess: () => {
-        enqueueSnackbar(productEnqueue.success.edit, { variant: 'success' });
+        enqueueSnackbar(productSnackbarMessages.success.edit, { variant: 'success' });
         navigate({ to: '/products' });
       },
       onError: () => {
-        enqueueSnackbar(productEnqueue.errors.edit, { variant: 'error' });
+        enqueueSnackbar(productSnackbarMessages.errors.edit, { variant: 'error' });
       }
     }
   );

@@ -19,9 +19,9 @@ interface TableProps {
   handleChangeRowsPerPage: (newRowsPerPage: number) => void;
   onClickRow?: (cell: Cell<any, unknown>, row: Row<any>) => void;
   emptyText?: string;
-  handleViewRow?: (rowId: string) => void;
-  handleEditRow?: (rowId: string) => void;
-  handleDeleteRow?: (rowId: string) => void;
+  handleViewRow?: (record: any) => void;
+  handleEditRow?: (record: any) => void;
+  handleDeleteRow?: (record: any) => void;
   recordsCount: number | undefined | null;
   recordsCountLoading?: boolean;
 }
@@ -68,7 +68,7 @@ const TableUI: FC<TableProps> = ({
         {handleViewRow && (
           <Tooltip title="Ver" sx={{cursor: 'pointer'}}>
             <RemoveRedEyeIcon 
-              onClick={() => handleViewRow(row.original.id)} 
+              onClick={() => handleViewRow(row.original)} 
               color="action"
             />
           </Tooltip>
@@ -77,7 +77,7 @@ const TableUI: FC<TableProps> = ({
         {handleEditRow && (
           <Tooltip title="Editar" sx={{cursor: 'pointer'}}>
             <EditIcon 
-              onClick={() => handleEditRow(row.original.id)} 
+              onClick={() => handleEditRow(row.original)} 
               color="primary"
             />
           </Tooltip>
@@ -86,7 +86,7 @@ const TableUI: FC<TableProps> = ({
         {handleDeleteRow && (
           <Tooltip title="Delete" sx={{cursor: 'pointer'}}>
             <DeleteIcon 
-              onClick={() => handleDeleteRow(row.original.id)} 
+              onClick={() => handleDeleteRow(row.original)} 
               color="error"
             />
           </Tooltip>
@@ -96,11 +96,11 @@ const TableUI: FC<TableProps> = ({
   );
 
   return (
-    <Paper elevation={2} style={{ padding: "0 0 1rem 0" }}>
+    <Paper elevation={2} sx={{ padding: "0 0 1rem 0" }}>
       <Box paddingX="1rem">
         {memoisedHeaderComponent && <Box>{memoisedHeaderComponent}</Box>}
       </Box>
-      <Box style={{ overflowX: "auto", minHeight: 600 }}>
+      <Box sx={{ overflowX: "auto", minHeight: 625 }}>
         <MuiTable>
           {!isFetching && (
             <TableHead>

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from 'src/supabaseClient';
 import { enqueueSnackbar } from 'notistack';
-import { productEnqueue } from 'src/localization';
+import { productSnackbarMessages } from 'src/constants';
 import { API_KEYS } from 'src/query/keys/queryConfig';
 
 interface UseGetProductProps {
@@ -30,7 +30,7 @@ const useGetProduct = ({ id }: UseGetProductProps) => {
     queryKey: [API_KEYS.FETCH_PRODUCT, {id}],
     queryFn: () => getProduct({ id }),
     throwOnError: () => { 
-      enqueueSnackbar(productEnqueue.errors.detail, {variant: 'error'}) 
+      enqueueSnackbar(productSnackbarMessages.errors.detail, {variant: 'error'}) 
       return true;
     }
   });

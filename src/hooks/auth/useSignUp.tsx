@@ -4,7 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { supabase } from 'src/supabaseClient';
 import { useSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
-import { authForm, authEnqueue } from 'src/localization';
+import { authFormsValidations, authSnackbarMessages } from 'src/constants';
 
 interface SignUpValues {
   email: string;
@@ -16,8 +16,8 @@ const useSignUp = () => {
   const { enqueueSnackbar } = useSnackbar(); 
 
   const signUpSchema = yup.object().shape({
-    email: yup.string().email(authForm.email.valid).required(authForm.email.required),
-    password: yup.string().required(authForm.password.required).min(6, authForm.password.min(6)),
+    email: yup.string().email(authFormsValidations.email.valid).required(authFormsValidations.email.required),
+    password: yup.string().required(authFormsValidations.password.required).min(6, authFormsValidations.password.min(6)),
   });
 
   const {
@@ -25,23 +25,26 @@ const useSignUp = () => {
     isPending
   } = useMutation({
     mutationFn: async(values: SignUpValues) => {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: values.email, 
         password: values.password,
         options: {
           emailRedirectTo: import.meta.env.VITE_SUPABASE_SIGNUP_EMAIL_REDIRECT_TO_URL
         }
       });
+      
       if (error) {
         throw error;
       }
+
+      return data;
     },
     onSuccess: () => {
-      enqueueSnackbar(authEnqueue.success.signup, { variant: 'success' });
+      enqueueSnackbar(authSnackbarMessages.success.signup, { variant: 'success' });
       navigate({to: '/signin'});
     },
     onError: () => {
-      enqueueSnackbar(authEnqueue.errors.signup, { variant: 'error' });
+      enqueueSnackbar(authSnackbarMessages.errors.signup, { variant: 'error' });
     }
   });
 

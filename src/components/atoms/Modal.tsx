@@ -1,8 +1,7 @@
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
-import { Modal as MuiModal } from '@mui/material';
+import { Modal as MuiModal, Stack } from '@mui/material';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useModalStore } from '../zustand/useModalStore';
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,11 +19,12 @@ const style = {
 };
 
 export default function Modal() {
-  const { open, handleOpen, handleClose } = useModalStore();
+  const { open, handleClose, title, description, buttons } = useModalStore();
+
+  console.log('OPEN STATE', open);
 
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <MuiModal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -42,11 +42,12 @@ export default function Modal() {
           <Box sx={style}>
             <CloseIcon sx={{position: 'absolute', top: 10, right: 10, cursor: 'pointer'}} onClick={handleClose}/>
             <Typography id="transition-modal-title" variant="h2" component="h2">
-              Text in a modal
+              {title}
             </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            <Typography id="transition-modal-description" sx={{ my: 2 }}>
+              {description}
             </Typography>
+            {buttons}
           </Box>
         </Fade>
       </MuiModal>

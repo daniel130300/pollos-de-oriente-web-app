@@ -4,7 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { supabase } from 'src/supabaseClient';
 import { useSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
-import { authForm, authEnqueue } from 'src/localization';
+import { authFormsValidations, authSnackbarMessages } from 'src/constants';
 
 const useUpdatePassword = () => {
   const navigate = useNavigate();
@@ -12,26 +12,28 @@ const useUpdatePassword = () => {
 
   const {mutate, isPending} = useMutation({
     mutationFn: async(password: string) => {
-      const { error } = await supabase.auth.updateUser({ password });
+      const { data, error } = await supabase.auth.updateUser({ password });
 
       if(error) {
         throw error
       }
+
+      return data;
     },
     onSuccess: () => {
-      enqueueSnackbar(authEnqueue.success.passwordUpdate, { variant: 'success' });
+      enqueueSnackbar(authSnackbarMessages.success.passwordUpdate, { variant: 'success' });
       navigate({to: '/products'});
     },
     onError: () => {
-      enqueueSnackbar(authEnqueue.errors.passwordUpdate, { variant: 'error' });
+      enqueueSnackbar(authSnackbarMessages.errors.passwordUpdate, { variant: 'error' });
     },
   });
 
   const updatePasswordSchema = yup.object().shape({
-    password: yup.string().required(authForm.password.required).min(6, authForm.password.min(6)),
+    password: yup.string().required(authFormsValidations.password.required).min(6, authFormsValidations.password.min(6)),
     confirmPassword: yup.string()
-        .oneOf([yup.ref('password')], authForm.confirmPassword.oneOf)
-        .required(authForm.confirmPassword.required)
+        .oneOf([yup.ref('password')], authFormsValidations.confirmPassword.oneOf)
+        .required(authFormsValidations.confirmPassword.required)
   });
 
   const formik = useFormik({

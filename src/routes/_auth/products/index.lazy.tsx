@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
 import usePagination from 'src/hooks/common/usePagination';
@@ -13,6 +14,8 @@ import { formatTimestamp } from 'src/utils/formatTimestamp';
 import { useNavigate } from '@tanstack/react-router';
 import { parseToCurrency } from 'src/utils/parseToCurrency';
 import { useModalStore } from 'src/components/zustand/useModalStore';
+import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
+import Loader from 'src/components/atoms/Loader';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products
@@ -36,22 +39,46 @@ function Products() {
     rowsPerPage, 
     handleChangeRowsPerPage
   } = usePagination();
-  const { handleOpen } = useModalStore();
-
-  const handleViewRow = (id: string) => {
-    navigate({ to: '/products/$id', params: { id } })
-  }
-
-  const handleEditRow = (id: string) => {
-    navigate({ to: '/products/$id/edit', params: { id } })
-  }
-
-  const handleDeleteRow = (id: string) => {
-    handleOpen()
-  }
-
+  const { handleOpen, handleClose } = useModalStore();
   const [search, setSearch] = useState('');
   const { products, productsIsLoading, productsCount, productsCountIsLoading } = useProductData({page, rowsPerPage, search});
+  const { mutate, isLoading, deleteImageIsLoading, productToDelete, setProductToDelete } = useDeleteProduct();
+
+  const handleViewRow = (product: any) => {
+    navigate({ to: '/products/$id', params: { id: product.id } })
+  }
+
+  const handleEditRow = (product: any) => {
+    navigate({ to: '/products/$id/edit', params: { id: product.id } })
+  }
+
+  const handleDelete = (product: any) => {
+    mutate(product);
+  }
+
+  const handleDeleteRow = (product: any) => {
+    setProductToDelete(product);
+  }
+
+  useEffect(() => {
+    if(!productToDelete) return;
+
+    handleOpen({
+      title: 'Eliminar Producto', 
+      description: `¿Estas seguro que deseas eliminar el siguiente producto: ${productToDelete.name}?`,
+      buttons: <>
+        {(isLoading || deleteImageIsLoading) ? (
+          <Loader />
+        ) : (
+          <Stack direction="row" spacing={1}>
+            <Button onClick={() => handleClose()} color="action">Cancelar</Button>
+            <Button onClick={() => handleDelete(productToDelete)} color="error">Eliminar</Button>
+          </Stack>
+        )}
+      </>
+    });
+
+  }, [isLoading, deleteImageIsLoading, productToDelete]);
 
   return (
     <>

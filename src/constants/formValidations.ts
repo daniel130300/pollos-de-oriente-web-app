@@ -1,4 +1,4 @@
-export const authForm = {
+export const authFormsValidations = {
   email: {
     valid: 'El correo debe ser valido',
     required: 'El correo es un campo requerido'
@@ -13,7 +13,7 @@ export const authForm = {
   }
 }
 
-export const productForm = {
+export const productFormsValidations = {
   name: {
     required: 'El nombre es un campo requerido',
   },

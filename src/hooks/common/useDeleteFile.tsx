@@ -1,7 +1,7 @@
 import { useSnackbar } from 'notistack';
 import { supabase } from 'src/supabaseClient';
 import { useMutation } from '@tanstack/react-query';
-import { productEnqueue } from 'src/localization';
+import { productSnackbarMessages } from 'src/constants';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface deleteFile {
@@ -9,7 +9,7 @@ interface deleteFile {
   tableName: string;
   bucket_id: string;
   file_name: string;
-  invalidators?: string[];
+  invalidators?: readonly string[];
 }
 
 const useDeleteFile = () => {
@@ -18,7 +18,8 @@ const useDeleteFile = () => {
 
   const {
     isPending,
-    mutate
+    mutate,
+    mutateAsync,
   } = useMutation(
     {
       mutationFn: async(values: deleteFile) => {
@@ -42,17 +43,18 @@ const useDeleteFile = () => {
       },
       onSuccess: (data) => {
         if (data.invalidators) queryClient.invalidateQueries({queryKey: data.invalidators})
-        enqueueSnackbar(productEnqueue.success.imageDelete, { variant: 'success' });
+        enqueueSnackbar(productSnackbarMessages.success.imageDelete, { variant: 'success' });
       },
       onError: () => {
-        enqueueSnackbar(productEnqueue.errors.imageDelete, { variant: 'error' });
+        enqueueSnackbar(productSnackbarMessages.errors.imageDelete, { variant: 'error' });
       }
     }
   );
 
   return {
     isLoading: isPending,
-    mutate
+    mutate,
+    mutateAsync
   };
 };
 

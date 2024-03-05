@@ -4,7 +4,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { enqueueSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
 import { supabase } from 'src/supabaseClient';
-import { authEnqueue, authForm } from 'src/localization';
+import { authSnackbarMessages, authFormsValidations } from 'src/constants';
 
 interface SignInValues {
   email: string;
@@ -19,21 +19,24 @@ const useSignIn = () => {
     mutate
   } = useMutation({
     mutationFn: async (values: SignInValues) => {
-      const { error } = await supabase.auth.signInWithPassword(values);
+      const { data, error } = await supabase.auth.signInWithPassword(values);
+      
       if (error) {
         throw error;
       }
+
+      return data;
     },
     onSuccess: () => {
       navigate({to: '/products'});
     },
     onError: () => {
-      enqueueSnackbar(authEnqueue.errors.login, { variant: 'error' });
+      enqueueSnackbar(authSnackbarMessages.errors.login, { variant: 'error' });
     },
   });
 
   const signInSchema = yup.object().shape({
-    email: yup.string().email(authForm.email.valid).required(authForm.email.required)
+    email: yup.string().email(authFormsValidations.email.valid).required(authFormsValidations.email.required)
   });
 
   const formik = useFormik<SignInValues>({

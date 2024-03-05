@@ -4,14 +4,14 @@ import { useNavigate } from '@tanstack/react-router';
 import { supabase } from 'src/supabaseClient';
 import { useSnackbar } from 'notistack';
 import { useMutation } from '@tanstack/react-query';
-import { authForm, authEnqueue } from 'src/localization'
+import { authFormsValidations, authSnackbarMessages } from 'src/constants'
 
 const useResetPassword = () => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar(); 
 
   const resetPasswordSchema = yup.object().shape({
-    email: yup.string().email(authForm.email.valid).required(authForm.email.required)
+    email: yup.string().email(authFormsValidations.email.valid).required(authFormsValidations.email.required)
   });
 
   const { 
@@ -27,10 +27,10 @@ const useResetPassword = () => {
     },
     onSuccess: () => {
       navigate({to: '/signin'});
-      enqueueSnackbar(authEnqueue.success.passwordReset, { variant: 'success' });
+      enqueueSnackbar(authSnackbarMessages.success.passwordReset, { variant: 'success' });
     },
     onError: () => {
-      enqueueSnackbar(authEnqueue.errors.passwordReset, { variant: 'error' });
+      enqueueSnackbar(authSnackbarMessages.errors.passwordReset, { variant: 'error' });
     },
   });
 
