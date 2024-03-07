@@ -14,9 +14,7 @@ const useUpdatePassword = () => {
     mutationFn: async(password: string) => {
       const { data, error } = await supabase.auth.updateUser({ password });
 
-      if(error) {
-        throw error
-      }
+      if(error) throw error
 
       return data;
     },

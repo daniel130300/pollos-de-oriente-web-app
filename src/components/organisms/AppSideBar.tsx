@@ -1,13 +1,8 @@
 import Drawer from '@mui/material/Drawer';
-import Typography from '@mui/material/Typography';
-import { Link } from '@tanstack/react-router';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import { sideBarRoutes } from 'src/constants/routes';
+import ListItem from '../molecules/ListItem';
 
 interface AppSideBarProps {
   mobileOpen: boolean;
@@ -24,20 +19,9 @@ export const AppSideBar: React.FC<AppSideBarProps> = ({
 }) => {
 
   const drawer = (
-    <List sx={{pt: 10}}>
+    <List sx={{pt: 8}}>
       {sideBarRoutes.map((route) => (
-        <ListItem key={route.title} disablePadding component={Link} to={route.href} activeProps={{}}>
-          <ListItemButton>
-            <ListItemIcon sx={{pr: 2, minWidth: 0}}>
-              <route.icon />
-            </ListItemIcon>
-            <ListItemText  
-              primary={<Typography color="initial">{route.title}</Typography>}
-              disableTypography
-              sx={{textDecoration: 'none'}}
-            />
-          </ListItemButton>
-        </ListItem>
+        <ListItem key={route.title} route={route}/>
       ))}
     </List>
   );
