@@ -6,11 +6,11 @@ import { API_KEYS } from 'src/query/keys/queryConfig';
 
 const useGetUser = () => {
   const getUser = async () => {
-    const { data, error } = await supabase.auth.getUser();
+    const { data, error } = await supabase.auth.getSession();
 
     if(error) throw error
 
-    return data.user;
+    return data.session?.user || {};
   };
 
   const { 
@@ -27,7 +27,7 @@ const useGetUser = () => {
     }
   });
 
-  return { 
+  return {
     userIsLoading,
     userIsFetching,
     userIsError,

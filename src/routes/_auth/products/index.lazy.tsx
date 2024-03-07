@@ -23,7 +23,7 @@ export const Route = createLazyFileRoute('/_auth/products/')({
 
 const columns: ColumnDef<any, any>[] = [
   { accessorKey: "id", header: "Id", cell: (product) => <span>{product.row.original.id}</span> },
-  { accessorKey: "name", header: "Name", cell: (product) => <span>{product.row.original.name}</span>},
+  { accessorKey: "name", header: "Nombre", cell: (product) => <span>{product.row.original.name}</span>},
   { accessorKey: "unity", header: "Unidad", cell: (product) => <span>{product.row.original.unity}</span> },
   { accessorKey: "sale_price", header: "Precio de Venta", cell: (product) => <span>{parseToCurrency(product.row.original.sale_price)}</span> },
   { accessorKey: "purchase_price", header: "Precio de Compra", cell: (product) => <span>{parseToCurrency(product.row.original.purchase_price)}</span> },

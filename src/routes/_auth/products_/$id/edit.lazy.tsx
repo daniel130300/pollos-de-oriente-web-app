@@ -1,18 +1,16 @@
 import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
 import InputField from 'src/components/atoms/InputField';
 import { Button } from 'src/components/atoms/Button';
 import SelectField from 'src/components/atoms/SelectField';
-import ReturnButton from 'src/components/molecules/ReturnButton';
 import useGetProduct from 'src/hooks/products/useGetProduct';
 import Loader from 'src/components/atoms/Loader';
 import useEditProduct from 'src/hooks/products/useEditProduct';
 import ImageUploadCard from 'src/components/molecules/ImageUploadCard';
 import useDeleteFile from 'src/hooks/common/useDeleteFile';
 import { API_KEYS } from 'src/query/keys/queryConfig';
+import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 
 export const Route = createLazyFileRoute('/_auth/products/$id/edit')({
   component: EditProduct
@@ -56,10 +54,8 @@ function EditProduct () {
   if (productIsLoading) return <Loader type='cover'/>
 
   return (
-    <Grid container>
-      <Grid item xs={10} sm={8} md={6} mx="auto">
-        <ReturnButton to='/products' params={{}}/>
-        <Typography variant="h1" mb={2}>Editar Producto</Typography>
+    <DetailsTemplate title='Editar Producto' returnButtonProps={{to: '/products', params: {}}}>
+      <>
         <Stack spacing={3} mb={4}>
           <ImageUploadCard
             file={selectedFile} 
@@ -99,8 +95,8 @@ function EditProduct () {
           />
         </Stack>
         <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Editar Producto</Button>
-      </Grid>
-    </Grid>
+      </>
+    </DetailsTemplate>
   );
 };
 

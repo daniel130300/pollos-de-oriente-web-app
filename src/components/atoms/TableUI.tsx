@@ -84,7 +84,7 @@ const TableUI: FC<TableProps> = ({
         )}
 
         {handleDeleteRow && (
-          <Tooltip title="Delete" sx={{cursor: 'pointer'}}>
+          <Tooltip title="Eliminar" sx={{cursor: 'pointer'}}>
             <DeleteIcon 
               onClick={() => handleDeleteRow(row.original)} 
               color="error"

@@ -24,7 +24,12 @@ export const Button = forwardRef(
       ref={ref}
       disabled={isLoading}
       >
-        {isLoading ? (<><Typography variant='button' mr={2}>Cargando</Typography> <CircularProgress size={25} color='primary'/></>) : children}
+        {isLoading ? (
+          <>
+            <Typography variant='button' mr={2}>Cargando</Typography> 
+            <CircularProgress size={25} color='primary'/>
+          </>
+        ) : children}
       </MuiButton>
     );
   }

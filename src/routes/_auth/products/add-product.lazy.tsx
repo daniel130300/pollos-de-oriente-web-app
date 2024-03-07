@@ -1,13 +1,11 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
-import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import Grid from "@mui/material/Grid";
 import useAddProduct from "src/hooks/products/useAddProduct";
 import ImageUploadCard from 'src/components/molecules/ImageUploadCard';
 import InputField from 'src/components/atoms/InputField';
-import { Button } from 'src/components/atoms/Button';
+import Button from 'src/components/atoms/Button';
 import SelectField from 'src/components/atoms/SelectField';
-import ReturnButton from 'src/components/molecules/ReturnButton';
+import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 
 export const Route = createLazyFileRoute('/_auth/products/add-product')({
   component: AddProduct
@@ -27,10 +25,8 @@ function AddProduct () {
   } = useAddProduct();
 
   return (
-    <Grid container>
-      <Grid item xs={6} mx="auto">
-        <ReturnButton to='/products' params={{}}/>
-        <Typography variant="h1" mb={2}>Agregar Producto</Typography>
+    <DetailsTemplate title='Agregar Producto' returnButtonProps={{to: '/products', params: {}}} >
+      <>
         <Stack spacing={3} mb={4}>
           <ImageUploadCard 
             file={selectedFile} 
@@ -67,8 +63,8 @@ function AddProduct () {
           />
         </Stack>
         <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Agregar Producto</Button>
-      </Grid>
-    </Grid>
+      </>
+    </DetailsTemplate>
   );
 };
 

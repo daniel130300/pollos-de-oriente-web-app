@@ -2,7 +2,7 @@ import { Button, ButtonProps } from "@mui/material";
 import { Link, LinkProps } from "@tanstack/react-router";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-type ReturnButtonProps = ButtonProps & LinkProps
+export type ReturnButtonProps = ButtonProps & LinkProps
 
 const ReturnButton: React.FC<ReturnButtonProps> = (props) => {
   const {
