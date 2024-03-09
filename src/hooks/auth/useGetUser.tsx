@@ -3,14 +3,15 @@ import { supabase } from 'src/supabaseClient';
 import { enqueueSnackbar } from 'notistack';
 import { productSnackbarMessages } from 'src/constants';
 import { API_KEYS } from 'src/query/keys/queryConfig';
+import { User } from '@supabase/supabase-js';
 
 const useGetUser = () => {
-  const getUser = async () => {
+  const getUser = async () : Promise<undefined | User> => {
     const { data, error } = await supabase.auth.getSession();
 
     if(error) throw error
 
-    return data.session?.user || {};
+    return data.session?.user;
   };
 
   const { 
