@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
 import usePagination from 'src/hooks/common/usePagination';
-import useProductData from 'src/hooks/products/useGetProducts';
 import { Box, Stack, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from '@tanstack/react-router';
@@ -10,12 +9,12 @@ import { useState } from 'react';
 import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
-import { formatTimestamp } from 'src/utils/formatTimestamp';
+import { formatTimestamp, parseToCurrency } from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
-import { parseToCurrency } from 'src/utils/parseToCurrency';
 import { useModalStore } from 'src/components/zustand/useModalStore';
 import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
 import Loader from 'src/components/atoms/Loader';
+import useGetProducts from 'src/hooks/products/useGetProducts';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products
@@ -41,7 +40,7 @@ function Products() {
   } = usePagination();
   const { handleOpen, handleClose } = useModalStore();
   const [search, setSearch] = useState('');
-  const { products, productsIsLoading, productsCount, productsCountIsLoading } = useProductData({page, rowsPerPage, search});
+  const { products, productsIsLoading, productsCount, productsCountIsLoading } = useGetProducts({page, rowsPerPage, search});
   const { mutate, isLoading, deleteImageIsLoading, productToDelete, setProductToDelete } = useDeleteProduct();
 
   const handleViewRow = (product: any) => {

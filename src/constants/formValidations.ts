@@ -32,3 +32,12 @@ export const productFormsValidations = {
   },
   product_image: 'La imagen debe ser un archivo de imagen válido'
 }
+
+export const storeFormsValidations = {
+  name: {
+    required: 'El nombre es un campo requerido',
+  },
+  is_main: {
+    required: 'Es necesario especificar si la tienda es la principal o no'
+  }
+}

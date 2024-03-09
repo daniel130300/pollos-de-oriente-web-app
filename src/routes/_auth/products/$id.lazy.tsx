@@ -3,9 +3,8 @@ import useGetProduct from 'src/hooks/products/useGetProduct';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Loader from 'src/components/atoms/Loader';
-import { formatTimestamp } from 'src/utils/formatTimestamp';
+import { formatTimestamp, parseToCurrency } from 'src/utils';
 import Card from '@mui/material/Card';
-import { parseToCurrency } from 'src/utils/parseToCurrency';
 import { DynamicImage } from 'src/components/atoms/DynamicImage';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 

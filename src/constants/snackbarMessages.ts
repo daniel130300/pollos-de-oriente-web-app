@@ -32,3 +32,20 @@ export const productSnackbarMessages = {
     delete: 'Producto eliminado exitosamente'
   }
 }
+
+export const storeSnackbarMessages = {
+  errors: {
+    create: 'Error creando la tienda',
+    edit: 'Error editando la tienda',
+    list: 'Error obteniendo el listado de tiendas',
+    count: 'Error obteniendo el conteo de tiendas',
+    detail: 'Error obteniendo el detalle de la tienda',
+    imageDelete: 'Error eliminando la imagen de la tienda',
+    delete: 'Error eliminando la tienda'
+  },
+  success: {
+    create: 'Tienda creada exitosamente',
+    edit: 'Tienda editada exitosamente',
+    delete: 'Tienda eliminada exitosamente'
+  }
+}

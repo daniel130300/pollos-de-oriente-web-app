@@ -7,17 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { API_KEYS } from "src/query/keys/queryConfig";
 import { useState } from "react";
 import { useModalStore } from "src/components/zustand/useModalStore";
-
-interface Product {
-  id: string;
-  name: string;
-  unity: string;
-  sale_price: number | string;
-  purchase_price: number | string;
-  product_image: File | null;
-  bucket_id: string | null;
-  file_name: string | null
-}
+import { Product } from './interface';
 
 const useDeleteProduct = () => {
   const [productToDelete, setProductToDelete] = useState<null | any>(null);

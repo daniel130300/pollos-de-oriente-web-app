@@ -1,9 +1,11 @@
 export { 
   authSnackbarMessages, 
-  productSnackbarMessages 
+  productSnackbarMessages,
+  storeSnackbarMessages
 } from './snackbarMessages';
 
 export { 
   authFormsValidations, 
-  productFormsValidations 
+  productFormsValidations,
+  storeFormsValidations
 } from './formValidations';

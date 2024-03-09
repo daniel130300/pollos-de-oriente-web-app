@@ -100,7 +100,7 @@ const TableUI: FC<TableProps> = ({
       <Box paddingX="1rem">
         {memoisedHeaderComponent && <Box>{memoisedHeaderComponent}</Box>}
       </Box>
-      <Box sx={{ overflowX: "auto", minHeight: 625 }}>
+      <Box sx={{ overflowX: "auto", minHeight: noDataFound ? 'inherit' : 625 }}>
         <MuiTable>
           {!isFetching && (
             <TableHead>
@@ -144,28 +144,32 @@ const TableUI: FC<TableProps> = ({
           </TableBody>
         </MuiTable>
       </Box>
-      {noDataFound && (
-        <Box my={2} textAlign="center">
+      {noDataFound ? (
+        <Box my={2} display={"flex"} textAlign="center" justifyContent={"center"} alignItems={"center"} height={"100%"}>
           {emptyText}
         </Box>
-      )}
-      {recordsCountLoading ? (
-        <Box pt={1} px={2} display="flex" justifyContent="flex-end">
-          <Skeleton width={300} height={skeletonHeight} />
-        </Box>
       ) : (
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={recordsCount ?? 0}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={(_, page) => handleChangePage(page)}
-          onRowsPerPageChange={(e) => handleChangeRowsPerPage(+e.target.value)}
-          labelRowsPerPage="Registros por pagina"
-          labelDisplayedRows={({ from, to, count }) => `Del ${from} al ${to} ${count !== -1 ? `de ${count} registros` : `más que ${to}`}`}
-        />
+        <>
+          {recordsCountLoading ? (
+            <Box pt={1} px={2} display="flex" justifyContent="flex-end">
+              <Skeleton width={300} height={skeletonHeight} />
+            </Box>
+          ) : (
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={recordsCount ?? 0}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={(_, page) => handleChangePage(page)}
+              onRowsPerPageChange={(e) => handleChangeRowsPerPage(+e.target.value)}
+              labelRowsPerPage="Registros por pagina"
+              labelDisplayedRows={({ from, to, count }) => `Del ${from} al ${to} ${count !== -1 ? `de ${count} registros` : `más que ${to}`}`}
+            />
+          )}
+        </>
       )}
+     
     </Paper>
   );
 };

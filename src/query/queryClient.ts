@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { getMinutesInMilliSeconds } from "src/utils/getMinutesInMilliSeconds";
+import { getMinutesInMilliSeconds } from "src/utils";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

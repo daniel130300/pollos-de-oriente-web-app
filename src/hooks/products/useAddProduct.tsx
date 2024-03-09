@@ -3,20 +3,13 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from '@tanstack/react-router';
-import { generateFilename } from 'src/utils/generateFileName';
+import { generateFilename } from 'src/utils';
 import { supabase } from 'src/supabaseClient';
 import { useMutation } from '@tanstack/react-query';
 import { productFormsValidations, productSnackbarMessages } from 'src/constants';
+import { Product } from './interface';
 
-interface Product {
-  name: string;
-  unity: string;
-  sale_price: number | string;
-  purchase_price: number | string;
-  product_image: File | null;
-  bucket_id: string | null;
-  file_name: string | null
-}
+type AddProduct = Omit<Product, 'id'>;
 
 const useAddProduct = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -51,7 +44,7 @@ const useAddProduct = () => {
     mutate
   } = useMutation(
     {
-      mutationFn: async(values: Product) => {
+      mutationFn: async(values: AddProduct) => {
         if (values.product_image) {
           const image_file_name = generateFilename(values.name, values.product_image);
   
@@ -86,7 +79,7 @@ const useAddProduct = () => {
     }
   );
 
-  const formik = useFormik<Product>({
+  const formik = useFormik <AddProduct>({
     initialValues: {
       name: '',
       unity: '',
