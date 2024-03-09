@@ -8,7 +8,7 @@ import { FormikProps } from 'formik';
 
 interface SelectItem {
   label: string;
-  value: string | number | boolean | undefined;
+  value: any;
 }
 
 interface SelectFieldProps extends SelectProps {
