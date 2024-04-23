@@ -56,7 +56,7 @@ function EditProduct () {
   return (
     <DetailsTemplate title='Editar Producto' returnButtonProps={{to: '/products', params: {}}}>
       <>
-        <Stack spacing={3} mb={4}>
+        <Stack spacing={4} mb={4}>
           <ImageUploadCard
             file={selectedFile} 
             setSelectedFile={handleFileSelect}

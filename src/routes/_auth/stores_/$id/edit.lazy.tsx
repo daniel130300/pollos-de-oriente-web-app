@@ -37,7 +37,7 @@ function EditStore () {
   return (
     <DetailsTemplate title='Editar Tienda' returnButtonProps={{to: '/stores', params: {}}}>
       <>
-        <Stack spacing={3} mb={4}>
+        <Stack spacing={4} mb={4}>
           <InputField 
             id="name"
             name="name"

@@ -14,9 +14,9 @@ function UpdatePassword () {
 
   return (
     <Grid container>
-      <Grid item xs={6} mx="auto">
+      <Grid item xs={8} mx="auto">
       <Typography variant="h1" mb={2}>Cambiar Contraseña</Typography>
-        <Stack spacing={3} mb={4}>
+        <Stack spacing={4} mb={4}>
           <InputField
             id='password'
             name="password"

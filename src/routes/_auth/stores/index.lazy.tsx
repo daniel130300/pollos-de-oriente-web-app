@@ -1,7 +1,9 @@
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
 import usePagination from 'src/hooks/common/usePagination';
-import { Box, Stack, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
@@ -13,7 +15,7 @@ import { useNavigate } from '@tanstack/react-router';
 import useGetStores from 'src/hooks/stores/useGetStores';
 import useDeleteStore from 'src/hooks/stores/useDeleteStore';
 import Loader from 'src/components/atoms/Loader';
-import { useModalStore } from 'src/components/zustand/useModalStore';
+import { useModalStore } from 'src/zustand/useModalStore';
 
 export const Route = createLazyFileRoute('/_auth/stores/')({
   component: Stores

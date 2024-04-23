@@ -21,7 +21,7 @@ function ProductComponent() {
   return (
     <DetailsTemplate title="Detalle del Producto" returnButtonProps={{to: '/products', params: {}}}>
       <Card sx={{p: 4}}>
-        <Stack spacing={3}>
+        <Stack spacing={4}>
           {product.imagePublicUrl && <DynamicImage src={product.imagePublicUrl} />}
           <Typography variant='body1'>Id: {product.id}</Typography>
           <Typography variant='body1'>Nombre: {product.name}</Typography>

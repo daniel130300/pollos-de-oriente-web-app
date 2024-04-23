@@ -11,6 +11,7 @@ export const Button = forwardRef(
       variant = 'contained', 
       isLoading = false, 
       color, 
+      disabled,
       size, 
       ...rest
     } = props;
@@ -22,7 +23,7 @@ export const Button = forwardRef(
       size={size}
       {...rest}
       ref={ref}
-      disabled={isLoading}
+      disabled={isLoading || disabled}
       >
         {isLoading ? (
           <>

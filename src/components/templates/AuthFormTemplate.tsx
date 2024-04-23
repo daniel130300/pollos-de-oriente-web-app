@@ -28,7 +28,7 @@ export const AuthFormTemplate: React.FC<AuthFormTemplateProps> = ({
         <Typography variant='h1' sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4}}>
           {title}
         </Typography>
-        <Stack spacing={3}>
+        <Stack spacing={4}>
           {children}
           <Button onClick={onSubmit} isLoading={submitLoading}>{submitButtonText}</Button>
         </Stack>

@@ -22,9 +22,9 @@ export const DetailsTemplate : React.FC<DetailsTemplateProps> = ({
 
   return (
     <Grid container>
-      <Grid item xs={10} sm={8} md={6} mx="auto">
+      <Grid item xs={10} sm={8} md={8} mx="auto">
         <ReturnButton to={returnButtonProps.to} params={returnButtonProps.params} {...rest}/>
-        <Typography variant="h1" mb={2}>{title}</Typography>
+        <Typography variant="h1" mb={4}>{title}</Typography>
           {children}
       </Grid>
     </Grid>
