@@ -139,12 +139,13 @@ const AddStore: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card sx={{ px: 4, pb: 4 }}>
+        <Card sx={{ px: 4, pb: 4, zIndex: 1, position: 'relative', overflow: 'visible' }}>
           <CardContent>
             <Typography variant="h2">Productos</Typography>
             <Stack spacing={4}>
               <List>
                 {products.map((product, index) => (
+
                   <ListItem key={index}>
                     {product.editable ? (
                       <Stack direction="row" spacing={2}>
@@ -152,8 +153,8 @@ const AddStore: React.FC = () => {
                           id='id'
                           name='id'
                           label='Producto'
+                          options={autoCompleteProducts}
                           observerRef={observerRef}
-                          items={autoCompleteProducts}
                         />
                         <InputField
                           id="quantity"

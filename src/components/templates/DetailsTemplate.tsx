@@ -21,7 +21,7 @@ export const DetailsTemplate : React.FC<DetailsTemplateProps> = ({
   } = returnButtonProps;
 
   return (
-    <Grid container>
+    <Grid container sx={{position: 'relative'}}>
       <Grid item xs={10} sm={8} md={8} mx="auto">
         <ReturnButton to={returnButtonProps.to} params={returnButtonProps.params} {...rest}/>
         <Typography variant="h1" mb={4}>{title}</Typography>

@@ -2,17 +2,21 @@ import React, { useState, useRef, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import MenuItem from '@mui/material/MenuItem';
+import Box from '@mui/material/Box';
 
 interface AutoCompleteSelectProps {
+  id: string;
+  name: string;
+  label: string;
   options: any[] | null | undefined;
-  placeholder: string;
-  onSelect: (selectedOption: string) => void;
+  onSelect?: (selectedOption: string) => void;
+  observerRef: React.MutableRefObject<any>
 }
 
 const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
   options,
-  placeholder,
   onSelect,
+  label
 }) => {
   const [inputValue, setInputValue] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
@@ -28,7 +32,7 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
   const handleMenuItemClick = (option: any) => {
     setInputValue(option);
     setOpen(false);
-    onSelect(option); // Callback to parent component on selection
+    onSelect && onSelect(option);
   };
 
   const handleOutsideClick = (event: MouseEvent) => {
@@ -45,12 +49,12 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
   }, []);
 
   return (
-    <div ref={wrapperRef} style={{ position: 'relative', width: '100%' }}>
+    <Box ref={wrapperRef} sx={{ position: 'relative' }}>
       <TextField
+        label={label}
         value={inputValue}
         onChange={handleInputChange}
-        placeholder={placeholder}
-        variant="outlined"
+        variant="standard"
         fullWidth
         InputProps={{
           onFocus: handleInputChange,
@@ -59,13 +63,13 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
       {open && (
         <Paper
           square
-          style={{
+          sx={{
             position: 'absolute',
             top: '100%',
             left: 0,
             right: 0,
             zIndex: 999,
-            maxHeight: '200px',
+            maxHeight: '300px',
             overflowY: 'auto',
           }}
         >
@@ -79,7 +83,7 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
           ))}
         </Paper>
       )}
-    </div>
+    </Box>
   );
 };
 
