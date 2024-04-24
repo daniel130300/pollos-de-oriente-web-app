@@ -1,5 +1,5 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useRef, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -18,6 +18,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import AutoCompleteSelect from 'src/components/molecules/AutoCompleteSelect';
+import useGetProducts from 'src/hooks/products/useGetProducts';
 
 interface Product {
   id: string;
@@ -36,6 +38,33 @@ const AddStore: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [addProduct, setAddProduct] = useState<Product>({ id: '', quantity: '', price: '', editable: false });
   const [editProduct, setEditProduct] = useState<Product>({ id: '', quantity: '', price: '', editable: false });
+  const observerRef = useRef(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [addSearch, setAddSearch] = useState('');
+  const [addPage, setAddPage] = useState(0);
+  const { products: autoCompleteProducts, productsIsLoading: autoCompleteProductsLoading } = useGetProducts({page: addPage, rowsPerPage: 10, search: addSearch});
+
+
+  console.log('AUTO COMPLETE PRODUCTS', autoCompleteProducts);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          // here add the logic to fetch the next page
+        }
+      },
+      { threshold: 1 }
+    )
+    if (observerRef.current) {
+      observer.observe(observerRef.current)
+    }
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current)
+      }
+    }
+}, []);
 
   const handleAddProduct = () => {
     if (addProduct.id && addProduct.quantity && addProduct.price) {
@@ -103,7 +132,7 @@ const AddStore: React.FC = () => {
                 labelId="label-is_main"
                 name="is_main"
                 label="Principal"
-                selectItems={selectItems}
+                items={selectItems}
                 formik={formik}
               />
             </Stack>
@@ -119,12 +148,12 @@ const AddStore: React.FC = () => {
                   <ListItem key={index}>
                     {product.editable ? (
                       <Stack direction="row" spacing={2}>
-                        <InputField
-                          id="id"
-                          name="id"
-                          label="Id"
-                          value={editProduct.id}
-                          onChange={(event) => handleInputChange(event, 'id', true)}
+                        <AutoCompleteSelect
+                          id='id'
+                          name='id'
+                          label='Producto'
+                          observerRef={observerRef}
+                          items={autoCompleteProducts}
                         />
                         <InputField
                           id="quantity"
@@ -172,7 +201,13 @@ const AddStore: React.FC = () => {
               </List>
 
               <Stack direction="row" spacing={2}>
-                <InputField id="id" name="id" label="Id" value={addProduct.id} onChange={(event) => handleInputChange(event, 'id')} />
+                <AutoCompleteSelect
+                  id='id'
+                  name='id'
+                  label='Producto'
+                  options={autoCompleteProducts}
+                  observerRef={observerRef}
+                />
                 <InputField
                   id="quantity"
                   name="quantity"

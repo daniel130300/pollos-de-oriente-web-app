@@ -40,3 +40,11 @@ export function formatStringToBoolean(input: string): boolean | null {
 
   return null;
 }
+
+export function capitalizeFirstLetter(str: string): string {
+  if (str.length === 0) {
+    return str;
+  }
+  
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

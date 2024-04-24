@@ -76,7 +76,7 @@ function EditProduct () {
             labelId="label-unity"
             name="unity"
             label="Unidad" 
-            selectItems={selectItems} 
+            items={selectItems} 
             formik={formik}
           />
           <InputField 

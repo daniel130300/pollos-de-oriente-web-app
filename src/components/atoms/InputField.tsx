@@ -2,7 +2,7 @@ import React from 'react';
 import TextField, { BaseTextFieldProps } from '@mui/material/TextField';
 import { FormikProps } from 'formik';
 
-interface InputFieldProps extends BaseTextFieldProps {
+export interface InputFieldProps extends BaseTextFieldProps {
   id: string;
   name: string;
   formik?: FormikProps<any>;
@@ -12,7 +12,6 @@ interface InputFieldProps extends BaseTextFieldProps {
 export const InputField: React.FC<InputFieldProps> = ({
   id,
   value,
-  defaultValue,
   variant = 'standard', 
   label,
   formik,
@@ -31,7 +30,6 @@ export const InputField: React.FC<InputFieldProps> = ({
     <TextField
       id={id}
       label={label}
-      defaultValue={defaultValue}
       variant={variant}
       onChange={handleChange}
       value={displayValue}

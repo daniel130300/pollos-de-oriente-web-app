@@ -15,7 +15,7 @@ interface SelectFieldProps extends SelectProps {
   id: string;
   name: string;
   noneOption?: boolean;
-  selectItems: SelectItem[]
+  items: SelectItem[]
   helperText?: string | false | undefined;
   formik?: FormikProps<any>
 }
@@ -28,7 +28,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   onChange,
   label,
   noneOption = false,
-  selectItems,
+  items,
   helperText,
   error,
   formik,
@@ -58,7 +58,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             <em>Ninguno</em>
           </MenuItem>
         )}
-        {selectItems.map((selectItem) => (
+        {items.map((selectItem) => (
           <MenuItem key={selectItem.label} value={selectItem.value}>{selectItem.label}</MenuItem>
         ))}
       </Select>

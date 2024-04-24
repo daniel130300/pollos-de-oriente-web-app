@@ -50,7 +50,7 @@ function EditStore () {
             labelId="label-is_main"
             name="is_main"
             label="Principal" 
-            selectItems={selectItems}
+            items={selectItems}
             formik={formik}
           />
         </Stack>
