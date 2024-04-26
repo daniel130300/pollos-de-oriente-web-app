@@ -4,6 +4,7 @@ import Paper from '@mui/material/Paper';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Loader from '../atoms/Loader';
+import { FormHelperText } from '@mui/material';
 
 interface AutoCompleteSelectProps {
   id: string;
@@ -15,6 +16,8 @@ interface AutoCompleteSelectProps {
   inputValue: string;
   setInputValue: React.Dispatch<string>;
   loading?: boolean;
+  error?: boolean;
+  errorMessage?: string;
 }
 
 const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
@@ -26,9 +29,10 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
   onSelectChange,
   label,
   loading = false,
+  error = false,
+  errorMessage = ''
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -66,35 +70,43 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
         onChange={handleInputChange}
         variant="standard"
         fullWidth
+        error={error}
       />
       {open && (
         <>
-        {loading ? (
-          <Loader />
-        ) : (
-          <Paper
-            square
-            sx={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              right: 0,
-              zIndex: 999,
-              maxHeight: '300px',
-              overflowY: 'auto',
-            }}
-          >
-            {options && options.map((option) => (
-              <MenuItem
-                key={option.id}
-                onClick={() => handleMenuItemClick(option)}
-              >
-                {option.name}
-              </MenuItem>
-            ))}
-          </Paper>
-        )}
+          {loading ? (
+            <Loader />
+          ) : (
+            <Paper
+              square
+              sx={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                right: 0,
+                zIndex: 999,
+                maxHeight: '300px',
+                overflowY: 'auto',
+              }}
+            >
+              {options && options.map((option) => (
+                <MenuItem
+                  key={option.id}
+                  onClick={() => handleMenuItemClick(option)}
+                >
+                  {option.name}
+                </MenuItem>
+              ))}
+            </Paper>
+          )}
         </>
+      )}
+      {error && (
+        <FormHelperText 
+          error={error}
+        >
+          {errorMessage}
+        </FormHelperText>
       )}
     </Box>
   );

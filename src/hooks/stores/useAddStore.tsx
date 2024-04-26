@@ -44,7 +44,8 @@ const useAddStore = () => {
   const formik = useFormik<AddStore>({
     initialValues: {
       name: '',
-      is_main: false
+      is_main: false,
+      products: []
     },
     validationSchema: storeSchema,
     onSubmit: async (values) => {

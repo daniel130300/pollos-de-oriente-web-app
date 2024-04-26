@@ -1,5 +1,5 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -17,7 +17,7 @@ export interface Product {
   id: string;
   name: string;
   quantity: string;
-  price: string;
+  sale_price: string;
   editable: boolean;
 }
 
@@ -30,8 +30,8 @@ const AddStore = () => {
   const { formik, isLoading } = useAddStore();
   const [products, setProducts] = useState<Product[]>([]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = () => {
+    formik.setFieldValue('products', products);
     formik.handleSubmit();
   };
   
@@ -73,7 +73,10 @@ const AddStore = () => {
                 ))}
               </List>
               <Stack direction="row" spacing={2}>
-                <AddProductItem setProducts={setProducts}/>
+                <AddProductItem 
+                  productsList={products}
+                  setProducts={setProducts}
+                />
               </Stack>
             </Stack>
           </CardContent>

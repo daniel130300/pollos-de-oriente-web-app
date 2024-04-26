@@ -14,11 +14,19 @@ export const authFormsValidations = {
 }
 
 export const productFormsValidations = {
+  select_product: {
+    required:  'Debes seleccionar un producto'
+  },
   name: {
     required: 'El nombre es un campo requerido',
   },
   unity: {
     required: 'La unidad es un campo requerido'
+  },
+  quantity: {
+    typeError: 'La cantidad debe ser un número',
+    required: 'La cantidad es un campo requerido',
+    min: (value: number) => `La cantidad debe ser mayor o igual a ${value}`
   },
   sale_price: {
     typeError: 'El precio de venta debe ser un número',
