@@ -48,13 +48,6 @@ function AddProduct () {
             formik={formik}
           />
           <InputField 
-            id="sale_price"
-            name="sale_price"
-            label="Precio de Venta" 
-            type="number"
-            formik={formik}
-          />
-          <InputField 
             id="purchase_price"
             name="purchase_price"
             label="Precio de Compra" 

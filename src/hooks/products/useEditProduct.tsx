@@ -84,7 +84,6 @@ const useEditProduct = ({id}: {id: string}) => {
     initialValues: {
       name: '',
       unity: '',
-      sale_price: '',
       purchase_price: '',
       product_image: null,
       bucket_id: null,

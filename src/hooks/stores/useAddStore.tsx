@@ -24,12 +24,29 @@ const useAddStore = () => {
   } = useMutation(
     {
       mutationFn: async(values: AddStore) => {
-        const { data } = await supabase
+        const { products, ...rest } = values;
+        const { data: storeData } = await supabase
                             .from('stores')
-                            .insert([values])
+                            .insert([rest])
                             .select()
                             .throwOnError();
-        return data;
+
+        if (values.products?.length === 0) return storeData;
+
+        const insertProducts = products?.map((product) => ({
+          store_id: storeData?.at(0).id,
+          product_id: product.id,
+          quantity: product.quantity,
+          sale_price: product.sale_price
+        }))
+
+        const { data: productsData } = await supabase
+                                      .from('store_products')
+                                      .insert([insertProducts])
+                                      .select()
+                                      .throwOnError();
+        
+        return { storeData, productsData }
       },
       onSuccess: () => {
         enqueueSnackbar(storeSnackbarMessages.success.create, { variant: 'success' });

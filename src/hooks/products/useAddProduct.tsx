@@ -19,11 +19,6 @@ const useAddProduct = () => {
   const productSchema = yup.object().shape({
     name: yup.string().required(productFormsValidations.name.required),
     unity: yup.string().required(productFormsValidations.unity.required),
-    sale_price: yup
-      .number()
-      .typeError(productFormsValidations.sale_price.typeError)
-      .required(productFormsValidations.sale_price.required)
-      .min(0, productFormsValidations.sale_price.min(0)),
     purchase_price: yup
       .number()
       .typeError(productFormsValidations.purchase_price.typeError)
@@ -83,7 +78,6 @@ const useAddProduct = () => {
     initialValues: {
       name: '',
       unity: '',
-      sale_price: '',
       purchase_price: '',
       product_image: null,
       bucket_id: null,
