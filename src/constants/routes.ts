@@ -6,7 +6,7 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 
 export const sideBarRoutes = [
   {title: 'Productos', href: '/products', icon: InventoryIcon}, 
-  {title: 'Tiendas', href: '/stores', icon: StoreIcon},
+  {title: 'Establecimientos', href: '/establishments', icon: StoreIcon},
   {title: 'Combos', href: '/combos', icon: FastfoodIcon},
   {title: 'Ventas', href: '/sales', icon: AttachMoneyIcon},
   {title: 'Compras', href: '/purchases', icon: ReceiptIcon}
