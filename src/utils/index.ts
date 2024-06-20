@@ -1,12 +1,12 @@
 export const parseToCurrency = (value: number): string => {
   // Check if value is a number
   if (typeof value !== 'number' || isNaN(value)) {
-      return '';
+    return '';
   }
 
   // Format the number as currency using toLocaleString method with appropriate parameters for Honduras (Lempiras)
   return value.toLocaleString('es-HN', { style: 'currency', currency: 'HNL' }); // 'es-HN' for Spanish (Honduras), 'HNL' for Honduran Lempiras
-}
+};
 
 export const getMinutesInMilliSeconds = (minutes = 0) => {
   return 1000 * 60 * minutes;
@@ -45,6 +45,6 @@ export function capitalizeFirstLetter(str: string): string {
   if (str.length === 0) {
     return str;
   }
-  
+
   return str.charAt(0).toUpperCase() + str.slice(1);
 }

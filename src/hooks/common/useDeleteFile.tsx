@@ -16,45 +16,43 @@ const useDeleteFile = () => {
   const { enqueueSnackbar } = useSnackbar();
   const queryClient = useQueryClient();
 
-  const {
-    isPending,
-    mutate,
-    mutateAsync,
-  } = useMutation(
-    {
-      mutationFn: async(values: deleteFile) => {
-        const { error: deleteFromBucketError } = await supabase
-        .storage
+  const { isPending, mutate, mutateAsync } = useMutation({
+    mutationFn: async (values: deleteFile) => {
+      const { error: deleteFromBucketError } = await supabase.storage
         .from(values.bucket_id)
-        .remove([values.file_name])
+        .remove([values.file_name]);
 
-        if (deleteFromBucketError) {
-          throw deleteFromBucketError;
-        }
+      if (deleteFromBucketError) {
+        throw deleteFromBucketError;
+      }
 
-        await supabase
+      await supabase
         .from(values.tableName)
-        .update({bucket_id: null, file_name: null})
+        .update({ bucket_id: null, file_name: null })
         .eq('id', values.id)
         .select()
-        .throwOnError()
+        .throwOnError();
 
-        return values;
-      },
-      onSuccess: (data) => {
-        if (data.invalidators) queryClient.invalidateQueries({queryKey: data.invalidators})
-        enqueueSnackbar(productSnackbarMessages.success.imageDelete, { variant: 'success' });
-      },
-      onError: () => {
-        enqueueSnackbar(productSnackbarMessages.errors.imageDelete, { variant: 'error' });
-      }
-    }
-  );
+      return values;
+    },
+    onSuccess: data => {
+      if (data.invalidators)
+        queryClient.invalidateQueries({ queryKey: data.invalidators });
+      enqueueSnackbar(productSnackbarMessages.success.imageDelete, {
+        variant: 'success',
+      });
+    },
+    onError: () => {
+      enqueueSnackbar(productSnackbarMessages.errors.imageDelete, {
+        variant: 'error',
+      });
+    },
+  });
 
   return {
     isLoading: isPending,
     mutate,
-    mutateAsync
+    mutateAsync,
   };
 };
 

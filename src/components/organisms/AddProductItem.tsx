@@ -1,37 +1,37 @@
-import { Dispatch } from "react";
-import { Product } from "src/routes/_auth/stores/add-store.lazy";
-import AutoCompleteSelect from "../molecules/AutoCompleteSelect";
-import InputField from "../atoms/InputField";
-import Button from "@mui/material/Button";
-import { productFormsValidations } from "src/constants";
-import { Box } from "@mui/material";
-import useAddProductToStoreInventory from "src/hooks/stores/useAddProductToStoreInventory";
+import { Dispatch } from 'react';
+import AutoCompleteSelect from '../molecules/AutoCompleteSelect';
+import InputField from '../atoms/InputField';
+import Button from '@mui/material/Button';
+import { productFormsValidations } from 'src/constants';
+import { Box } from '@mui/material';
+import useAddProductToStoreInventory from 'src/hooks/stores/useAddProductToStoreInventory';
+import { EditableProduct } from 'src/hooks/products/interface';
 
 export const AddProductItem = ({
   productsList,
-  setProducts
-} : {
-  productsList: Product[],
-  setProducts: Dispatch<React.SetStateAction<Product[]>>
+  setProducts,
+}: {
+  productsList: EditableProduct[];
+  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
 }) => {
-  const {  
+  const {
     search,
     autoCompleteProducts,
     autoCompleteProductsLoading,
     formik,
     productSelectError,
-    setSearch
-  } = useAddProductToStoreInventory({productsList, setProducts});
+    setSearch,
+  } = useAddProductToStoreInventory({ productsList, setProducts });
 
   return (
     <>
       <Box>
         <AutoCompleteSelect
-          id='id'
-          name='id'
-          label='Producto'
+          id="id"
+          name="id"
+          label="Producto"
           options={autoCompleteProducts}
-          onSelectChange={(option) => {
+          onSelectChange={option => {
             formik.setFieldValue('id', option.id);
             formik.setFieldValue('name', option.name);
           }}
@@ -60,7 +60,7 @@ export const AddProductItem = ({
         Agregar
       </Button>
     </>
-  )
-}
+  );
+};
 
 export default AddProductItem;

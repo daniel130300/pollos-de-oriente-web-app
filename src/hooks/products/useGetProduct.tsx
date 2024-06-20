@@ -9,37 +9,46 @@ interface UseGetProductProps {
 }
 
 const useGetProduct = ({ id }: UseGetProductProps) => {
-  const getProduct = async ({ id }: {id: string}) => {
-    const { data } = await supabase.from('products').select('*').eq('id', id).single().throwOnError();
+  const getProduct = async ({ id }: { id: string }) => {
+    const { data } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', id)
+      .single()
+      .throwOnError();
 
-    if(data.bucket_id && data.file_name) {
-      const { data: image } = supabase.storage.from(data.bucket_id).getPublicUrl(data.file_name)
-      
+    if (data.bucket_id && data.file_name) {
+      const { data: image } = supabase.storage
+        .from(data.bucket_id)
+        .getPublicUrl(data.file_name);
+
       data.imagePublicUrl = image?.publicUrl;
     }
 
     return data;
   };
 
-  const { 
-    isLoading: productIsLoading, 
+  const {
+    isLoading: productIsLoading,
     isFetching: productIsFetching,
-    data: product, 
+    data: product,
     isError: productIsError,
   } = useQuery({
-    queryKey: [API_KEYS.FETCH_PRODUCT, {id}],
+    queryKey: [API_KEYS.FETCH_PRODUCT, { id }],
     queryFn: () => getProduct({ id }),
-    throwOnError: () => { 
-      enqueueSnackbar(productSnackbarMessages.errors.detail, {variant: 'error'}) 
+    throwOnError: () => {
+      enqueueSnackbar(productSnackbarMessages.errors.detail, {
+        variant: 'error',
+      });
       return true;
-    }
+    },
   });
 
-  return { 
-    productIsLoading, 
+  return {
+    productIsLoading,
     productIsFetching,
     productIsError,
-    product
+    product,
   };
 };
 

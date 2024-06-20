@@ -48,6 +48,7 @@ Este proyecto es posible gracias a la contribución de:
 ## 📋 Agile Scrum Board
 
 Para ver el progreso del proyecto y las tareas actuales, visita nuestro tablero Agile Scrum en Notion:
+
 - [Tablero Agile Scrum de Pollos de Oriente](https://www.notion.so/pollos-de-oriente-web-3eb7cb7049de4963a1fb09d1ef34e8fa?pvs=4)
 
 ---
@@ -102,4 +103,5 @@ This project is made possible by the contributions of:
 ## 📋 Agile Scrum Board
 
 To see the project's progress and current tasks, visit our Agile Scrum board on Notion:
+
 - [Pollos de Oriente Agile Scrum Board](https://www.notion.so/pollos-de-oriente-web-3eb7cb7049de4963a1fb09d1ef34e8fa?pvs=4)

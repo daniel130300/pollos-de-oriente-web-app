@@ -58,7 +58,7 @@ const theme = createTheme({
     },
     button: {
       fontSize: '1rem', // Equivalent to 16px
-      textTransform: 'none'
+      textTransform: 'none',
     },
     caption: {
       fontSize: '0.75rem', // Equivalent to 12px
@@ -66,7 +66,7 @@ const theme = createTheme({
     overline: {
       fontSize: '0.75rem', // Equivalent to 12px
     },
-  }
+  },
 });
 
 export default responsiveFontSizes(theme);

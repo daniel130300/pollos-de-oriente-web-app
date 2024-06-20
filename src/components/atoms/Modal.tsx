@@ -38,7 +38,15 @@ export default function Modal() {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <CloseIcon sx={{position: 'absolute', top: 10, right: 10, cursor: 'pointer'}} onClick={handleClose}/>
+            <CloseIcon
+              sx={{
+                position: 'absolute',
+                top: 10,
+                right: 10,
+                cursor: 'pointer',
+              }}
+              onClick={handleClose}
+            />
             <Typography id="transition-modal-title" variant="h2" component="h2">
               {title}
             </Typography>

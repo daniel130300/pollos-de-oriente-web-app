@@ -9,40 +9,44 @@ interface UseGetStoreProps {
 }
 
 const useGetStore = ({ id }: UseGetStoreProps) => {
-  const getStore = async ({ id }: {id: string}) => {
+  const getStore = async ({ id }: { id: string }) => {
     const { data } = await supabase
-                            .from('stores')
-                            .select(`
+      .from('stores')
+      .select(
+        `
                             *,
                             store_products (
                               store_id
                             )
-                          `)
-                          .eq('id', id)
-                          .single()
-                          .throwOnError();             
+                          `,
+      )
+      .eq('id', id)
+      .single()
+      .throwOnError();
     return data;
   };
 
-  const { 
-    isLoading: storeIsLoading, 
+  const {
+    isLoading: storeIsLoading,
     isFetching: storeIsFetching,
-    data: store, 
+    data: store,
     isError: storeIsError,
   } = useQuery({
-    queryKey: [API_KEYS.FETCH_STORE, {id}],
+    queryKey: [API_KEYS.FETCH_STORE, { id }],
     queryFn: () => getStore({ id }),
-    throwOnError: () => { 
-      enqueueSnackbar(storeSnackbarMessages.errors.detail, {variant: 'error'}) 
+    throwOnError: () => {
+      enqueueSnackbar(storeSnackbarMessages.errors.detail, {
+        variant: 'error',
+      });
       return true;
-    }
+    },
   });
 
-  return { 
-    storeIsLoading, 
+  return {
+    storeIsLoading,
     storeIsFetching,
     storeIsError,
-    store
+    store,
   };
 };
 

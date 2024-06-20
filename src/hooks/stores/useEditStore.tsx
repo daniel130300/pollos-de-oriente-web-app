@@ -9,7 +9,7 @@ import { Store } from './interface';
 
 type EditStore = Omit<Store, 'id'>;
 
-const useEditStore = ({id}: {id: string}) => {
+const useEditStore = ({ id }: { id: string }) => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
@@ -18,30 +18,26 @@ const useEditStore = ({id}: {id: string}) => {
     is_main: yup.string().required(storeFormsValidations.is_main.required),
   });
 
-  const {
-    isPending,
-    mutate
-  } = useMutation(
-    {
-      mutationFn: async(values: EditStore) => {
-
-        const { data } = await supabase
-                              .from('stores')
-                              .update(values)
-                              .eq('id', id)
-                              .select()
-                              .throwOnError()
-        return data;
-      },
-      onSuccess: () => {
-        enqueueSnackbar(storeSnackbarMessages.success.edit, { variant: 'success' });
-        navigate({ to: '/stores' });
-      },
-      onError: () => {
-        enqueueSnackbar(storeSnackbarMessages.errors.edit, { variant: 'error' });
-      }
-    }
-  );
+  const { isPending, mutate } = useMutation({
+    mutationFn: async (values: EditStore) => {
+      const { data } = await supabase
+        .from('stores')
+        .update(values)
+        .eq('id', id)
+        .select()
+        .throwOnError();
+      return data;
+    },
+    onSuccess: () => {
+      enqueueSnackbar(storeSnackbarMessages.success.edit, {
+        variant: 'success',
+      });
+      navigate({ to: '/stores' });
+    },
+    onError: () => {
+      enqueueSnackbar(storeSnackbarMessages.errors.edit, { variant: 'error' });
+    },
+  });
 
   const formik = useFormik<EditStore>({
     initialValues: {
@@ -49,15 +45,15 @@ const useEditStore = ({id}: {id: string}) => {
       is_main: false,
     },
     validationSchema: storeSchema,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       mutate(values);
     },
-    enableReinitialize: true
+    enableReinitialize: true,
   });
 
   return {
     formik,
-    isLoading: isPending
+    isLoading: isPending,
   };
 };
 
