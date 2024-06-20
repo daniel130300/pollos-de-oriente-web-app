@@ -6,33 +6,35 @@ import { API_KEYS } from 'src/query/keys/queryConfig';
 import { User } from '@supabase/supabase-js';
 
 const useGetUser = () => {
-  const getUser = async () : Promise<undefined | User> => {
+  const getUser = async (): Promise<undefined | User> => {
     const { data, error } = await supabase.auth.getSession();
 
-    if(error) throw error
+    if (error) throw error;
 
     return data.session?.user;
   };
 
-  const { 
-    isLoading: userIsLoading, 
+  const {
+    isLoading: userIsLoading,
     isFetching: userIsFetching,
-    data: user, 
+    data: user,
     isError: userIsError,
   } = useQuery({
     queryKey: [API_KEYS.FETCH_USER],
     queryFn: () => getUser(),
-    throwOnError: () => { 
-      enqueueSnackbar(productSnackbarMessages.errors.detail, {variant: 'error'}) 
+    throwOnError: () => {
+      enqueueSnackbar(productSnackbarMessages.errors.detail, {
+        variant: 'error',
+      });
       return true;
-    }
+    },
   });
 
   return {
     userIsLoading,
     userIsFetching,
     userIsError,
-    user
+    user,
   };
 };
 

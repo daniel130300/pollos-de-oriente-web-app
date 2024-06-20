@@ -1,8 +1,8 @@
-import { Product } from "src/routes/_auth/stores/add-store.lazy";
+import { EditableProduct } from '../products/interface';
 
 export interface Store {
   id: string;
   name: string;
   is_main: boolean;
-  products?: Product[];
+  products?: EditableProduct[];
 }

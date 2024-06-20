@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { createLazyFileRoute } from '@tanstack/react-router'
-import Stack from "@mui/material/Stack";
+import { createLazyFileRoute } from '@tanstack/react-router';
+import Stack from '@mui/material/Stack';
 import InputField from 'src/components/atoms/InputField';
 import { Button } from 'src/components/atoms/Button';
 import SelectField from 'src/components/atoms/SelectField';
@@ -8,56 +8,73 @@ import Loader from 'src/components/atoms/Loader';
 import useEditStore from 'src/hooks/stores/useEditStore';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 import useGetStore from 'src/hooks/stores/useGetStore';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 export const Route = createLazyFileRoute('/_auth/stores/$id/edit')({
-  component: EditStore
-})
+  component: EditStore,
+});
 
 const selectItems = [
-  {label: "Si", value: true},
-  {label: "No", value: false}
+  { label: 'Si', value: true },
+  { label: 'No', value: false },
 ];
 
-function EditStore () {
+function EditStore() {
   const { id } = Route.useParams();
-  const { store, storeIsLoading, storeIsError } = useGetStore({id})
-  const { formik, isLoading } = useEditStore({id})
+  const { store, storeIsLoading, storeIsError } = useGetStore({ id });
+  const { formik, isLoading } = useEditStore({ id });
 
   useEffect(() => {
     if (!storeIsLoading && !storeIsError) {
       formik.setValues({
         name: store.name,
-        is_main: store.is_main
-      })
+        is_main: store.is_main,
+      });
     }
-  }, [store, storeIsError, storeIsLoading])
+  }, [store, storeIsError, storeIsLoading, formik]);
 
-  if (storeIsLoading) return <Loader type='cover'/>
+  if (storeIsLoading) return <Loader type="cover" />;
+
+  console.log('STORE INFO', store);
 
   return (
-    <DetailsTemplate title='Editar Tienda' returnButtonProps={{to: '/stores', params: {}}}>
+    <DetailsTemplate
+      title="Editar Tienda"
+      returnButtonProps={{ to: '/stores', params: {} }}
+    >
       <>
-        <Stack spacing={4} mb={4}>
-          <InputField 
-            id="name"
-            name="name"
-            label="Nombre"
-            type="text"
-            formik={formik}
-          />
-          <SelectField 
-            id="is_main" 
-            labelId="label-is_main"
-            name="is_main"
-            label="Principal" 
-            items={selectItems}
-            formik={formik}
-          />
-        </Stack>
-        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Editar Tienda</Button>
+        <Card sx={{ px: 4, pb: 4 }}>
+          <CardContent>
+            <Typography variant="h2" gutterBottom>
+              Informacion General
+            </Typography>
+            <Stack spacing={4} mb={4}>
+              <InputField
+                id="name"
+                name="name"
+                label="Nombre"
+                type="text"
+                formik={formik}
+              />
+              <SelectField
+                id="is_main"
+                labelId="label-is_main"
+                name="is_main"
+                label="Principal"
+                items={selectItems}
+                formik={formik}
+              />
+            </Stack>
+          </CardContent>
+        </Card>
+        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>
+          Editar Tienda
+        </Button>
       </>
     </DetailsTemplate>
   );
-};
+}
 
 export default EditStore;

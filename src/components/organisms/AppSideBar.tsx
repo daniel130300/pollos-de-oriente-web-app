@@ -15,13 +15,12 @@ export const AppSideBar: React.FC<AppSideBarProps> = ({
   mobileOpen,
   drawerWidth,
   handleDrawerClose,
-  handleDrawerTransitionEnd
+  handleDrawerTransitionEnd,
 }) => {
-
   const drawer = (
-    <List sx={{pt: 8}}>
-      {sideBarRoutes.map((route) => (
-        <ListItem key={route.title} route={route}/>
+    <List sx={{ pt: 8 }}>
+      {sideBarRoutes.map(route => (
+        <ListItem key={route.title} route={route} />
       ))}
     </List>
   );
@@ -38,7 +37,7 @@ export const AppSideBar: React.FC<AppSideBarProps> = ({
         onTransitionEnd={handleDrawerTransitionEnd}
         onClose={handleDrawerClose}
         ModalProps={{
-          keepMounted: true
+          keepMounted: true,
         }}
         sx={{
           display: { xs: 'block', sm: 'none' },
@@ -51,14 +50,18 @@ export const AppSideBar: React.FC<AppSideBarProps> = ({
         variant="permanent"
         sx={{
           display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, zIndex: 0 },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: drawerWidth,
+            zIndex: 0,
+          },
         }}
         open
       >
         {drawer}
       </Drawer>
     </Box>
-  )
-}
+  );
+};
 
 export default AppSideBar;

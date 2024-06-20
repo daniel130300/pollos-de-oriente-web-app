@@ -1,5 +1,5 @@
-import { QueryClient } from "@tanstack/react-query";
-import { getMinutesInMilliSeconds } from "src/utils";
+import { QueryClient } from '@tanstack/react-query';
+import { getMinutesInMilliSeconds } from 'src/utils';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,7 +9,7 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: true,
       refetchOnReconnect: true,
       refetchInterval: getMinutesInMilliSeconds(5),
-      gcTime:  getMinutesInMilliSeconds(5)
+      gcTime: getMinutesInMilliSeconds(5),
     },
     mutations: {
       retry: 1,

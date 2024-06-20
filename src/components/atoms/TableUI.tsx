@@ -1,6 +1,24 @@
-import { FC, memo, useMemo } from "react";
-import { Box, Paper, Table as MuiTable, TableHead, TableCell, TableBody, TableRow, TablePagination, Skeleton, Stack } from "@mui/material";
-import { Cell, ColumnDef, flexRender, getCoreRowModel, Row, useReactTable } from "@tanstack/react-table";
+import { FC, memo, useMemo } from 'react';
+import {
+  Box,
+  Paper,
+  Table as MuiTable,
+  TableHead,
+  TableCell,
+  TableBody,
+  TableRow,
+  TablePagination,
+  Skeleton,
+  Stack,
+} from '@mui/material';
+import {
+  Cell,
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  Row,
+  useReactTable,
+} from '@tanstack/react-table';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -47,7 +65,10 @@ const TableUI: FC<TableProps> = ({
 }) => {
   const memoizedData = useMemo(() => data, [data]);
   const memoizedColumns = useMemo(() => columns, [columns]);
-  const memoisedHeaderComponent = useMemo(() => headerComponent, [headerComponent]);
+  const memoisedHeaderComponent = useMemo(
+    () => headerComponent,
+    [headerComponent],
+  );
 
   const { getHeaderGroups, getRowModel, getAllColumns } = useReactTable({
     data: memoizedData,
@@ -60,33 +81,34 @@ const TableUI: FC<TableProps> = ({
 
   const columnCount = getAllColumns().length;
 
-  const noDataFound = !isFetching && (!memoizedData || memoizedData.length === 0);
+  const noDataFound =
+    !isFetching && (!memoizedData || memoizedData.length === 0);
 
   const renderActionsColumn = (row: Row<any>) => (
     <TableCell>
-      <Stack direction='row' spacing={1}>
+      <Stack direction="row" spacing={1}>
         {handleViewRow && (
-          <Tooltip title="Ver" sx={{cursor: 'pointer'}}>
-            <RemoveRedEyeIcon 
-              onClick={() => handleViewRow(row.original)} 
+          <Tooltip title="Ver" sx={{ cursor: 'pointer' }}>
+            <RemoveRedEyeIcon
+              onClick={() => handleViewRow(row.original)}
               color="action"
             />
           </Tooltip>
         )}
 
         {handleEditRow && (
-          <Tooltip title="Editar" sx={{cursor: 'pointer'}}>
-            <EditIcon 
-              onClick={() => handleEditRow(row.original)} 
+          <Tooltip title="Editar" sx={{ cursor: 'pointer' }}>
+            <EditIcon
+              onClick={() => handleEditRow(row.original)}
               color="primary"
             />
           </Tooltip>
         )}
 
         {handleDeleteRow && (
-          <Tooltip title="Eliminar" sx={{cursor: 'pointer'}}>
-            <DeleteIcon 
-              onClick={() => handleDeleteRow(row.original)} 
+          <Tooltip title="Eliminar" sx={{ cursor: 'pointer' }}>
+            <DeleteIcon
+              onClick={() => handleDeleteRow(row.original)}
               color="error"
             />
           </Tooltip>
@@ -96,47 +118,63 @@ const TableUI: FC<TableProps> = ({
   );
 
   return (
-    <Paper elevation={2} sx={{ padding: "0 0 1rem 0" }}>
+    <Paper elevation={2} sx={{ padding: '0 0 1rem 0' }}>
       <Box paddingX="1rem">
         {memoisedHeaderComponent && <Box>{memoisedHeaderComponent}</Box>}
       </Box>
-      <Box sx={{ overflowX: "auto", minHeight: noDataFound ? 'inherit' : 625 }}>
+      <Box sx={{ overflowX: 'auto', minHeight: noDataFound ? 'inherit' : 625 }}>
         <MuiTable>
           {!isFetching && (
             <TableHead>
-              {getHeaderGroups().map((headerGroup) => (
+              {getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
+                  {headerGroup.headers.map(header => (
                     <TableCell key={header.id}>
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableCell>
                   ))}
-                  {(handleViewRow || handleEditRow || handleDeleteRow) && <TableCell>Acciones</TableCell>}
+                  {(handleViewRow || handleEditRow || handleDeleteRow) && (
+                    <TableCell>Acciones</TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableHead>
           )}
           <TableBody>
             {!isFetching ? (
-              getRowModel()?.rows.map((row) => (
+              getRowModel()?.rows.map(row => (
                 <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell onClick={() => onClickRow?.(cell, row)} key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell
+                      onClick={() => onClickRow?.(cell, row)}
+                      key={cell.id}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
                     </TableCell>
                   ))}
-                  {(handleViewRow || handleEditRow || handleDeleteRow) && renderActionsColumn(row)}
+                  {(handleViewRow || handleEditRow || handleDeleteRow) &&
+                    renderActionsColumn(row)}
                 </TableRow>
               ))
             ) : (
               <>
-                {skeletons.map((skeleton) => (
+                {skeletons.map(skeleton => (
                   <TableRow key={skeleton}>
-                    {Array.from({ length: columnCount }, (_, i) => i).map((elm) => (
-                      <TableCell key={elm}>
-                        <Skeleton height={skeletonHeight} />
-                      </TableCell>
-                    ))}
+                    {Array.from({ length: columnCount }, (_, i) => i).map(
+                      elm => (
+                        <TableCell key={elm}>
+                          <Skeleton height={skeletonHeight} />
+                        </TableCell>
+                      ),
+                    )}
                   </TableRow>
                 ))}
               </>
@@ -145,7 +183,14 @@ const TableUI: FC<TableProps> = ({
         </MuiTable>
       </Box>
       {noDataFound ? (
-        <Box my={2} display={"flex"} textAlign="center" justifyContent={"center"} alignItems={"center"} height={"100%"}>
+        <Box
+          my={2}
+          display={'flex'}
+          textAlign="center"
+          justifyContent={'center'}
+          alignItems={'center'}
+          height={'100%'}
+        >
           {emptyText}
         </Box>
       ) : (
@@ -162,14 +207,17 @@ const TableUI: FC<TableProps> = ({
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={(_, page) => handleChangePage(page)}
-              onRowsPerPageChange={(e) => handleChangeRowsPerPage(+e.target.value)}
+              onRowsPerPageChange={e =>
+                handleChangeRowsPerPage(+e.target.value)
+              }
               labelRowsPerPage="Registros por pagina"
-              labelDisplayedRows={({ from, to, count }) => `Del ${from} al ${to} ${count !== -1 ? `de ${count} registros` : `más que ${to}`}`}
+              labelDisplayedRows={({ from, to, count }) =>
+                `Del ${from} al ${to} ${count !== -1 ? `de ${count} registros` : `más que ${to}`}`
+              }
             />
           )}
         </>
       )}
-     
     </Paper>
   );
 };

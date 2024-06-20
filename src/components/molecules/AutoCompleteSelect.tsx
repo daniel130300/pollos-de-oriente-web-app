@@ -24,13 +24,13 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
   id,
   name,
   options,
-  inputValue, 
+  inputValue,
   setInputValue,
   onSelectChange,
   label,
   loading = false,
   error = false,
-  errorMessage = ''
+  errorMessage = '',
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -48,7 +48,10 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
   };
 
   const handleOutsideClick = (event: MouseEvent) => {
-    if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+    if (
+      wrapperRef.current &&
+      !wrapperRef.current.contains(event.target as Node)
+    ) {
       setOpen(false);
     }
   };
@@ -89,25 +92,20 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
                 overflowY: 'auto',
               }}
             >
-              {options && options.map((option) => (
-                <MenuItem
-                  key={option.id}
-                  onClick={() => handleMenuItemClick(option)}
-                >
-                  {option.name}
-                </MenuItem>
-              ))}
+              {options &&
+                options.map(option => (
+                  <MenuItem
+                    key={option.id}
+                    onClick={() => handleMenuItemClick(option)}
+                  >
+                    {option.name}
+                  </MenuItem>
+                ))}
             </Paper>
           )}
         </>
       )}
-      {error && (
-        <FormHelperText 
-          error={error}
-        >
-          {errorMessage}
-        </FormHelperText>
-      )}
+      {error && <FormHelperText error={error}>{errorMessage}</FormHelperText>}
     </Box>
   );
 };

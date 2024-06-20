@@ -6,7 +6,10 @@ import { useNavigate } from '@tanstack/react-router';
 import { generateFilename } from 'src/utils';
 import { supabase } from 'src/supabaseClient';
 import { useMutation } from '@tanstack/react-query';
-import { productFormsValidations, productSnackbarMessages } from 'src/constants';
+import {
+  productFormsValidations,
+  productSnackbarMessages,
+} from 'src/constants';
 import { Product } from './interface';
 
 type AddProduct = Omit<Product, 'id'>;
@@ -31,63 +34,64 @@ const useAddProduct = () => {
         if (typeof value === 'string') return true;
         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
       })
-      .nullable()
+      .nullable(),
   });
 
-  const {
-    isPending,
-    mutate
-  } = useMutation(
-    {
-      mutationFn: async(values: AddProduct) => {
-        if (values.product_image) {
-          const image_file_name = generateFilename(values.name, values.product_image);
-  
-          const { data: image, error: imageError } = await supabase.storage
-            .from('uploads')
-            .upload(image_file_name, values.product_image);
-  
-          if (imageError) {
-            throw imageError;
-          }
+  const { isPending, mutate } = useMutation({
+    mutationFn: async (values: AddProduct) => {
+      if (values.product_image) {
+        const image_file_name = generateFilename(
+          values.name,
+          values.product_image,
+        );
 
-          values.bucket_id = 'uploads'
-          values.file_name = image.path
+        const { data: image, error: imageError } = await supabase.storage
+          .from('uploads')
+          .upload(image_file_name, values.product_image);
+
+        if (imageError) {
+          throw imageError;
         }
-  
-        const { product_image, ...rest } = values;
-  
-        const { data } = await supabase
-                            .from('products')
-                            .insert([rest])
-                            .select()
-                            .throwOnError();
-        return data;
-      },
-      onSuccess: () => {
-        enqueueSnackbar(productSnackbarMessages.success.create, { variant: 'success' });
-        navigate({ to: '/' });
-      },
-      onError: () => {
-        enqueueSnackbar(productSnackbarMessages.errors.create, { variant: 'error' });
-      }
-    }
-  );
 
-  const formik = useFormik <AddProduct>({
+        values.bucket_id = 'uploads';
+        values.file_name = image.path;
+      }
+
+      const { product_image, ...rest } = values;
+
+      const { data } = await supabase
+        .from('products')
+        .insert([rest])
+        .select()
+        .throwOnError();
+      return data;
+    },
+    onSuccess: () => {
+      enqueueSnackbar(productSnackbarMessages.success.create, {
+        variant: 'success',
+      });
+      navigate({ to: '/' });
+    },
+    onError: () => {
+      enqueueSnackbar(productSnackbarMessages.errors.create, {
+        variant: 'error',
+      });
+    },
+  });
+
+  const formik = useFormik<AddProduct>({
     initialValues: {
       name: '',
       unity: '',
-      purchase_price: '',
       product_image: null,
       bucket_id: null,
-      file_name: null
+      file_name: null,
     },
     validationSchema: productSchema,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       mutate(values);
     },
-    enableReinitialize: true
+    enableReinitialize: true,
   });
 
   const handleFileSelect = (file: File | null) => {
@@ -99,7 +103,7 @@ const useAddProduct = () => {
     formik,
     selectedFile,
     handleFileSelect,
-    isLoading: isPending
+    isLoading: isPending,
   };
 };
 

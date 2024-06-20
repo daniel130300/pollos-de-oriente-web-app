@@ -6,11 +6,15 @@ interface ModalState {
   title: string;
   description: string;
   buttons: React.ReactNode;
-  handleOpen: (data: { title: string, description: string, buttons: React.ReactNode }) => void;
+  handleOpen: (data: {
+    title: string;
+    description: string;
+    buttons: React.ReactNode;
+  }) => void;
   handleClose: () => void;
 }
 
-export const useModalStore = create<ModalState>((set) => ({
+export const useModalStore = create<ModalState>(set => ({
   open: false,
   title: '',
   description: '',
