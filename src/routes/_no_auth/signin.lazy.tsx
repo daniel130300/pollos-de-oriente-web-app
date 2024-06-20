@@ -37,9 +37,6 @@ function SignIn() {
       <Typography align='right'>
         <Link component={RouterLink} to='/reset-password'>Se te olvido tu contraseña?</Link>
       </Typography>
-      <Typography>
-        No tienes una cuenta? <Link component={RouterLink} to='/signup'>Crear Cuenta</Link>
-      </Typography>
     </AuthFormTemplate>
   )
 }
