@@ -19,7 +19,6 @@ import { Route as IndexImport } from './routes/index'
 
 // Create Virtual Routes
 
-const NoauthSignupLazyImport = createFileRoute('/_no_auth/signup')()
 const NoauthSigninLazyImport = createFileRoute('/_no_auth/signin')()
 const NoauthResetPasswordLazyImport = createFileRoute(
   '/_no_auth/reset-password',
@@ -58,13 +57,6 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
-
-const NoauthSignupLazyRoute = NoauthSignupLazyImport.update({
-  path: '/signup',
-  getParentRoute: () => NoauthRoute,
-} as any).lazy(() =>
-  import('./routes/_no_auth/signup.lazy').then((d) => d.Route),
-)
 
 const NoauthSigninLazyRoute = NoauthSigninLazyImport.update({
   path: '/signin',
@@ -170,10 +162,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoauthSigninLazyImport
       parentRoute: typeof NoauthImport
     }
-    '/_no_auth/signup': {
-      preLoaderRoute: typeof NoauthSignupLazyImport
-      parentRoute: typeof NoauthImport
-    }
     '/_auth/products/$id': {
       preLoaderRoute: typeof AuthProductsIdLazyImport
       parentRoute: typeof AuthImport
@@ -231,7 +219,6 @@ export const routeTree = rootRoute.addChildren([
   NoauthRoute.addChildren([
     NoauthResetPasswordLazyRoute,
     NoauthSigninLazyRoute,
-    NoauthSignupLazyRoute,
   ]),
 ])
 

@@ -10,8 +10,17 @@ interface UseGetStoreProps {
 
 const useGetStore = ({ id }: UseGetStoreProps) => {
   const getStore = async ({ id }: {id: string}) => {
-    const { data } = await supabase.from('stores').select('*').eq('id', id).single().throwOnError();
-
+    const { data } = await supabase
+                            .from('stores')
+                            .select(`
+                            *,
+                            store_products (
+                              store_id
+                            )
+                          `)
+                          .eq('id', id)
+                          .single()
+                          .throwOnError();             
     return data;
   };
 

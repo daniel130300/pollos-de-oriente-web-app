@@ -3,14 +3,12 @@ export const authSnackbarMessages = {
     passwordReset: 'Error enviando correo para reestablecer tu contraseña',
     passwordUpdate: 'Error actualizando la contraseña',
     login: 'Error iniciando sesión',
-    signup: 'Error creando cuenta',
     logout: 'Error cerrando sesión',
     getUser: 'Error obteniendo la información del usuario'
   },
   success: {
     passwordReset: 'Si tu correo existe, se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña',
     passwordUpdate: 'Contraseña actualizada exitosamente',
-    signup: 'Antes de iniciar sesión, deberás verificar el correo utilizado al momento de crear tu cuenta',
     logout: 'Se ha cerrando sesión exitosamente'
   }
 }
