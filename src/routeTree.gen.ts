@@ -37,6 +37,9 @@ const AuthProductsAddProductLazyImport = createFileRoute(
   '/_auth/products/add-product',
 )()
 const AuthProductsIdLazyImport = createFileRoute('/_auth/products/$id')()
+const AuthExpensesCategoriesIndexLazyImport = createFileRoute(
+  '/_auth/expenses/categories/',
+)()
 const AuthStoresIdEditLazyImport = createFileRoute('/_auth/stores/$id/edit')()
 const AuthProductsIdEditLazyImport = createFileRoute(
   '/_auth/products/$id/edit',
@@ -132,6 +135,16 @@ const AuthProductsIdLazyRoute = AuthProductsIdLazyImport.update({
   import('./routes/_auth/products/$id.lazy').then((d) => d.Route),
 )
 
+const AuthExpensesCategoriesIndexLazyRoute =
+  AuthExpensesCategoriesIndexLazyImport.update({
+    path: '/expenses/categories/',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/expenses/categories/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthStoresIdEditLazyRoute = AuthStoresIdEditLazyImport.update({
   path: '/stores/$id/edit',
   getParentRoute: () => AuthRoute,
@@ -210,6 +223,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthStoresIdEditLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/expenses/categories/': {
+      preLoaderRoute: typeof AuthExpensesCategoriesIndexLazyImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
@@ -227,6 +244,7 @@ export const routeTree = rootRoute.addChildren([
     AuthStoresIndexLazyRoute,
     AuthProductsIdEditLazyRoute,
     AuthStoresIdEditLazyRoute,
+    AuthExpensesCategoriesIndexLazyRoute,
   ]),
   NoauthRoute.addChildren([
     NoauthResetPasswordLazyRoute,

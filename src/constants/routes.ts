@@ -31,7 +31,7 @@ export const sideBarRoutes = [
   },
   {
     title: 'Gastos',
-    href: '/purchases',
+    href: '/expenses',
     icon: ReceiptIcon,
     subMenu: [
       {

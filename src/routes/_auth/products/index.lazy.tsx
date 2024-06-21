@@ -16,7 +16,9 @@ import { useNavigate } from '@tanstack/react-router';
 import { useModalStore } from 'src/zustand/useModalStore';
 import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
 import Loader from 'src/components/atoms/Loader';
-import useGetProducts from 'src/hooks/products/useGetProducts';
+import useGetData from 'src/hooks/common/useGetData';
+import { API_KEYS } from 'src/query/keys/queryConfig';
+import { productSnackbarMessages } from 'src/constants';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products
@@ -42,7 +44,15 @@ function Products() {
   } = usePagination();
   const { handleOpen, handleClose } = useModalStore();
   const [search, setSearch] = useState('');
-  const { products, productsIsLoading, productsCount, productsCountIsLoading } = useGetProducts({page, rowsPerPage, search});
+  const { data, dataIsLoading, dataCount, dataCountIsLoading } = useGetData({
+    page, 
+    rowsPerPage, 
+    search,
+    dataQueryKey: API_KEYS.FETCH_PRODUCTS,
+    countQueryKey: API_KEYS.FETCH_PRODUCTS_COUNT,
+    entity: 'products',
+    snackbarMessages: productSnackbarMessages
+  });
   const { mutate, isLoading, deleteImageIsLoading, productToDelete, setProductToDelete } = useDeleteProduct();
 
   const handleViewRow = (product: any) => {
@@ -108,16 +118,16 @@ function Products() {
         </Stack>
       </Box>
       <TableUI
-        data={products || []}
+        data={data || []}
         columns={columns}
         emptyText="No se encontraron productos"
-        isFetching={productsIsLoading}
+        isFetching={dataIsLoading}
         page={page}
         handleChangePage={handleChangePage}
         rowsPerPage={rowsPerPage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
-        recordsCount={productsCount}
-        recordsCountLoading={productsCountIsLoading}
+        recordsCount={dataCount}
+        recordsCountLoading={dataCountIsLoading}
         handleViewRow={handleViewRow}
         handleEditRow={handleEditRow}
         handleDeleteRow={handleDeleteRow}

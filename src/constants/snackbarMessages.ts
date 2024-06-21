@@ -49,3 +49,18 @@ export const storeSnackbarMessages = {
     delete: 'Tienda eliminada exitosamente'
   }
 }
+
+export const expensesSnackbarMessages = {
+  errors: {
+    create: 'Error creando la categoría de gasto',
+    edit: 'Error editando la categoría de gasto',
+    list: 'Error obteniendo el listado de categorías de gasto',
+    count: 'Error obteniendo el conteo de categorías de gasto',
+    detail: 'Error obteniendo el detalle de la categoría de gasto'
+  },
+  success: {
+    create: 'Categoría de gasto creada exitosamente',
+    edit: 'Categoría de gasto editada exitosamente',
+    delete: 'Categoría de gasto eliminada exitosamente'
+  }
+}
