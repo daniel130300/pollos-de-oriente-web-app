@@ -11,12 +11,6 @@ type AddProduct = Omit<Product, 'id'>;
 const useAddProduct = () => {
   const productSchema = yup.object().shape({
     name: yup.string().required(productFormsValidations.name.required),
-    unity: yup.string().required(productFormsValidations.unity.required),
-    purchase_price: yup
-      .number()
-      .typeError(productFormsValidations.purchase_price.typeError)
-      .required(productFormsValidations.purchase_price.required)
-      .min(0, productFormsValidations.purchase_price.min(0)),
     product_image: yup
       .mixed()
       .test('fileType', productFormsValidations.product_image, (value: any) => {
@@ -37,8 +31,6 @@ const useAddProduct = () => {
   const { formik, isLoading } = useAddEntity<AddProduct>({
     initialValues: {
       name: '',
-      unity: '',
-      purchase_price: '',
       product_image: null,
       bucket_id: null,
       file_name: null

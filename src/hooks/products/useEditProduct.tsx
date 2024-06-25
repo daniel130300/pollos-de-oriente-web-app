@@ -18,17 +18,6 @@ const useEditProduct = ({id}: {id: string}) => {
 
   const productSchema = yup.object().shape({
     name: yup.string().required(productFormsValidations.name.required),
-    unity: yup.string().required(productFormsValidations.unity.required),
-    sale_price: yup
-      .number()
-      .typeError(productFormsValidations.sale_price.typeError)
-      .required(productFormsValidations.sale_price.required)
-      .min(0, productFormsValidations.sale_price.min(0)),
-    purchase_price: yup
-      .number()
-      .typeError(productFormsValidations.purchase_price.typeError)
-      .required(productFormsValidations.purchase_price.required)
-      .min(0, productFormsValidations.purchase_price.min(0)),
     product_image: yup
       .mixed()
       .test('fileType', productFormsValidations.product_image, (value: any) => {
@@ -83,8 +72,6 @@ const useEditProduct = ({id}: {id: string}) => {
   const formik = useFormik<EditProduct>({
     initialValues: {
       name: '',
-      unity: '',
-      purchase_price: '',
       product_image: null,
       bucket_id: null,
       file_name: null

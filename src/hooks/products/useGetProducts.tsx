@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import usePagination from 'src/hooks/common/usePagination';
-import useGetData from 'src/hooks/common/useGetData';
+import useGetData from 'src/hooks/common/useGetEntity';
 import { API_KEYS } from 'src/query/keys/queryConfig';
 import { productSnackbarMessages } from 'src/constants';
 

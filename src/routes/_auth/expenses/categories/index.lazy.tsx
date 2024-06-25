@@ -14,7 +14,7 @@ import { useNavigate } from '@tanstack/react-router';
 // import { useModalStore } from 'src/zustand/useModalStore';
 // import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
 // import Loader from 'src/components/atoms/Loader';
-import { useGetCategoryExpenses } from 'src/hooks/expense-category/useGetCategoryExpenses';
+import useGetExpenseCategories from 'src/hooks/expense-category/useGetExpenseCategories';
 
 export const Route = createLazyFileRoute('/_auth/expenses/categories/')({
   component: ExpensesCategories
@@ -38,20 +38,20 @@ function ExpensesCategories() {
     handleChangeRowsPerPage,
     search,
     setSearch,
-    categoryExpenses,
-    categoryExpensesIsLoading,
-    categoryExpensesCount,
-    categoryExpensesCountIsLoading
-  } = useGetCategoryExpenses();
+    expenseCategories,
+    expenseCategoriesIsLoading,
+    expenseCategoriesCount,
+    expenseCategoriesCountIsLoading
+  } = useGetExpenseCategories();
   // const { handleOpen, handleClose } = useModalStore();
   // const { mutate, isLoading, deleteImageIsLoading, productToDelete, setProductToDelete } = useDeleteProduct();
 
   const handleViewRow = (expense_category: any) => {
-    // navigate({ to: '/expenses/categories/$id', params: { id: expense.id } })
+    navigate({ to: '/expenses/categories/$id', params: { id: expense_category.id } })
   }
 
   const handleEditRow = (expense_category: any) => {
-    // navigate({ to: '/expenses/categories/$id/edit', params: { id: expense.id } })
+    navigate({ to: '/expenses/categories/$id/edit', params: { id: expense_category.id } })
   }
 
   const handleDelete = (expense_category: any) => {
@@ -109,16 +109,16 @@ function ExpensesCategories() {
         </Stack>
       </Box>
       <TableUI
-        data={categoryExpenses || []}
+        data={expenseCategories || []}
         columns={columns}
         emptyText="No se encontraron categorías de gasto"
-        isFetching={categoryExpensesIsLoading}
+        isFetching={expenseCategoriesIsLoading}
         page={page}
         handleChangePage={handleChangePage}
         rowsPerPage={rowsPerPage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
-        recordsCount={categoryExpensesCount}
-        recordsCountLoading={categoryExpensesCountIsLoading}
+        recordsCount={expenseCategoriesCount}
+        recordsCountLoading={expenseCategoriesCountIsLoading}
         handleViewRow={handleViewRow}
         handleEditRow={handleEditRow}
         handleDeleteRow={handleDeleteRow}

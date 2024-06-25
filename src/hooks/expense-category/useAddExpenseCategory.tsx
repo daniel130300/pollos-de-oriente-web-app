@@ -1,5 +1,5 @@
 import { expenseCategoryFormsValidations, expenseCategorySnackbarMessages } from 'src/constants';
-import { EstablishmentTypes, ExpenseCategory, ExpenseCategoryTypes } from './interface';
+import { ExpenseCategory } from './interface';
 import { useAddEntity } from '../common/useAddEntity';
 import * as yup from 'yup';
 import { supabase } from 'src/supabaseClient';
@@ -16,8 +16,8 @@ const useAddExpenseCategory = () => {
   const { formik, isLoading } = useAddEntity<AddExpenseCategory>({
     initialValues: {
       name: '',
-      type: ExpenseCategoryTypes.INVENTORY,
-      available_at: EstablishmentTypes.STORE,
+      type: null,
+      available_at: null,
     },
     validationSchema: expenseCategorySchema,
     mutationFn: async(values: AddExpenseCategory) => {

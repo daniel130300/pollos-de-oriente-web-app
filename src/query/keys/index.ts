@@ -1,4 +1,4 @@
 export * from './productApiKeys';
 export * from './userApiKeys';
 export * from './storeApiKeys';
-export * from './expensesApiKeys';
+export * from './expenseCategoriesApiKeys';

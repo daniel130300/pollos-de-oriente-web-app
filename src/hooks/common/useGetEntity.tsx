@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { supabase } from 'src/supabaseClient';
 import { enqueueSnackbar } from 'notistack';
 
-interface UseGetDataProps {
+interface UseGetEntityProps {
   page: number;
   dataQueryKey: string | readonly string[];
   countQueryKey: string | readonly string[];
@@ -29,9 +29,9 @@ const useGetData = ({
   snackbarMessages,
   dataQueryKey,
   countQueryKey
-} : UseGetDataProps) => {
+} : UseGetEntityProps) => {
 
-  const getData = async () => {
+  const getEntity = async () => {
     const start = page * rowsPerPage;
     const end = start + rowsPerPage - 1;
 
@@ -48,7 +48,7 @@ const useGetData = ({
     return data;
   };
 
-  const getDataCount = async () => {
+  const getEntityCount = async () => {
     let countQuery = supabase.from(entity).select(selectStatement, { count: 'exact', head: true });
 
     if (search) {
@@ -63,7 +63,7 @@ const useGetData = ({
   const { isLoading: dataIsLoading, isError: dataIsError, data } = useQuery(
     {
       queryKey: [dataQueryKey, {page, rowsPerPage, search}],
-      queryFn: () => getData(),
+      queryFn: () => getEntity(),
       placeholderData: keepPreviousData,
       throwOnError: () => {
         enqueueSnackbar(snackbarMessages.errors.list, { variant: 'error' });
@@ -75,7 +75,7 @@ const useGetData = ({
   const { isLoading: dataCountIsLoading, isError: dataCountIsError, data: dataCount } = useQuery(
     {
       queryKey: [countQueryKey, search],
-      queryFn: () => getDataCount(),
+      queryFn: () => getEntityCount(),
       throwOnError: () => {
         enqueueSnackbar(snackbarMessages.errors.count, { variant: 'error' });
         return true;

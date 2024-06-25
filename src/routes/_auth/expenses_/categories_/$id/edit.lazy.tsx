@@ -1,21 +1,23 @@
+import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import Stack from "@mui/material/Stack";
 import InputField from 'src/components/atoms/InputField';
-import Button from 'src/components/atoms/Button';
+import { Button } from 'src/components/atoms/Button';
 import SelectField from 'src/components/atoms/SelectField';
+import Loader from 'src/components/atoms/Loader';
+import useEditProduct from 'src/hooks/products/useEditProduct';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
-import useAddExpenseCategory from 'src/hooks/expense-category/useAddExpenseCategory';
+import useGetExpenseCategory from 'src/hooks/expense-category/useGetExpenseCategory';
 import { EstablishmentTypes, ExpenseCategoryTypes } from 'src/hooks/expense-category/interface';
 
-export const Route = createLazyFileRoute('/_auth/expenses/categories/add-category')({
-  component: AddExpenseCategory
+export const Route = createLazyFileRoute('/_auth/expenses/categories/$id/edit')({
+  component: EditExpenseCategory
 })
 
-function AddExpenseCategory () {
-  const {
-    formik,
-    isLoading
-  } = useAddExpenseCategory();
+function EditExpenseCategory () {
+  const { id } = Route.useParams();
+  const { expenseCategory, expenseCategoryIsLoading, expenseCategoryIsError } = useGetExpenseCategory({id})
+  const { formik, isLoading } = useEditProduct({id})
 
   const typeItems = [
     {label: ExpenseCategoryTypes.INVENTORY, value: ExpenseCategoryTypes.INVENTORY},
@@ -27,8 +29,21 @@ function AddExpenseCategory () {
     {label: EstablishmentTypes.WAREHOUSE, value: EstablishmentTypes.WAREHOUSE}
   ]
 
+
+  useEffect(() => {
+    if (!expenseCategoryIsLoading && !expenseCategoryIsError) {
+      formik.setValues({
+        name: expenseCategory.name,
+        type: expenseCategory.type,
+        available_at: expenseCategory.available_at,
+      })
+    }
+  }, [expenseCategory, expenseCategoryIsError, expenseCategoryIsLoading])
+
+  if (expenseCategoryIsLoading) return <Loader type='cover'/>
+
   return (
-    <DetailsTemplate title='Agregar Categoría de Gasto' returnButtonProps={{to: '/expenses/categories', params: {}}} >
+    <DetailsTemplate title='Editar Categoría de Gasto' returnButtonProps={{to: '/expenses/categories', params: {}}}>
       <>
         <Stack spacing={4} mb={4}>
           <InputField 
@@ -55,10 +70,10 @@ function AddExpenseCategory () {
             formik={formik}
           />
         </Stack>
-        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Agregar Categoría de Gasto</Button>
+        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Editar Producto</Button>
       </>
     </DetailsTemplate>
   );
 };
 
-export default AddExpenseCategory;
+export default EditExpenseCategory;

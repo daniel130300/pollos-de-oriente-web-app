@@ -1,8 +1,8 @@
 export interface ExpenseCategory {
   id: string;
   name: string;
-  type: ExpenseCategoryTypes;
-  available_at: EstablishmentTypes;
+  type: ExpenseCategoryTypes | null;
+  available_at: EstablishmentTypes | null;
 }
 
 export enum ExpenseCategoryTypes {

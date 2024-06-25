@@ -47,6 +47,12 @@ const AuthProductsIdEditLazyImport = createFileRoute(
 const AuthExpensesCategoriesAddCategoryLazyImport = createFileRoute(
   '/_auth/expenses/categories/add-category',
 )()
+const AuthExpensesCategoriesIdLazyImport = createFileRoute(
+  '/_auth/expenses/categories/$id',
+)()
+const AuthExpensesCategoriesIdEditLazyImport = createFileRoute(
+  '/_auth/expenses/categories/$id/edit',
+)()
 
 // Create/Update Routes
 
@@ -172,6 +178,24 @@ const AuthExpensesCategoriesAddCategoryLazyRoute =
     ),
   )
 
+const AuthExpensesCategoriesIdLazyRoute =
+  AuthExpensesCategoriesIdLazyImport.update({
+    path: '/expenses/categories/$id',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/expenses/categories/$id.lazy').then((d) => d.Route),
+  )
+
+const AuthExpensesCategoriesIdEditLazyRoute =
+  AuthExpensesCategoriesIdEditLazyImport.update({
+    path: '/expenses/categories/$id/edit',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/expenses_/categories_/$id/edit.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -228,6 +252,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthStoresIndexLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/expenses/categories/$id': {
+      preLoaderRoute: typeof AuthExpensesCategoriesIdLazyImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/expenses/categories/add-category': {
       preLoaderRoute: typeof AuthExpensesCategoriesAddCategoryLazyImport
       parentRoute: typeof AuthImport
@@ -242,6 +270,10 @@ declare module '@tanstack/react-router' {
     }
     '/_auth/expenses/categories/': {
       preLoaderRoute: typeof AuthExpensesCategoriesIndexLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/expenses/categories/$id/edit': {
+      preLoaderRoute: typeof AuthExpensesCategoriesIdEditLazyImport
       parentRoute: typeof AuthImport
     }
   }
@@ -259,10 +291,12 @@ export const routeTree = rootRoute.addChildren([
     AuthStoresAddStoreLazyRoute,
     AuthProductsIndexLazyRoute,
     AuthStoresIndexLazyRoute,
+    AuthExpensesCategoriesIdLazyRoute,
     AuthExpensesCategoriesAddCategoryLazyRoute,
     AuthProductsIdEditLazyRoute,
     AuthStoresIdEditLazyRoute,
     AuthExpensesCategoriesIndexLazyRoute,
+    AuthExpensesCategoriesIdEditLazyRoute,
   ]),
   NoauthRoute.addChildren([
     NoauthResetPasswordLazyRoute,
