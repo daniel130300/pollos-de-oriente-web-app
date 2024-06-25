@@ -5,10 +5,10 @@ import InputField from 'src/components/atoms/InputField';
 import { Button } from 'src/components/atoms/Button';
 import SelectField from 'src/components/atoms/SelectField';
 import Loader from 'src/components/atoms/Loader';
-import useEditProduct from 'src/hooks/products/useEditProduct';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 import useGetExpenseCategory from 'src/hooks/expense-category/useGetExpenseCategory';
 import { EstablishmentTypes, ExpenseCategoryTypes } from 'src/hooks/expense-category/interface';
+import useEditExpenseCategory from 'src/hooks/expense-category/useEditExpenseCategory';
 
 export const Route = createLazyFileRoute('/_auth/expenses/categories/$id/edit')({
   component: EditExpenseCategory
@@ -17,7 +17,7 @@ export const Route = createLazyFileRoute('/_auth/expenses/categories/$id/edit')(
 function EditExpenseCategory () {
   const { id } = Route.useParams();
   const { expenseCategory, expenseCategoryIsLoading, expenseCategoryIsError } = useGetExpenseCategory({id})
-  const { formik, isLoading } = useEditProduct({id})
+  const { formik, isLoading } = useEditExpenseCategory({id})
 
   const typeItems = [
     {label: ExpenseCategoryTypes.INVENTORY, value: ExpenseCategoryTypes.INVENTORY},

@@ -1,10 +1,11 @@
-import { FormikValues, useFormik } from 'formik';
+import { useFormik, FormikValues } from 'formik';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from '@tanstack/react-router';
 import { useMutation } from '@tanstack/react-query';
 import { ObjectSchema } from 'yup';
 
-const useAddEntity = <T extends FormikValues,>(options: {
+export const useEditEntity = <T extends FormikValues>(options: {
+  id: string;
   initialValues: T;
   validationSchema: ObjectSchema<any>;
   mutationFn: (values: T) => Promise<any>;
@@ -42,6 +43,6 @@ const useAddEntity = <T extends FormikValues,>(options: {
     formik,
     isLoading: isPending
   };
-}
+};
 
-export default useAddEntity
+export default useEditEntity;

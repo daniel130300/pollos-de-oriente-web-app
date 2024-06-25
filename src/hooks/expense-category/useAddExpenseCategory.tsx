@@ -1,6 +1,6 @@
 import { expenseCategoryFormsValidations, expenseCategorySnackbarMessages } from 'src/constants';
 import { ExpenseCategory } from './interface';
-import { useAddEntity } from '../common/useAddEntity';
+import useAddEntity from '../common/useAddEntity';
 import * as yup from 'yup';
 import { supabase } from 'src/supabaseClient';
 
@@ -13,6 +13,15 @@ const useAddExpenseCategory = () => {
     available_at: yup.string().required(expenseCategoryFormsValidations.available_at.required),
   });
 
+  const mutationFn = async (values: AddExpenseCategory) => {
+    const { data } = await supabase
+                          .from('expense_categories')
+                          .insert([values])
+                          .select()
+                          .throwOnError();
+    return data;
+  }
+
   const { formik, isLoading } = useAddEntity<AddExpenseCategory>({
     initialValues: {
       name: '',
@@ -20,17 +29,10 @@ const useAddExpenseCategory = () => {
       available_at: null,
     },
     validationSchema: expenseCategorySchema,
-    mutationFn: async(values: AddExpenseCategory) => {
-      const { data } = await supabase
-                          .from('expense_categories')
-                          .insert([values])
-                          .select()
-                          .throwOnError();
-      return data;
-    },
     onSuccessPath: '/expenses/categories',
     successMessage: expenseCategorySnackbarMessages.success.create,
-    errorMessage: expenseCategorySnackbarMessages.errors.create
+    errorMessage: expenseCategorySnackbarMessages.errors.create,
+    mutationFn,
   });
 
   return {
