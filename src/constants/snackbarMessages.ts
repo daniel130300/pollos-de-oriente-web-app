@@ -50,7 +50,7 @@ export const storeSnackbarMessages = {
   }
 }
 
-export const expensesSnackbarMessages = {
+export const expenseCategorySnackbarMessages = {
   errors: {
     create: 'Error creando la categoría de gasto',
     edit: 'Error editando la categoría de gasto',

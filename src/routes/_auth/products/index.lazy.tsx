@@ -1,24 +1,20 @@
 import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
-import usePagination from 'src/hooks/common/usePagination';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
 import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
 import { formatTimestamp, parseToCurrency } from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
-import { useModalStore } from 'src/zustand/useModalStore';
+import { useModalStore } from 'src/stores/useModalStore';
 import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
 import Loader from 'src/components/atoms/Loader';
-import useGetData from 'src/hooks/common/useGetData';
-import { API_KEYS } from 'src/query/keys/queryConfig';
-import { productSnackbarMessages } from 'src/constants';
+import { useGetProducts } from 'src/hooks/products/useGetProducts';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products
@@ -36,24 +32,20 @@ const columns: ColumnDef<any, any>[] = [
 
 function Products() {
   const navigate = useNavigate();
-  const { 
-    page, 
-    handleChangePage,
-    rowsPerPage, 
-    handleChangeRowsPerPage
-  } = usePagination();
   const { handleOpen, handleClose } = useModalStore();
-  const [search, setSearch] = useState('');
-  const { data, dataIsLoading, dataCount, dataCountIsLoading } = useGetData({
-    page, 
-    rowsPerPage, 
-    search,
-    dataQueryKey: API_KEYS.FETCH_PRODUCTS,
-    countQueryKey: API_KEYS.FETCH_PRODUCTS_COUNT,
-    entity: 'products',
-    snackbarMessages: productSnackbarMessages
-  });
   const { mutate, isLoading, deleteImageIsLoading, productToDelete, setProductToDelete } = useDeleteProduct();
+  const {
+    page,
+    handleChangePage,
+    rowsPerPage,
+    handleChangeRowsPerPage,
+    search,
+    setSearch,
+    products,
+    productsIsLoading,
+    productsCount,
+    productsCountIsLoading
+  } = useGetProducts();
 
   const handleViewRow = (product: any) => {
     navigate({ to: '/products/$id', params: { id: product.id } })
@@ -118,16 +110,16 @@ function Products() {
         </Stack>
       </Box>
       <TableUI
-        data={data || []}
+        data={products || []}
         columns={columns}
         emptyText="No se encontraron productos"
-        isFetching={dataIsLoading}
+        isFetching={productsIsLoading}
         page={page}
         handleChangePage={handleChangePage}
         rowsPerPage={rowsPerPage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
-        recordsCount={dataCount}
-        recordsCountLoading={dataCountIsLoading}
+        recordsCount={productsCount}
+        recordsCountLoading={productsCountIsLoading}
         handleViewRow={handleViewRow}
         handleEditRow={handleEditRow}
         handleDeleteRow={handleDeleteRow}

@@ -1,13 +1,11 @@
 // import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
-import usePagination from 'src/hooks/common/usePagination';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
 import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
@@ -16,9 +14,7 @@ import { useNavigate } from '@tanstack/react-router';
 // import { useModalStore } from 'src/zustand/useModalStore';
 // import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
 // import Loader from 'src/components/atoms/Loader';
-import useGetData from 'src/hooks/common/useGetData';
-import { API_KEYS } from 'src/query/keys/queryConfig';
-import { expensesSnackbarMessages } from 'src/constants/snackbarMessages';
+import { useGetCategoryExpenses } from 'src/hooks/expense-category/useGetCategoryExpenses';
 
 export const Route = createLazyFileRoute('/_auth/expenses/categories/')({
   component: ExpensesCategories
@@ -35,23 +31,19 @@ const columns: ColumnDef<any, any>[] = [
 
 function ExpensesCategories() {
   const navigate = useNavigate();
-  const { 
+  const {
     page,
     handleChangePage,
-    rowsPerPage, 
-    handleChangeRowsPerPage
-  } = usePagination();
-  // const { handleOpen, handleClose } = useModalStore();
-  const [search, setSearch] = useState('');
-  const { data, dataIsLoading, dataCount, dataCountIsLoading } = useGetData({
-    page, 
-    rowsPerPage, 
+    rowsPerPage,
+    handleChangeRowsPerPage,
     search,
-    dataQueryKey: API_KEYS.FETCH_EXPENSES,
-    countQueryKey: API_KEYS.FETCH_EXPENSES_COUNT,
-    entity: 'expense_categories',
-    snackbarMessages: expensesSnackbarMessages
-  });
+    setSearch,
+    categoryExpenses,
+    categoryExpensesIsLoading,
+    categoryExpensesCount,
+    categoryExpensesCountIsLoading
+  } = useGetCategoryExpenses();
+  // const { handleOpen, handleClose } = useModalStore();
   // const { mutate, isLoading, deleteImageIsLoading, productToDelete, setProductToDelete } = useDeleteProduct();
 
   const handleViewRow = (expense_category: any) => {
@@ -71,7 +63,7 @@ function ExpensesCategories() {
   }
 
   // useEffect(() => {
-  //   if(!productToDelete) return;
+  //   if(!expenseCategoryToDelete) return;
 
   //   handleOpen({
   //     title: 'Eliminar Categoría de Gasto', 
@@ -110,23 +102,23 @@ function ExpensesCategories() {
             endIcon={<AddCircleIcon/>} 
             sx={{mx: "auto", mb: 2}} 
             component={Link} 
-            to='/expenses/add-expense-category'
+            to='/expenses/categories/add-category'
           >
             Agregar Categoría de Gasto
           </Button>
         </Stack>
       </Box>
       <TableUI
-        data={data || []}
+        data={categoryExpenses || []}
         columns={columns}
         emptyText="No se encontraron categorías de gasto"
-        isFetching={dataIsLoading}
+        isFetching={categoryExpensesIsLoading}
         page={page}
         handleChangePage={handleChangePage}
         rowsPerPage={rowsPerPage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
-        recordsCount={dataCount}
-        recordsCountLoading={dataCountIsLoading}
+        recordsCount={categoryExpensesCount}
+        recordsCountLoading={categoryExpensesCountIsLoading}
         handleViewRow={handleViewRow}
         handleEditRow={handleEditRow}
         handleDeleteRow={handleDeleteRow}

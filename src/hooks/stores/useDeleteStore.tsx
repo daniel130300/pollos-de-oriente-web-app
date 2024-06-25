@@ -5,7 +5,7 @@ import { storeSnackbarMessages } from "src/constants/snackbarMessages";
 import { useQueryClient } from "@tanstack/react-query";
 import { API_KEYS } from "src/query/keys/queryConfig";
 import { useState } from "react";
-import { useModalStore } from "src/zustand/useModalStore";
+import { useModalStore } from "src/stores/useModalStore";
 import { Store } from './interface';
 
 const useDeleteStore = () => {

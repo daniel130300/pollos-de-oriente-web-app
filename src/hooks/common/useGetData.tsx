@@ -10,6 +10,7 @@ interface UseGetDataProps {
   search?: string;
   searchField?: string;
   entity: string;
+  selectStatement?: string;
   snackbarMessages: {
     errors: {
       list: string;
@@ -19,11 +20,12 @@ interface UseGetDataProps {
 }
 
 const useGetData = ({ 
-  page, 
+  page,
   rowsPerPage,
   search = '', 
   searchField = 'name',
-  entity, 
+  entity,
+  selectStatement = '*',
   snackbarMessages,
   dataQueryKey,
   countQueryKey
@@ -33,7 +35,7 @@ const useGetData = ({
     const start = page * rowsPerPage;
     const end = start + rowsPerPage - 1;
 
-    let query = supabase.from(entity).select('*');
+    let query = supabase.from(entity).select(selectStatement);
 
     if (search) {
       query = query.ilike(searchField, `%${search}%`);
@@ -47,7 +49,7 @@ const useGetData = ({
   };
 
   const getDataCount = async () => {
-    let countQuery = supabase.from(entity).select('*', { count: 'exact', head: true });
+    let countQuery = supabase.from(entity).select(selectStatement, { count: 'exact', head: true });
 
     if (search) {
       countQuery = countQuery.ilike(searchField, `%${search}%`);
