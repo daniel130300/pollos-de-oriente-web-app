@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { productFormsValidations, productSnackbarMessages } from 'src/constants';
 import { generateFilename } from 'src/utils';
@@ -8,8 +8,21 @@ import { Product } from './interface';
 
 type EditProduct = Omit<Product, 'id'>;
 
-const useEditProduct = ({ id }: { id: string }) => {
+const useEditProduct = ({ id, product }: { id: string, product: EditProduct }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+
+  useEffect(() => {
+    if (product) {
+      formik.setValues({
+        name: product.name,
+        product_image: null,
+        bucket_id: product.bucket_id,
+        file_name: product.file_name
+      })
+    }
+  }, [product])
+
 
   const productSchema = yup.object().shape({
     name: yup.string().required(productFormsValidations.name.required),

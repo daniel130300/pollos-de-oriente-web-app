@@ -3,10 +3,21 @@ import { expenseCategorySnackbarMessages, expenseCategoryFormsValidations } from
 import useEditEntity from '../common/useEditEntity';
 import { ExpenseCategory } from './interface';
 import { supabase } from 'src/supabaseClient';
+import { useEffect } from 'react';
 
 type EditExpenseCategory = Omit<ExpenseCategory, 'id'>;
 
-const useEditExpenseCategory = ({id}: {id: string}) => {
+const useEditExpenseCategory = ({id, expenseCategory}: {id: string, expenseCategory: EditExpenseCategory}) => {
+
+  useEffect(() => {
+    if (expenseCategory) {
+      formik.setValues({
+        name: expenseCategory.name,
+        type: expenseCategory.type,
+        available_at: expenseCategory.available_at,
+      });
+    }
+  }, [expenseCategory]);
   
   const expenseCategorySchema = yup.object().shape({
     name: yup.string().required(expenseCategoryFormsValidations.name.required),

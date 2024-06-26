@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import Stack from "@mui/material/Stack";
 import InputField from 'src/components/atoms/InputField';
@@ -17,8 +16,8 @@ export const Route = createLazyFileRoute('/_auth/products/$id/edit')({
 
 function EditProduct () {
   const { id } = Route.useParams();
-  const { product, productIsLoading, productIsError, productIsFetching } = useGetProduct({id})
-  const { formik, isLoading, selectedFile, handleFileSelect } = useEditProduct({id})
+  const { product, productIsLoading, productIsFetching } = useGetProduct({id})
+  const { formik, isLoading, selectedFile, handleFileSelect } = useEditProduct({id, product})
   const { mutate, isLoading: deleteImageIsLoading } = useDeleteFile();
 
   const handleDeleteImage = () => {
@@ -30,17 +29,6 @@ function EditProduct () {
       invalidators: [API_KEYS.FETCH_PRODUCT]
     })
   }
-
-  useEffect(() => {
-    if (!productIsLoading && !productIsError) {
-      formik.setValues({
-        name: product.name,
-        product_image: null,
-        bucket_id: product.bucket_id,
-        file_name: product.file_name
-      })
-    }
-  }, [product, productIsError, productIsLoading])
 
   if (productIsLoading) return <Loader type='cover'/>
 
