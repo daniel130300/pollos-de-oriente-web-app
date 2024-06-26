@@ -29,8 +29,8 @@ const useEditExpenseCategory = ({id}: {id: string}) => {
     id,
     initialValues: {
       name: '',
-      type: null,
-      available_at: null,
+      type: '',
+      available_at: '',
     },
     validationSchema: expenseCategorySchema,
     onSuccessPath: '/expenses/categories',

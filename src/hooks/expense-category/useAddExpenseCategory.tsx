@@ -25,8 +25,8 @@ const useAddExpenseCategory = () => {
   const { formik, isLoading } = useAddEntity<AddExpenseCategory>({
     initialValues: {
       name: '',
-      type: null,
-      available_at: null,
+      type: '',
+      available_at: '',
     },
     validationSchema: expenseCategorySchema,
     onSuccessPath: '/expenses/categories',

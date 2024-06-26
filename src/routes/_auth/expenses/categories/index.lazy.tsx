@@ -1,4 +1,4 @@
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
 import Box from '@mui/material/Box';
@@ -9,12 +9,12 @@ import { Link } from '@tanstack/react-router';
 import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
-import { formatTimestamp } from 'src/utils';
+import { formatTimestamp, translateEstablishment, translateExpenseCategoryType } from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
-// import { useModalStore } from 'src/zustand/useModalStore';
-// import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
-// import Loader from 'src/components/atoms/Loader';
+import Loader from 'src/components/atoms/Loader';
 import useGetExpenseCategories from 'src/hooks/expense-category/useGetExpenseCategories';
+import useDeleteExpenseCategory from 'src/hooks/expense-category/useDeleteExpenseCategory';
+import { useModalStore } from 'src/stores/useModalStore';
 
 export const Route = createLazyFileRoute('/_auth/expenses/categories/')({
   component: ExpensesCategories
@@ -23,8 +23,8 @@ export const Route = createLazyFileRoute('/_auth/expenses/categories/')({
 const columns: ColumnDef<any, any>[] = [
   { accessorKey: "id", header: "Id", cell: (expense_category) => <span>{expense_category.row.original.id}</span> },
   { accessorKey: "name", header: "Nombre", cell: (expense_category) => <span>{expense_category.row.original.name}</span>},
-  { accessorKey: "type", header: "Tipo", cell: (expense_category) => <span>{expense_category.row.original.type}</span>},
-  { accessorKey: "available_at", header: "Disponible en", cell: (expense_category) => <span>{expense_category.row.original.available_at}</span>},
+  { accessorKey: "type", header: "Tipo", cell: (expense_category) => <span>{translateExpenseCategoryType(expense_category.row.original.type)}</span>},
+  { accessorKey: "available_at", header: "Disponible en", cell: (expense_category) => <span>{translateEstablishment(expense_category.row.original.available_at)}</span>},
   { accessorKey: "created_at", header: "Creado", cell: (expense_category) => <span>{formatTimestamp(expense_category.row.original.created_at)}</span> },
   { accessorKey: "updated_at", header: "Actualizado", cell: (expense_category) => <span>{formatTimestamp(expense_category.row.original.updated_at)}</span> }
 ];
@@ -43,8 +43,8 @@ function ExpensesCategories() {
     expenseCategoriesCount,
     expenseCategoriesCountIsLoading
   } = useGetExpenseCategories();
-  // const { handleOpen, handleClose } = useModalStore();
-  // const { mutate, isLoading, deleteImageIsLoading, productToDelete, setProductToDelete } = useDeleteProduct();
+  const { handleOpen, handleClose } = useModalStore();
+  const { mutate, isLoading, expenseCategoryToDelete, setExpenseCategoryToDelete } = useDeleteExpenseCategory();
 
   const handleViewRow = (expense_category: any) => {
     navigate({ to: '/expenses/categories/$id', params: { id: expense_category.id } })
@@ -55,32 +55,32 @@ function ExpensesCategories() {
   }
 
   const handleDelete = (expense_category: any) => {
-    // mutate(product);
+    mutate(expense_category);
   }
 
   const handleDeleteRow = (expense_category: any) => {
-    // setProductToDelete(product);
+    setExpenseCategoryToDelete(expense_category);
   }
 
-  // useEffect(() => {
-  //   if(!expenseCategoryToDelete) return;
+  useEffect(() => {
+    if(!expenseCategoryToDelete) return;
 
-  //   handleOpen({
-  //     title: 'Eliminar Categoría de Gasto', 
-  //     description: `¿Estas seguro que deseas eliminar la siguiente categoría de gasto: ${productToDelete.name}?`,
-  //     buttons: <>
-  //       {(isLoading || deleteImageIsLoading) ? (
-  //         <Loader />
-  //       ) : (
-  //         <Stack direction="row" spacing={1}>
-  //           <Button onClick={() => handleClose()} color="action">Cancelar</Button>
-  //           <Button onClick={() => handleDelete(productToDelete)} color="error">Eliminar</Button>
-  //         </Stack>
-  //       )}
-  //     </>
-  //   });
+    handleOpen({
+      title: 'Eliminar Categoría de Gasto', 
+      description: `¿Estas seguro que deseas eliminar la siguiente categoría de gasto: ${expenseCategoryToDelete.name}?`,
+      buttons: <>
+        {(isLoading) ? (
+          <Loader />
+        ) : (
+          <Stack direction="row" spacing={1}>
+            <Button onClick={() => handleClose()} color="action">Cancelar</Button>
+            <Button onClick={() => handleDelete(expenseCategoryToDelete)} color="error">Eliminar</Button>
+          </Stack>
+        )}
+      </>
+    });
 
-  // }, [isLoading, deleteImageIsLoading, productToDelete]);
+  }, [isLoading, expenseCategoryToDelete]);
 
   return (
     <>

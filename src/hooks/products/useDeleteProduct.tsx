@@ -1,5 +1,4 @@
 import { useSnackbar } from "notistack";
-import useDeleteFile from "../common/useDeleteFile";
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "src/supabaseClient";
 import { productSnackbarMessages } from "src/constants/snackbarMessages";
@@ -8,11 +7,11 @@ import { API_KEYS } from "src/query/keys/queryConfig";
 import { useState } from "react";
 import { useModalStore } from "src/stores/useModalStore";
 import { Product } from './interface';
+import { generateTimestampTZ } from "src/utils";
 
 const useDeleteProduct = () => {
   const [productToDelete, setProductToDelete] = useState<null | any>(null);
   const { enqueueSnackbar } = useSnackbar();
-  const { mutateAsync: mutateDeleteFile, isLoading: deleteImageIsLoading } = useDeleteFile(); 
   const queryClient = useQueryClient();
   const { handleClose } = useModalStore();
   
@@ -22,18 +21,11 @@ const useDeleteProduct = () => {
   } = useMutation(
     {
       mutationFn: async(values: Product) => {
-        if (values.bucket_id && values.file_name) {
-          await mutateDeleteFile({
-            id: values.id,
-            tableName: 'products',
-            bucket_id: values.bucket_id, 
-            file_name: values.file_name
-          })
-        }
-
         const { data } = await supabase
                               .from('products')
-                              .delete()
+                              .update({
+                                deleted_at: generateTimestampTZ()
+                              })
                               .eq('id', values.id)
                               .throwOnError()
         return data;
@@ -55,7 +47,6 @@ const useDeleteProduct = () => {
     setProductToDelete,
     mutate,
     isLoading: isPending,
-    deleteImageIsLoading
   };
 };
 

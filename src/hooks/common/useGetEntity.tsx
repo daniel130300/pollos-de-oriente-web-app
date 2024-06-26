@@ -19,7 +19,7 @@ interface UseGetEntityProps {
   };
 }
 
-const useGetData = ({ 
+const useGetEntity = ({ 
   page,
   rowsPerPage,
   search = '', 
@@ -35,7 +35,7 @@ const useGetData = ({
     const start = page * rowsPerPage;
     const end = start + rowsPerPage - 1;
 
-    let query = supabase.from(entity).select(selectStatement);
+    let query = supabase.from(entity).select(selectStatement).is('deleted_at', null);
 
     if (search) {
       query = query.ilike(searchField, `%${search}%`);
@@ -93,4 +93,4 @@ const useGetData = ({
   };
 };
 
-export default useGetData;
+export default useGetEntity;

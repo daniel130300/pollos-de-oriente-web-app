@@ -11,3 +11,8 @@ export {
   storeFormsValidations,
   expenseCategoryFormsValidations
 } from './formValidations';
+
+export {
+  expenseCategoryTypeItems,
+  establishmentItems
+} from './selectItems';

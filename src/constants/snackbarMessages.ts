@@ -56,7 +56,8 @@ export const expenseCategorySnackbarMessages = {
     edit: 'Error editando la categoría de gasto',
     list: 'Error obteniendo el listado de categorías de gasto',
     count: 'Error obteniendo el conteo de categorías de gasto',
-    detail: 'Error obteniendo el detalle de la categoría de gasto'
+    detail: 'Error obteniendo el detalle de la categoría de gasto',
+    delete: 'Error eliminando la categoría de gasto'
   },
   success: {
     create: 'Categoría de gasto creada exitosamente',

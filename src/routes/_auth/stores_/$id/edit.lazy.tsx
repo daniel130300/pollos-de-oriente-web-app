@@ -47,7 +47,6 @@ function EditStore () {
           />
           <SelectField 
             id="is_main" 
-            labelId="label-is_main"
             name="is_main"
             label="Principal" 
             items={selectItems}

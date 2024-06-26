@@ -7,8 +7,8 @@ import SelectField from 'src/components/atoms/SelectField';
 import Loader from 'src/components/atoms/Loader';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 import useGetExpenseCategory from 'src/hooks/expense-category/useGetExpenseCategory';
-import { EstablishmentTypes, ExpenseCategoryTypes } from 'src/hooks/expense-category/interface';
 import useEditExpenseCategory from 'src/hooks/expense-category/useEditExpenseCategory';
+import { expenseCategoryTypeItems, establishmentItems } from 'src/constants';
 
 export const Route = createLazyFileRoute('/_auth/expenses/categories/$id/edit')({
   component: EditExpenseCategory
@@ -19,17 +19,6 @@ function EditExpenseCategory () {
   const { expenseCategory, expenseCategoryIsLoading, expenseCategoryIsError } = useGetExpenseCategory({id})
   const { formik, isLoading } = useEditExpenseCategory({id})
 
-  const typeItems = [
-    {label: ExpenseCategoryTypes.INVENTORY, value: ExpenseCategoryTypes.INVENTORY},
-    {label: ExpenseCategoryTypes.NON_INVENTORY, value: ExpenseCategoryTypes.NON_INVENTORY}
-  ];
-
-  const availableAtItems = [
-    {label: EstablishmentTypes.STORE, value: EstablishmentTypes.STORE},
-    {label: EstablishmentTypes.WAREHOUSE, value: EstablishmentTypes.WAREHOUSE}
-  ]
-
-
   useEffect(() => {
     if (!expenseCategoryIsLoading && !expenseCategoryIsError) {
       formik.setValues({
@@ -38,7 +27,7 @@ function EditExpenseCategory () {
         available_at: expenseCategory.available_at,
       })
     }
-  }, [expenseCategory, expenseCategoryIsError, expenseCategoryIsLoading])
+  }, [expenseCategory, expenseCategoryIsError, expenseCategoryIsLoading]);
 
   if (expenseCategoryIsLoading) return <Loader type='cover'/>
 
@@ -55,18 +44,16 @@ function EditExpenseCategory () {
           />
           <SelectField 
             id="type" 
-            labelId="label-type"
             name="type"
             label="Tipo" 
-            items={typeItems}
+            items={expenseCategoryTypeItems}
             formik={formik}
           />
           <SelectField 
             id="available_at" 
-            labelId="label-available_at"
             name="available_at"
             label="Disponible en" 
-            items={availableAtItems}
+            items={establishmentItems}
             formik={formik}
           />
         </Stack>

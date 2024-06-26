@@ -5,7 +5,7 @@ import Button from 'src/components/atoms/Button';
 import SelectField from 'src/components/atoms/SelectField';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 import useAddExpenseCategory from 'src/hooks/expense-category/useAddExpenseCategory';
-import { EstablishmentTypes, ExpenseCategoryTypes } from 'src/hooks/expense-category/interface';
+import { expenseCategoryTypeItems, establishmentItems } from 'src/constants';
 
 export const Route = createLazyFileRoute('/_auth/expenses/categories/add-category')({
   component: AddExpenseCategory
@@ -16,16 +16,6 @@ function AddExpenseCategory () {
     formik,
     isLoading
   } = useAddExpenseCategory();
-
-  const typeItems = [
-    {label: ExpenseCategoryTypes.INVENTORY, value: ExpenseCategoryTypes.INVENTORY},
-    {label: ExpenseCategoryTypes.NON_INVENTORY, value: ExpenseCategoryTypes.NON_INVENTORY}
-  ];
-
-  const availableAtItems = [
-    {label: EstablishmentTypes.STORE, value: EstablishmentTypes.STORE},
-    {label: EstablishmentTypes.WAREHOUSE, value: EstablishmentTypes.WAREHOUSE}
-  ]
 
   return (
     <DetailsTemplate title='Agregar Categoría de Gasto' returnButtonProps={{to: '/expenses/categories', params: {}}} >
@@ -40,18 +30,16 @@ function AddExpenseCategory () {
           />
           <SelectField 
             id="type" 
-            labelId="label-type"
             name="type"
             label="Tipo" 
-            items={typeItems}
+            items={expenseCategoryTypeItems}
             formik={formik}
           />
           <SelectField 
             id="available_at" 
-            labelId="label-available_at"
             name="available_at"
             label="Disponible en" 
-            items={availableAtItems}
+            items={establishmentItems}
             formik={formik}
           />
         </Stack>

@@ -33,7 +33,7 @@ const columns: ColumnDef<any, any>[] = [
 function Products() {
   const navigate = useNavigate();
   const { handleOpen, handleClose } = useModalStore();
-  const { mutate, isLoading, deleteImageIsLoading, productToDelete, setProductToDelete } = useDeleteProduct();
+  const { mutate, isLoading, productToDelete, setProductToDelete } = useDeleteProduct();
   const {
     page,
     handleChangePage,
@@ -70,7 +70,7 @@ function Products() {
       title: 'Eliminar Producto', 
       description: `¿Estas seguro que deseas eliminar el siguiente producto: ${productToDelete.name}?`,
       buttons: <>
-        {(isLoading || deleteImageIsLoading) ? (
+        {(isLoading) ? (
           <Loader />
         ) : (
           <Stack direction="row" spacing={1}>
@@ -81,7 +81,7 @@ function Products() {
       </>
     });
 
-  }, [isLoading, deleteImageIsLoading, productToDelete]);
+  }, [isLoading, productToDelete]);
 
   return (
     <>
