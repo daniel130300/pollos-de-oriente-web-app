@@ -15,7 +15,7 @@ import { useNavigate } from '@tanstack/react-router';
 import useGetStores from 'src/hooks/stores/useGetStores';
 import useDeleteStore from 'src/hooks/stores/useDeleteStore';
 import Loader from 'src/components/atoms/Loader';
-import { useModalStore } from 'src/zustand/useModalStore';
+import { useModalStore } from 'src/stores/useModalStore';
 
 export const Route = createLazyFileRoute('/_auth/stores/')({
   component: Stores

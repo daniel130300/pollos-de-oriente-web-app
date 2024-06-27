@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { Modal as MuiModal } from '@mui/material';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
-import { useModalStore } from '../../zustand/useModalStore';
+import { useModalStore } from '../../stores/useModalStore';
 import CloseIcon from '@mui/icons-material/Close';
 
 const style = {

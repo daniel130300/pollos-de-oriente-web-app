@@ -13,7 +13,7 @@ const useAddProductToStoreInventory = ({
   setProducts: Dispatch<React.SetStateAction<Product[]>>
 }) => {
   const [search, setSearch] = useState('');
-  const { products: autoCompleteProducts, productsIsLoading: autoCompleteProductsLoading } = useGetProducts({page: 0, rowsPerPage: 10, search});
+  const { products: autoCompleteProducts, productsIsLoading: autoCompleteProductsLoading } = useGetProducts();
 
   const productSchema = yup.object().shape({
     id: yup.string().required(),

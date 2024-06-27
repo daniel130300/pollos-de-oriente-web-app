@@ -41,7 +41,6 @@ function AddProduct () {
           />
           <SelectField 
             id="unity" 
-            labelId="label-unity"
             name="unity"
             label="Unidad" 
             items={selectItems} 

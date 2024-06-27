@@ -47,7 +47,6 @@ const AddStore = () => {
               <InputField id="name" name="name" label="Nombre" type="text" formik={formik} />
               <SelectField
                 id="is_main"
-                labelId="label-is_main"
                 name="is_main"
                 label="Principal"
                 items={selectItems}
