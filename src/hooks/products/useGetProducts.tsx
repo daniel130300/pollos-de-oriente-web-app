@@ -4,7 +4,7 @@ import useGetData from 'src/hooks/common/useGetEntity';
 import { API_KEYS } from 'src/query/keys/queryConfig';
 import { productSnackbarMessages } from 'src/constants';
 
-export const useGetProducts = () => {
+const useGetProducts = () => {
   const { 
     page,
     handleChangePage,
@@ -42,3 +42,5 @@ export const useGetProducts = () => {
     productsCountIsLoading
   };
 };
+
+export default useGetProducts;
