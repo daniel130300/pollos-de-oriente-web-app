@@ -52,3 +52,15 @@ export const storeFormsValidations = {
     required: 'Es necesario especificar si la tienda es la principal o no',
   },
 };
+
+export const expenseCategoryFormsValidations = {
+  name: {
+    required: 'El nombre es un campo requerido',
+  },
+  type: {
+    required: 'El tipo es un campo requerido',
+  },
+  available_at: {
+    required: 'El campo disponible en es un campo requerido',
+  },
+};

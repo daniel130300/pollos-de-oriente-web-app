@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import Stack from '@mui/material/Stack';
 import InputField from 'src/components/atoms/InputField';
 import { Button } from 'src/components/atoms/Button';
-import SelectField from 'src/components/atoms/SelectField';
 import useGetProduct from 'src/hooks/products/useGetProduct';
 import Loader from 'src/components/atoms/Loader';
 import useEditProduct from 'src/hooks/products/useEditProduct';
@@ -16,17 +14,14 @@ export const Route = createLazyFileRoute('/_auth/products/$id/edit')({
   component: EditProduct,
 });
 
-const selectItems = [
-  { label: 'Unidad', value: 'unidad' },
-  { label: 'Libra', value: 'libra' },
-];
-
 function EditProduct() {
   const { id } = Route.useParams();
-  const { product, productIsLoading, productIsError, productIsFetching } =
-    useGetProduct({ id });
+  const { product, productIsLoading, productIsFetching } = useGetProduct({
+    id,
+  });
   const { formik, isLoading, selectedFile, handleFileSelect } = useEditProduct({
     id,
+    product,
   });
   const { mutate, isLoading: deleteImageIsLoading } = useDeleteFile();
 
@@ -39,18 +34,6 @@ function EditProduct() {
       invalidators: [API_KEYS.FETCH_PRODUCT],
     });
   };
-
-  useEffect(() => {
-    if (!productIsLoading && !productIsError) {
-      formik.setValues({
-        name: product.name,
-        unity: product.unity,
-        product_image: null,
-        bucket_id: product.bucket_id,
-        file_name: product.file_name,
-      });
-    }
-  }, [product, productIsError, productIsLoading]);
 
   if (productIsLoading) return <Loader type="cover" />;
 
@@ -73,14 +56,6 @@ function EditProduct() {
             name="name"
             label="Nombre"
             type="text"
-            formik={formik}
-          />
-          <SelectField
-            id="unity"
-            labelId="label-unity"
-            name="unity"
-            label="Unidad"
-            items={selectItems}
             formik={formik}
           />
         </Stack>

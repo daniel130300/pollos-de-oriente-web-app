@@ -23,7 +23,6 @@ interface SelectFieldProps extends SelectProps {
 export const SelectField: React.FC<SelectFieldProps> = ({
   id,
   name,
-  labelId,
   value,
   onChange,
   label,
@@ -47,13 +46,16 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     <FormControl variant="standard" sx={{ minWidth: 120 }} error={inputError}>
       <InputLabel id={`${id}-label`}>{label}</InputLabel>
       <Select
-        labelId={labelId}
+        labelId={`${id}-label`}
         id={id}
         name={name}
         value={displayValue}
         onChange={handleChange}
         label={label}
         {...rest}
+        size="small"
+        fullWidth
+        variant="standard"
       >
         {noneOption && (
           <MenuItem value="">

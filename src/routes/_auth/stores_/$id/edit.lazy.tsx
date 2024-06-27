@@ -8,9 +8,6 @@ import Loader from 'src/components/atoms/Loader';
 import useEditStore from 'src/hooks/stores/useEditStore';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 import useGetStore from 'src/hooks/stores/useGetStore';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
 
 export const Route = createLazyFileRoute('/_auth/stores/$id/edit')({
   component: EditStore,
@@ -45,30 +42,22 @@ function EditStore() {
       returnButtonProps={{ to: '/stores', params: {} }}
     >
       <>
-        <Card sx={{ px: 4, pb: 4 }}>
-          <CardContent>
-            <Typography variant="h2" gutterBottom>
-              Informacion General
-            </Typography>
-            <Stack spacing={4} mb={4}>
-              <InputField
-                id="name"
-                name="name"
-                label="Nombre"
-                type="text"
-                formik={formik}
-              />
-              <SelectField
-                id="is_main"
-                labelId="label-is_main"
-                name="is_main"
-                label="Principal"
-                items={selectItems}
-                formik={formik}
-              />
-            </Stack>
-          </CardContent>
-        </Card>
+        <Stack spacing={4} mb={4}>
+          <InputField
+            id="name"
+            name="name"
+            label="Nombre"
+            type="text"
+            formik={formik}
+          />
+          <SelectField
+            id="is_main"
+            name="is_main"
+            label="Principal"
+            items={selectItems}
+            formik={formik}
+          />
+        </Stack>
         <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>
           Editar Tienda
         </Button>

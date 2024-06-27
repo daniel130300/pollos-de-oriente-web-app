@@ -1,47 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from 'src/supabaseClient';
-import { enqueueSnackbar } from 'notistack';
-import { productSnackbarMessages } from 'src/constants';
 import { API_KEYS } from 'src/query/keys/queryConfig';
+import { productSnackbarMessages } from 'src/constants';
+import useGetSingleEntity from 'src/hooks/common/useGetSingleEntity';
+import { supabase } from 'src/supabaseClient';
 
-interface UseGetProductProps {
-  id: string;
-}
-
-const useGetProduct = ({ id }: UseGetProductProps) => {
-  const getProduct = async ({ id }: { id: string }) => {
-    const { data } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', id)
-      .single()
-      .throwOnError();
-
+const useGetProduct = ({ id }: { id: string }) => {
+  const processData = (data: any) => {
     if (data.bucket_id && data.file_name) {
       const { data: image } = supabase.storage
         .from(data.bucket_id)
         .getPublicUrl(data.file_name);
-
       data.imagePublicUrl = image?.publicUrl;
     }
-
     return data;
   };
 
   const {
     isLoading: productIsLoading,
     isFetching: productIsFetching,
-    data: product,
     isError: productIsError,
-  } = useQuery({
-    queryKey: [API_KEYS.FETCH_PRODUCT, { id }],
-    queryFn: () => getProduct({ id }),
-    throwOnError: () => {
-      enqueueSnackbar(productSnackbarMessages.errors.detail, {
-        variant: 'error',
-      });
-      return true;
-    },
+    data: product,
+  } = useGetSingleEntity({
+    id,
+    entity: 'products',
+    queryKey: API_KEYS.FETCH_PRODUCT,
+    snackbarMessages: productSnackbarMessages,
+    processData,
   });
 
   return {

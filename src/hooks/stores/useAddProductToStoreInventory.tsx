@@ -16,7 +16,7 @@ const useAddProductToStoreInventory = ({
   const {
     products: autoCompleteProducts,
     productsIsLoading: autoCompleteProductsLoading,
-  } = useGetProducts({ page: 0, rowsPerPage: 10, search });
+  } = useGetProducts();
 
   const productSchema = yup.object().shape({
     id: yup.string().required(),

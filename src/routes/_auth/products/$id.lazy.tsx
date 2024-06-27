@@ -3,7 +3,7 @@ import useGetProduct from 'src/hooks/products/useGetProduct';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Loader from 'src/components/atoms/Loader';
-import { formatTimestamp, parseToCurrency } from 'src/utils';
+import { formatTimestamp } from 'src/utils';
 import Card from '@mui/material/Card';
 import { DynamicImage } from 'src/components/atoms/DynamicImage';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
@@ -30,12 +30,6 @@ function ProductComponent() {
           )}
           <Typography variant="body1">Id: {product.id}</Typography>
           <Typography variant="body1">Nombre: {product.name}</Typography>
-          <Typography variant="body1">
-            Precio de Venta: {parseToCurrency(product.sale_price)}
-          </Typography>
-          <Typography variant="body1">
-            Precio de Compra: {parseToCurrency(product.purchase_price)}
-          </Typography>
           <Typography variant="body1">
             Creado: {formatTimestamp(product.created_at)}
           </Typography>

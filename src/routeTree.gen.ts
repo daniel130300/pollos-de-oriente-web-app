@@ -36,9 +36,21 @@ const AuthProductsAddProductLazyImport = createFileRoute(
   '/_auth/products/add-product',
 )()
 const AuthProductsIdLazyImport = createFileRoute('/_auth/products/$id')()
+const AuthExpensesCategoriesIndexLazyImport = createFileRoute(
+  '/_auth/expenses/categories/',
+)()
 const AuthStoresIdEditLazyImport = createFileRoute('/_auth/stores/$id/edit')()
 const AuthProductsIdEditLazyImport = createFileRoute(
   '/_auth/products/$id/edit',
+)()
+const AuthExpensesCategoriesAddCategoryLazyImport = createFileRoute(
+  '/_auth/expenses/categories/add-category',
+)()
+const AuthExpensesCategoriesIdLazyImport = createFileRoute(
+  '/_auth/expenses/categories/$id',
+)()
+const AuthExpensesCategoriesIdEditLazyImport = createFileRoute(
+  '/_auth/expenses/categories/$id/edit',
 )()
 
 // Create/Update Routes
@@ -124,6 +136,16 @@ const AuthProductsIdLazyRoute = AuthProductsIdLazyImport.update({
   import('./routes/_auth/products/$id.lazy').then((d) => d.Route),
 )
 
+const AuthExpensesCategoriesIndexLazyRoute =
+  AuthExpensesCategoriesIndexLazyImport.update({
+    path: '/expenses/categories/',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/expenses/categories/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthStoresIdEditLazyRoute = AuthStoresIdEditLazyImport.update({
   path: '/stores/$id/edit',
   getParentRoute: () => AuthRoute,
@@ -137,6 +159,34 @@ const AuthProductsIdEditLazyRoute = AuthProductsIdEditLazyImport.update({
 } as any).lazy(() =>
   import('./routes/_auth/products_/$id/edit.lazy').then((d) => d.Route),
 )
+
+const AuthExpensesCategoriesAddCategoryLazyRoute =
+  AuthExpensesCategoriesAddCategoryLazyImport.update({
+    path: '/expenses/categories/add-category',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/expenses/categories/add-category.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthExpensesCategoriesIdLazyRoute =
+  AuthExpensesCategoriesIdLazyImport.update({
+    path: '/expenses/categories/$id',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/expenses/categories/$id.lazy').then((d) => d.Route),
+  )
+
+const AuthExpensesCategoriesIdEditLazyRoute =
+  AuthExpensesCategoriesIdEditLazyImport.update({
+    path: '/expenses/categories/$id/edit',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/expenses_/categories_/$id/edit.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -190,12 +240,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthStoresIndexLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/expenses/categories/$id': {
+      preLoaderRoute: typeof AuthExpensesCategoriesIdLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/expenses/categories/add-category': {
+      preLoaderRoute: typeof AuthExpensesCategoriesAddCategoryLazyImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/products/$id/edit': {
       preLoaderRoute: typeof AuthProductsIdEditLazyImport
       parentRoute: typeof AuthImport
     }
     '/_auth/stores/$id/edit': {
       preLoaderRoute: typeof AuthStoresIdEditLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/expenses/categories/': {
+      preLoaderRoute: typeof AuthExpensesCategoriesIndexLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/expenses/categories/$id/edit': {
+      preLoaderRoute: typeof AuthExpensesCategoriesIdEditLazyImport
       parentRoute: typeof AuthImport
     }
   }
@@ -213,8 +279,12 @@ export const routeTree = rootRoute.addChildren([
     AuthStoresAddStoreLazyRoute,
     AuthProductsIndexLazyRoute,
     AuthStoresIndexLazyRoute,
+    AuthExpensesCategoriesIdLazyRoute,
+    AuthExpensesCategoriesAddCategoryLazyRoute,
     AuthProductsIdEditLazyRoute,
     AuthStoresIdEditLazyRoute,
+    AuthExpensesCategoriesIndexLazyRoute,
+    AuthExpensesCategoriesIdEditLazyRoute,
   ]),
   NoauthRoute.addChildren([
     NoauthResetPasswordLazyRoute,
