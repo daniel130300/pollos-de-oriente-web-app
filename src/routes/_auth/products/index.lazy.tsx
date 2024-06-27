@@ -11,7 +11,7 @@ import TableUI from 'src/components/atoms/TableUI';
 import { formatTimestamp, parseToCurrency } from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
 import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
-import { useGetProducts } from 'src/hooks/products/useGetProducts';
+import useGetProducts from 'src/hooks/products/useGetProducts';
 import { Product } from 'src/hooks/products/interface';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
