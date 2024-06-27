@@ -1,21 +1,23 @@
-import {ListItem as MuiListItem, SvgIconTypeMap} from "@mui/material";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import { Link } from "@tanstack/react-router";
-import React from "react";
+import { ListItem as MuiListItem, SvgIconTypeMap } from '@mui/material';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import { Link } from '@tanstack/react-router';
+import React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { OverridableComponent } from "@mui/material/OverridableComponent";
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 interface RouteItem {
   title: string;
   href: string;
-  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
-    muiName: string;
-  } | null;
+  icon:
+    | (OverridableComponent<SvgIconTypeMap<{}, 'svg'>> & {
+        muiName: string;
+      })
+    | null;
   subMenu: Pick<RouteItem, 'title' | 'href' | 'icon'>[] | [];
 }
 
@@ -23,7 +25,7 @@ interface ListItemProps {
   route: RouteItem;
 }
 
-export const ListItem: React.FC<ListItemProps> = ({route}) => {
+export const ListItem: React.FC<ListItemProps> = ({ route }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -33,19 +35,19 @@ export const ListItem: React.FC<ListItemProps> = ({route}) => {
 
   return (
     <>
-      <MuiListItem 
-        key={route.title} 
-        {...(route.subMenu.length === 0 ? 
-          { 
-            component: Link, 
-            to: route.href,
-            activeProps: { style: { color: theme.palette.primary.main } },
-            inactiveProps: { style: { color: theme. palette.text.primary } },
-          } : 
-          {
-            component: MuiListItem,
-            componentsProps: {root: {style: { padding: 0 }}}
-          })}
+      <MuiListItem
+        key={route.title}
+        {...(route.subMenu.length === 0
+          ? {
+              component: Link,
+              to: route.href,
+              activeProps: { style: { color: theme.palette.primary.main } },
+              inactiveProps: { style: { color: theme.palette.text.primary } },
+            }
+          : {
+              component: MuiListItem,
+              componentsProps: { root: { style: { padding: 0 } } },
+            })}
         disablePadding
         onClick={handleClick}
       >
@@ -58,18 +60,17 @@ export const ListItem: React.FC<ListItemProps> = ({route}) => {
             disableTypography
             sx={{ textDecoration: 'none' }}
           />
-          {route.subMenu.length > 0 && (
-            open ? <ExpandLessIcon /> : <ExpandMoreIcon />
-          )}
+          {route.subMenu.length > 0 &&
+            (open ? <ExpandLessIcon /> : <ExpandMoreIcon />)}
         </ListItemButton>
       </MuiListItem>
       {open && route.subMenu.length > 0 && (
         <>
           {route.subMenu.map((subItem, index) => (
-            <MuiListItem 
+            <MuiListItem
               key={subItem.title + index}
               disablePadding
-              component={Link} 
+              component={Link}
               to={`${route.href}/${subItem.href}`}
               activeProps={{ style: { color: theme.palette.primary.main } }}
               inactiveProps={{ style: { color: theme.palette.text.primary } }}
@@ -89,7 +90,7 @@ export const ListItem: React.FC<ListItemProps> = ({route}) => {
         </>
       )}
     </>
-  )
-}
+  );
+};
 
 export default ListItem;

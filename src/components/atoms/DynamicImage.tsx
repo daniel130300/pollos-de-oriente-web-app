@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import Box, {BoxProps} from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
+import React, { useState } from 'react';
+import Box, { BoxProps } from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 
-interface DynamicImageProps extends BoxProps<any>{
+interface DynamicImageProps extends BoxProps<any> {
   loading?: boolean;
 }
 
@@ -23,14 +23,14 @@ export const DynamicImage: React.FC<DynamicImageProps> = ({
   return (
     <Box
       sx={{
-        position: "relative",
-        height: "100%"
+        position: 'relative',
+        height: '100%',
       }}
     >
       {(imageLoading || loading) && (
         <Skeleton
           variant="rectangular"
-          sx={{height: {xs: 100, sm: 200, md: 300}}}
+          sx={{ height: { xs: 100, sm: 200, md: 300 } }}
           animation="wave"
         />
       )}
@@ -39,10 +39,10 @@ export const DynamicImage: React.FC<DynamicImageProps> = ({
         src={src}
         alt={alt}
         sx={{
-          objectFit: "cover",
-          display: (imageLoading || loading) ? "none" : "block",
-          margin: "auto",
-          height: {xs: 100, sm: 200, md: 300}
+          objectFit: 'cover',
+          display: imageLoading || loading ? 'none' : 'block',
+          margin: 'auto',
+          height: { xs: 100, sm: 200, md: 300 },
         }}
         onLoad={handleImageLoad}
         {...rest}

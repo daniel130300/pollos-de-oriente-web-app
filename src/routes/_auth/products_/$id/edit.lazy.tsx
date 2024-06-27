@@ -1,5 +1,5 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
-import Stack from "@mui/material/Stack";
+import { createLazyFileRoute } from '@tanstack/react-router';
+import Stack from '@mui/material/Stack';
 import InputField from 'src/components/atoms/InputField';
 import { Button } from 'src/components/atoms/Button';
 import useGetProduct from 'src/hooks/products/useGetProduct';
@@ -11,39 +11,47 @@ import { API_KEYS } from 'src/query/keys/queryConfig';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 
 export const Route = createLazyFileRoute('/_auth/products/$id/edit')({
-  component: EditProduct
-})
+  component: EditProduct,
+});
 
-function EditProduct () {
+function EditProduct() {
   const { id } = Route.useParams();
-  const { product, productIsLoading, productIsFetching } = useGetProduct({id})
-  const { formik, isLoading, selectedFile, handleFileSelect } = useEditProduct({id, product})
+  const { product, productIsLoading, productIsFetching } = useGetProduct({
+    id,
+  });
+  const { formik, isLoading, selectedFile, handleFileSelect } = useEditProduct({
+    id,
+    product,
+  });
   const { mutate, isLoading: deleteImageIsLoading } = useDeleteFile();
 
   const handleDeleteImage = () => {
     mutate({
-      id: product.id, 
-      tableName: 'products', 
-      bucket_id: product.bucket_id, 
+      id: product.id,
+      tableName: 'products',
+      bucket_id: product.bucket_id,
       file_name: product.file_name,
-      invalidators: [API_KEYS.FETCH_PRODUCT]
-    })
-  }
+      invalidators: [API_KEYS.FETCH_PRODUCT],
+    });
+  };
 
-  if (productIsLoading) return <Loader type='cover'/>
+  if (productIsLoading) return <Loader type="cover" />;
 
   return (
-    <DetailsTemplate title='Editar Producto' returnButtonProps={{to: '/products', params: {}}}>
+    <DetailsTemplate
+      title="Editar Producto"
+      returnButtonProps={{ to: '/products', params: {} }}
+    >
       <>
         <Stack spacing={4} mb={4}>
           <ImageUploadCard
-            file={selectedFile} 
+            file={selectedFile}
             setSelectedFile={handleFileSelect}
             src={product.imagePublicUrl}
             handleDelete={handleDeleteImage}
             loading={deleteImageIsLoading || productIsFetching}
           />
-          <InputField 
+          <InputField
             id="name"
             name="name"
             label="Nombre"
@@ -51,10 +59,12 @@ function EditProduct () {
             formik={formik}
           />
         </Stack>
-        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>Editar Producto</Button>
+        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>
+          Editar Producto
+        </Button>
       </>
     </DetailsTemplate>
   );
-};
+}
 
 export default EditProduct;

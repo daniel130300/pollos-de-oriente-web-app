@@ -1,8 +1,8 @@
-import { ChangeEvent } from "react";
-import Card from "@mui/material/Card";
-import InputFileUpload from "src/components/atoms/InputFileUpload";
-import DynamicImage from "src/components/atoms/DynamicImage";
-import { Button, Stack } from "@mui/material";
+import { ChangeEvent } from 'react';
+import Card from '@mui/material/Card';
+import InputFileUpload from 'src/components/atoms/InputFileUpload';
+import DynamicImage from 'src/components/atoms/DynamicImage';
+import { Button, Stack } from '@mui/material';
 
 interface ImageUploadCardProps {
   file: File | null;
@@ -23,9 +23,8 @@ const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
   uploadText = 'Subir Imagen',
   deleteText = 'Eliminar Imagen',
   handleDelete,
-  loading = false
+  loading = false,
 }) => {
-
   const handleUploadClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -52,18 +51,18 @@ const ImageUploadCard: React.FC<ImageUploadCardProps> = ({
   };
 
   return (
-    <Card sx={{p: 4}}>
+    <Card sx={{ p: 4 }}>
       <DynamicImage
         src={file ? URL.createObjectURL(file) : src || defaultSrc}
         alt="Uploaded"
         loading={loading}
       />
-      <Stack spacing={2} direction={"row"} mt={4} justifyContent={"center"}>
-        <InputFileUpload onChange={handleUploadClick} label={uploadText}/>
+      <Stack spacing={2} direction={'row'} mt={4} justifyContent={'center'}>
+        <InputFileUpload onChange={handleUploadClick} label={uploadText} />
         {(file || src) && (
           <Button onClick={handleDeleteClick} color="error" variant="contained">
             {deleteText}
-         </Button>
+          </Button>
         )}
       </Stack>
     </Card>

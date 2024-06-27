@@ -45,11 +45,11 @@ export const sideBarRoutes = [
 
 export const profileTopBarRoutes = ({
   handleCloseUserMenu,
-  handleLogOut
-} : {
-  handleCloseUserMenu: () => void
-  handleLogOut: () => Promise<void>
+  handleLogOut,
+}: {
+  handleCloseUserMenu: () => void;
+  handleLogOut: () => Promise<void>;
 }) => [
   { title: 'Perfil', onClick: handleCloseUserMenu },
-  { title: 'Cerrar Sesión', onClick: handleLogOut }
+  { title: 'Cerrar Sesión', onClick: handleLogOut },
 ];

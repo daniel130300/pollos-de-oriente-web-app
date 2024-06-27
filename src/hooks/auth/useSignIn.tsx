@@ -14,13 +14,10 @@ interface SignInValues {
 const useSignIn = () => {
   const navigate = useNavigate();
 
-  const {
-    isPending, 
-    mutate
-  } = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: async (values: SignInValues) => {
       const { data, error } = await supabase.auth.signInWithPassword(values);
-      
+
       if (error) {
         throw error;
       }
@@ -28,7 +25,7 @@ const useSignIn = () => {
       return data;
     },
     onSuccess: () => {
-      navigate({to: '/products'});
+      navigate({ to: '/products' });
     },
     onError: () => {
       enqueueSnackbar(authSnackbarMessages.errors.login, { variant: 'error' });
@@ -36,7 +33,10 @@ const useSignIn = () => {
   });
 
   const signInSchema = yup.object().shape({
-    email: yup.string().email(authFormsValidations.email.valid).required(authFormsValidations.email.required)
+    email: yup
+      .string()
+      .email(authFormsValidations.email.valid)
+      .required(authFormsValidations.email.required),
   });
 
   const formik = useFormik<SignInValues>({
@@ -45,10 +45,10 @@ const useSignIn = () => {
       password: '',
     },
     validationSchema: signInSchema,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       mutate(values);
     },
-    enableReinitialize: true
+    enableReinitialize: true,
   });
 
   return { formik, isLoading: isPending };

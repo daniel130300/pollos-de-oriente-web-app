@@ -1,4 +1,7 @@
-import { EstablishmentTypes, ExpenseCategoryTypes } from "src/hooks/expense-category/interface";
+import {
+  EstablishmentTypes,
+  ExpenseCategoryTypes,
+} from 'src/hooks/expense-category/interface';
 
 export function translateExpenseCategoryType(category: ExpenseCategoryTypes) {
   switch (category) {

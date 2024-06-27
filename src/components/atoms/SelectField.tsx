@@ -15,9 +15,9 @@ interface SelectFieldProps extends SelectProps {
   id: string;
   name: string;
   noneOption?: boolean;
-  items: SelectItem[]
+  items: SelectItem[];
   helperText?: string | false | undefined;
-  formik?: FormikProps<any>
+  formik?: FormikProps<any>;
 }
 
 export const SelectField: React.FC<SelectFieldProps> = ({
@@ -33,10 +33,12 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   formik,
   ...rest
 }) => {
-
   const formikError = formik?.errors?.[id];
-  const inputError = formik ? (formik.touched?.[id] && Boolean(formikError)) : error;
-  const inputHelperText = formikError !== undefined ? String(formikError) : helperText;
+  const inputError = formik
+    ? formik.touched?.[id] && Boolean(formikError)
+    : error;
+  const inputHelperText =
+    formikError !== undefined ? String(formikError) : helperText;
   const handleChange = formik ? formik.handleChange : onChange;
   const displayValue = formik ? formik.values?.[id] : value;
 
@@ -51,22 +53,24 @@ export const SelectField: React.FC<SelectFieldProps> = ({
         onChange={handleChange}
         label={label}
         {...rest}
-        size='small'
+        size="small"
         fullWidth
-        variant='standard'
+        variant="standard"
       >
         {noneOption && (
           <MenuItem value="">
             <em>Ninguno</em>
           </MenuItem>
         )}
-        {items.map((selectItem) => (
-          <MenuItem key={selectItem.label} value={selectItem.value}>{selectItem.label}</MenuItem>
+        {items.map(selectItem => (
+          <MenuItem key={selectItem.label} value={selectItem.value}>
+            {selectItem.label}
+          </MenuItem>
         ))}
       </Select>
       {inputHelperText && <FormHelperText>{inputHelperText}</FormHelperText>}
     </FormControl>
   );
-}
+};
 
 export default SelectField;

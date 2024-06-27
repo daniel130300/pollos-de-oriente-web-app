@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useSnackbar } from "notistack";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "src/supabaseClient";
-import { useModalStore } from "src/stores/useModalStore";
-import { generateTimestampTZ } from "src/utils";
-import { deleteModal } from "src/constants";
+import { useSnackbar } from 'notistack';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from 'src/supabaseClient';
+import { useModalStore } from 'src/stores/useModalStore';
+import { generateTimestampTZ } from 'src/utils';
+import { deleteModal } from 'src/constants';
 
 type DeleteEntityOptions = {
   entityName: string;
@@ -14,12 +14,12 @@ type DeleteEntityOptions = {
   entityDisplayName: string;
 };
 
-const useDeleteEntity = <T extends { id: string, name: string }>({
+const useDeleteEntity = <T extends { id: string; name: string }>({
   entityName,
   queryKey,
   successMessage,
   errorMessage,
-  entityDisplayName
+  entityDisplayName,
 }: DeleteEntityOptions) => {
   const [entityToDelete, setEntityToDelete] = useState<T | null>(null);
   const { enqueueSnackbar } = useSnackbar();
@@ -43,19 +43,21 @@ const useDeleteEntity = <T extends { id: string, name: string }>({
     },
     onError: () => {
       enqueueSnackbar(errorMessage, { variant: 'error' });
-    }
+    },
   });
 
   useEffect(() => {
     if (!entityToDelete) return;
 
-    handleOpen(deleteModal({
-      entity: entityDisplayName,
-      name: entityToDelete.name,
-      handleClose: () => handleClose(),
-      handleDelete: () => mutate(entityToDelete),
-      isLoading: isPending
-    }));
+    handleOpen(
+      deleteModal({
+        entity: entityDisplayName,
+        name: entityToDelete.name,
+        handleClose: () => handleClose(),
+        handleDelete: () => mutate(entityToDelete),
+        isLoading: isPending,
+      }),
+    );
   }, [entityToDelete, isPending]);
 
   return {

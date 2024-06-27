@@ -12,31 +12,27 @@ import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 import useAddStore from 'src/hooks/stores/useAddStore';
 import AddProductItem from 'src/components/organisms/AddProductItem';
 import EditProductItem from 'src/components/organisms/EditProductItem';
-
-export interface Product {
-  id: string;
-  name: string;
-  quantity: string;
-  sale_price: string;
-  editable: boolean;
-}
+import { EditableProduct } from 'src/hooks/products/interface';
 
 const selectItems = [
   { label: 'Si', value: 'true' },
-  { label: 'No', value: 'false' }
+  { label: 'No', value: 'false' },
 ];
 
 const AddStore = () => {
   const { formik, isLoading } = useAddStore();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<EditableProduct[]>([]);
 
   const handleSubmit = () => {
     formik.setFieldValue('products', products);
     formik.handleSubmit();
   };
-  
+
   return (
-    <DetailsTemplate title="Agregar Tienda" returnButtonProps={{ to: '/stores', params: {} }}>
+    <DetailsTemplate
+      title="Agregar Tienda"
+      returnButtonProps={{ to: '/stores', params: {} }}
+    >
       <Stack spacing={4} mb={4}>
         <Card sx={{ px: 4, pb: 4 }}>
           <CardContent>
@@ -44,7 +40,13 @@ const AddStore = () => {
               Informacion General
             </Typography>
             <Stack spacing={4}>
-              <InputField id="name" name="name" label="Nombre" type="text" formik={formik} />
+              <InputField
+                id="name"
+                name="name"
+                label="Nombre"
+                type="text"
+                formik={formik}
+              />
               <SelectField
                 id="is_main"
                 name="is_main"
@@ -56,13 +58,21 @@ const AddStore = () => {
           </CardContent>
         </Card>
 
-        <Card sx={{ px: 4, pb: 4, zIndex: 1, position: 'relative', overflow: 'visible' }}>
+        <Card
+          sx={{
+            px: 4,
+            pb: 4,
+            zIndex: 1,
+            position: 'relative',
+            overflow: 'visible',
+          }}
+        >
           <CardContent>
             <Typography variant="h2">Productos</Typography>
             <Stack spacing={4}>
               <List>
                 {products.map((product, index) => (
-                  <EditProductItem 
+                  <EditProductItem
                     key={product.id}
                     index={index}
                     product={product}
@@ -72,7 +82,7 @@ const AddStore = () => {
                 ))}
               </List>
               <Stack direction="row" spacing={2}>
-                <AddProductItem 
+                <AddProductItem
                   productsList={products}
                   setProducts={setProducts}
                 />
@@ -86,10 +96,10 @@ const AddStore = () => {
       </Button>
     </DetailsTemplate>
   );
-}
+};
 
 export const Route = createLazyFileRoute('/_auth/stores/add-store')({
-  component: AddStore
+  component: AddStore,
 });
 
 export default AddStore;

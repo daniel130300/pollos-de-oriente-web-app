@@ -1,23 +1,26 @@
-import { productFormsValidations } from "src/constants/formValidations";
-import useGetProducts from "../products/useGetProducts";
+import { productFormsValidations } from 'src/constants/formValidations';
+import useGetProducts from '../products/useGetProducts';
 import * as yup from 'yup';
-import { Product } from "src/routes/_auth/stores/add-store.lazy";
-import { Dispatch, useState } from "react";
-import { useFormik } from "formik";
+import { Dispatch, useState } from 'react';
+import { useFormik } from 'formik';
+import { EditableProduct } from '../products/interface';
 
 const useEditProductToAddToStoreInventory = ({
   index,
   productsList,
   product,
-  setProducts
-} : {
+  setProducts,
+}: {
   index: number;
-  productsList: Product[],
-  product: Product,
-  setProducts: Dispatch<React.SetStateAction<Product[]>>
+  productsList: EditableProduct[];
+  product: EditableProduct;
+  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
 }) => {
-  const [ search, setSearch ] = useState(product.name);
-  const { products: autoCompleteProducts, productsIsLoading: autoCompleteProductsLoading } = useGetProducts();
+  const [search, setSearch] = useState(product.name);
+  const {
+    products: autoCompleteProducts,
+    productsIsLoading: autoCompleteProductsLoading,
+  } = useGetProducts();
 
   const productSchema = yup.object().shape({
     id: yup.string().required(),
@@ -31,23 +34,23 @@ const useEditProductToAddToStoreInventory = ({
       .number()
       .typeError(productFormsValidations.sale_price.typeError)
       .required(productFormsValidations.sale_price.required)
-      .min(0, productFormsValidations.sale_price.min(0))
+      .min(0, productFormsValidations.sale_price.min(0)),
   });
 
   const formik = useFormik({
     initialValues: {
       id: '',
-      name: '', 
-      quantity: '', 
-      sale_price: '', 
-      editable: false
+      name: '',
+      quantity: '',
+      sale_price: '',
+      editable: false,
     },
     validationSchema: productSchema,
-    onSubmit: (values) => {
+    onSubmit: values => {
       const { id, name, quantity, sale_price } = values;
       const idExists = productsList.some(product => product.id === id);
       let indexToRemove = -1;
-    
+
       if (idExists) {
         const updatedProducts = productsList.map(product => {
           if (product.id === id) {
@@ -57,7 +60,7 @@ const useEditProductToAddToStoreInventory = ({
               name,
               quantity,
               sale_price,
-              editable: false
+              editable: false,
             };
           } else {
             return product;
@@ -74,7 +77,7 @@ const useEditProductToAddToStoreInventory = ({
               name,
               quantity,
               sale_price,
-              editable: false
+              editable: false,
             };
           } else {
             return product;
@@ -85,37 +88,41 @@ const useEditProductToAddToStoreInventory = ({
       setSearch('');
       formik.resetForm();
     },
-    enableReinitialize: true
+    enableReinitialize: true,
   });
 
   const productSelectError = !!formik.errors.id && !!formik.errors.name;
 
   const handleDeleteProduct = (productId: string) => {
-    const filteredProducts = productsList.filter((product) => product.id !== productId);
+    const filteredProducts = productsList.filter(
+      product => product.id !== productId,
+    );
     setProducts(filteredProducts);
   };
 
   const toggleProductEditable = (productId: string) => {
-    const updatedProducts = productsList.map((product) =>
+    const updatedProducts = productsList.map(product =>
       product.id === productId
         ? { ...product, editable: !product.editable }
-        : { ...product, editable: false }
+        : { ...product, editable: false },
     );
     setProducts(updatedProducts);
-    if (!productsList.find((product) => product.id === productId)?.editable) {
-      const productToEdit = productsList.find((product) => product.id === productId);
+    if (!productsList.find(product => product.id === productId)?.editable) {
+      const productToEdit = productsList.find(
+        product => product.id === productId,
+      );
       if (productToEdit) {
         formik.setValues({
           id: productToEdit.id,
           name: productToEdit.name,
           quantity: productToEdit.quantity,
           sale_price: productToEdit.sale_price,
-          editable: true
+          editable: true,
         });
         setSearch(productToEdit.name);
       }
-    };
-  }
+    }
+  };
 
   return {
     search,
@@ -125,8 +132,8 @@ const useEditProductToAddToStoreInventory = ({
     handleDeleteProduct,
     toggleProductEditable,
     formik,
-    productSelectError
-  }
-}
+    productSelectError,
+  };
+};
 
 export default useEditProductToAddToStoreInventory;

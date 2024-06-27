@@ -5,28 +5,24 @@ import { API_KEYS } from 'src/query/keys/queryConfig';
 import { expenseCategorySnackbarMessages } from 'src/constants/snackbarMessages';
 
 const useGetExpenseCategories = () => {
-  const { 
-    page,
-    handleChangePage,
-    rowsPerPage, 
-    handleChangeRowsPerPage
-  } = usePagination();
+  const { page, handleChangePage, rowsPerPage, handleChangeRowsPerPage } =
+    usePagination();
 
   const [search, setSearch] = useState('');
 
-  const { 
-    data: expenseCategories, 
+  const {
+    data: expenseCategories,
     dataIsLoading: expenseCategoriesIsLoading,
     dataCount: expenseCategoriesCount,
-    dataCountIsLoading: expenseCategoriesCountIsLoading
+    dataCountIsLoading: expenseCategoriesCountIsLoading,
   } = useGetData({
-    page, 
-    rowsPerPage, 
+    page,
+    rowsPerPage,
     search,
     dataQueryKey: API_KEYS.FETCH_EXPENSE_CATEGORIES,
     countQueryKey: API_KEYS.FETCH_EXPENSE_CATEGORIES_COUNT,
     entity: 'expense_categories',
-    snackbarMessages: expenseCategorySnackbarMessages
+    snackbarMessages: expenseCategorySnackbarMessages,
   });
 
   return {
@@ -39,7 +35,7 @@ const useGetExpenseCategories = () => {
     expenseCategories,
     expenseCategoriesIsLoading,
     expenseCategoriesCount,
-    expenseCategoriesCountIsLoading
+    expenseCategoriesCountIsLoading,
   };
 };
 

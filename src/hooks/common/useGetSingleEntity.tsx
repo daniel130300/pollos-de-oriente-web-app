@@ -14,34 +14,40 @@ interface UseGetEntityProps {
   processData?: (data: any) => any;
 }
 
-const useGetEntity = ({ id, entity, queryKey, snackbarMessages, processData }: UseGetEntityProps) => {
+const useGetEntity = ({
+  id,
+  entity,
+  queryKey,
+  snackbarMessages,
+  processData,
+}: UseGetEntityProps) => {
   const getEntity = async () => {
-    const { data, error } = await supabase.from(entity).select('*').eq('id', id).single().throwOnError();
+    const { data, error } = await supabase
+      .from(entity)
+      .select('*')
+      .eq('id', id)
+      .single()
+      .throwOnError();
     if (error) {
       throw error;
     }
     return processData ? processData(data) : data;
   };
 
-  const { 
-    isLoading, 
-    isFetching,
-    data, 
-    isError,
-  } = useQuery({
+  const { isLoading, isFetching, data, isError } = useQuery({
     queryKey: [queryKey, { id }],
     queryFn: getEntity,
     throwOnError: () => {
       enqueueSnackbar(snackbarMessages.errors.detail, { variant: 'error' });
       return true;
-    }
+    },
   });
 
-  return { 
-    isLoading, 
+  return {
+    isLoading,
     isFetching,
     isError,
-    data
+    data,
   };
 };
 

@@ -15,17 +15,26 @@ function StoreComponent() {
   const { id } = Route.useParams();
   const { store, storeIsLoading } = useGetStore({ id });
 
-  if (storeIsLoading) return <Loader type='cover'/>;
+  if (storeIsLoading) return <Loader type="cover" />;
 
   return (
-    <DetailsTemplate title="Detalle de la Tienda" returnButtonProps={{to: '/stores', params: {}}}>
-      <Card sx={{p: 4}}>
+    <DetailsTemplate
+      title="Detalle de la Tienda"
+      returnButtonProps={{ to: '/stores', params: {} }}
+    >
+      <Card sx={{ p: 4 }}>
         <Stack spacing={4}>
-          <Typography variant='body1'>Id: {store.id}</Typography>
-          <Typography variant='body1'>Nombre: {store.name}</Typography>
-          <Typography variant='body1'>Principal: {formatBooleanToStringLabel(store.is_main)}</Typography>
-          <Typography variant='body1'>Creado: {formatTimestamp(store.created_at)}</Typography>
-          <Typography variant='body1'>Actualizado: {formatTimestamp(store.updated_at)}</Typography>
+          <Typography variant="body1">Id: {store.id}</Typography>
+          <Typography variant="body1">Nombre: {store.name}</Typography>
+          <Typography variant="body1">
+            Principal: {formatBooleanToStringLabel(store.is_main)}
+          </Typography>
+          <Typography variant="body1">
+            Creado: {formatTimestamp(store.created_at)}
+          </Typography>
+          <Typography variant="body1">
+            Actualizado: {formatTimestamp(store.updated_at)}
+          </Typography>
         </Stack>
       </Card>
     </DetailsTemplate>

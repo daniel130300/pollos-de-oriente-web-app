@@ -1,22 +1,17 @@
-export { 
-  authSnackbarMessages, 
+export {
+  authSnackbarMessages,
   productSnackbarMessages,
   storeSnackbarMessages,
-  expenseCategorySnackbarMessages
+  expenseCategorySnackbarMessages,
 } from './snackbarMessages';
 
-export { 
-  authFormsValidations, 
+export {
+  authFormsValidations,
   productFormsValidations,
   storeFormsValidations,
-  expenseCategoryFormsValidations
+  expenseCategoryFormsValidations,
 } from './formValidations';
 
-export {
-  expenseCategoryTypeItems,
-  establishmentItems
-} from './selectItems';
+export { expenseCategoryTypeItems, establishmentItems } from './selectItems';
 
-export {
-  deleteModal
-} from './modals'
+export { deleteModal } from './modals';

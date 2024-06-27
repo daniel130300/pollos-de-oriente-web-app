@@ -11,7 +11,7 @@ interface AppSideBarProps {
   children: React.ReactNode;
 }
 
-export default function AppTemplate({children}: AppSideBarProps) {
+export default function AppTemplate({ children }: AppSideBarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -27,20 +27,24 @@ export default function AppTemplate({children}: AppSideBarProps) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppTopBar 
-        isClosing={isClosing} 
-        setMobileOpen={setMobileOpen} 
+      <AppTopBar
+        isClosing={isClosing}
+        setMobileOpen={setMobileOpen}
         mobileOpen={mobileOpen}
       />
-      <AppSideBar 
-        handleDrawerClose={handleDrawerClose} 
-        handleDrawerTransitionEnd={handleDrawerTransitionEnd} 
-        drawerWidth={drawerWidth} 
+      <AppSideBar
+        handleDrawerClose={handleDrawerClose}
+        handleDrawerTransitionEnd={handleDrawerTransitionEnd}
+        drawerWidth={drawerWidth}
         mobileOpen={mobileOpen}
-      />  
+      />
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3, width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` } }}
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { xs: '100%', sm: `calc(100% - ${drawerWidth}px)` },
+        }}
       >
         <Toolbar />
         {children}

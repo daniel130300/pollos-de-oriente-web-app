@@ -1,28 +1,28 @@
-import { productSnackbarMessages } from "src/constants/snackbarMessages";
-import { API_KEYS } from "src/query/keys/queryConfig";
-import { Product } from "./interface";
-import useDeleteEntity from "../common/useDeleteEntity";
+import { productSnackbarMessages } from 'src/constants/snackbarMessages';
+import { API_KEYS } from 'src/query/keys/queryConfig';
+import { Product } from './interface';
+import useDeleteEntity from '../common/useDeleteEntity';
 
 const useDeleteProduct = () => {
-  const { 
-    entityToDelete: productToDelete, 
-    setEntityToDelete: setProductToDelete, 
-    mutate, 
-    isLoading 
+  const {
+    entityToDelete: productToDelete,
+    setEntityToDelete: setProductToDelete,
+    mutate,
+    isLoading,
   } = useDeleteEntity<Product>({
     entityName: 'products',
     queryKey: API_KEYS.FETCH_PRODUCTS,
     successMessage: productSnackbarMessages.success.delete,
     errorMessage: productSnackbarMessages.errors.delete,
-    entityDisplayName: 'Producto'
+    entityDisplayName: 'Producto',
   });
 
   return {
     productToDelete,
     setProductToDelete,
     mutate,
-    isLoading
-  }
+    isLoading,
+  };
 };
 
 export default useDeleteProduct;

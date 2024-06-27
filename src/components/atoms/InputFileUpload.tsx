@@ -18,13 +18,13 @@ const VisuallyHiddenInput = styled('input')({
 interface InputFileUploadProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
-  sx?: SxProps
+  sx?: SxProps;
 }
 
-export const InputFileUpload: React.FC<InputFileUploadProps> = ({ 
-  onChange, 
+export const InputFileUpload: React.FC<InputFileUploadProps> = ({
+  onChange,
   label = 'Subir Archivo',
-  sx= {}
+  sx = {},
 }) => {
   return (
     <label>
@@ -39,6 +39,6 @@ export const InputFileUpload: React.FC<InputFileUploadProps> = ({
       <VisuallyHiddenInput type="file" onChange={onChange} />
     </label>
   );
-}
+};
 
 export default InputFileUpload;

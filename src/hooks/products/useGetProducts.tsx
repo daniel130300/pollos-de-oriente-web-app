@@ -5,28 +5,24 @@ import { API_KEYS } from 'src/query/keys/queryConfig';
 import { productSnackbarMessages } from 'src/constants';
 
 const useGetProducts = () => {
-  const { 
-    page,
-    handleChangePage,
-    rowsPerPage, 
-    handleChangeRowsPerPage
-  } = usePagination();
+  const { page, handleChangePage, rowsPerPage, handleChangeRowsPerPage } =
+    usePagination();
 
   const [search, setSearch] = useState('');
 
-  const { 
-    data: products, 
-    dataIsLoading: productsIsLoading, 
-    dataCount: productsCount, 
-    dataCountIsLoading: productsCountIsLoading
+  const {
+    data: products,
+    dataIsLoading: productsIsLoading,
+    dataCount: productsCount,
+    dataCountIsLoading: productsCountIsLoading,
   } = useGetData({
-    page, 
-    rowsPerPage, 
+    page,
+    rowsPerPage,
     search,
     dataQueryKey: API_KEYS.FETCH_PRODUCTS,
     countQueryKey: API_KEYS.FETCH_PRODUCTS_COUNT,
     entity: 'products',
-    snackbarMessages: productSnackbarMessages
+    snackbarMessages: productSnackbarMessages,
   });
 
   return {
@@ -39,7 +35,7 @@ const useGetProducts = () => {
     products,
     productsIsLoading,
     productsCount,
-    productsCountIsLoading
+    productsCountIsLoading,
   };
 };
 

@@ -16,10 +16,7 @@ export const useEditEntity = <T extends FormikValues>(options: {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-  const {
-    isPending,
-    mutate
-  } = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: options.mutationFn,
     onSuccess: () => {
       enqueueSnackbar(options.successMessage, { variant: 'success' });
@@ -27,21 +24,21 @@ export const useEditEntity = <T extends FormikValues>(options: {
     },
     onError: () => {
       enqueueSnackbar(options.errorMessage, { variant: 'error' });
-    }
+    },
   });
 
   const formik = useFormik({
     initialValues: options.initialValues,
     validationSchema: options.validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async values => {
       mutate(values);
     },
-    enableReinitialize: true
+    enableReinitialize: true,
   });
 
   return {
     formik,
-    isLoading: isPending
+    isLoading: isPending,
   };
 };
 

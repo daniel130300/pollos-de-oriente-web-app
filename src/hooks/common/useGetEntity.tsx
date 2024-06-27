@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { supabase } from 'src/supabaseClient';
 import { enqueueSnackbar } from 'notistack';
 
@@ -19,23 +19,25 @@ interface UseGetEntityProps {
   };
 }
 
-const useGetEntity = ({ 
+const useGetEntity = ({
   page,
   rowsPerPage,
-  search = '', 
+  search = '',
   searchField = 'name',
   entity,
   selectStatement = '*',
   snackbarMessages,
   dataQueryKey,
-  countQueryKey
-} : UseGetEntityProps) => {
-
+  countQueryKey,
+}: UseGetEntityProps) => {
   const getEntity = async () => {
     const start = page * rowsPerPage;
     const end = start + rowsPerPage - 1;
 
-    let query = supabase.from(entity).select(selectStatement).is('deleted_at', null);
+    let query = supabase
+      .from(entity)
+      .select(selectStatement)
+      .is('deleted_at', null);
 
     if (search) {
       query = query.ilike(searchField, `%${search}%`);
@@ -49,7 +51,9 @@ const useGetEntity = ({
   };
 
   const getEntityCount = async () => {
-    let countQuery = supabase.from(entity).select(selectStatement, { count: 'exact', head: true });
+    let countQuery = supabase
+      .from(entity)
+      .select(selectStatement, { count: 'exact', head: true });
 
     if (search) {
       countQuery = countQuery.ilike(searchField, `%${search}%`);
@@ -60,36 +64,40 @@ const useGetEntity = ({
     return count;
   };
 
-  const { isLoading: dataIsLoading, isError: dataIsError, data } = useQuery(
-    {
-      queryKey: [dataQueryKey, {page, rowsPerPage, search}],
-      queryFn: () => getEntity(),
-      placeholderData: keepPreviousData,
-      throwOnError: () => {
-        enqueueSnackbar(snackbarMessages.errors.list, { variant: 'error' });
-        return true;
-      }
-    }
-  );
-  
-  const { isLoading: dataCountIsLoading, isError: dataCountIsError, data: dataCount } = useQuery(
-    {
-      queryKey: [countQueryKey, search],
-      queryFn: () => getEntityCount(),
-      throwOnError: () => {
-        enqueueSnackbar(snackbarMessages.errors.count, { variant: 'error' });
-        return true;
-      }
-    }
-  );
+  const {
+    isLoading: dataIsLoading,
+    isError: dataIsError,
+    data,
+  } = useQuery({
+    queryKey: [dataQueryKey, { page, rowsPerPage, search }],
+    queryFn: () => getEntity(),
+    placeholderData: keepPreviousData,
+    throwOnError: () => {
+      enqueueSnackbar(snackbarMessages.errors.list, { variant: 'error' });
+      return true;
+    },
+  });
 
-  return { 
-    dataIsLoading, 
-    dataIsError, 
-    data, 
-    dataCountIsLoading, 
-    dataCountIsError, 
-    dataCount 
+  const {
+    isLoading: dataCountIsLoading,
+    isError: dataCountIsError,
+    data: dataCount,
+  } = useQuery({
+    queryKey: [countQueryKey, search],
+    queryFn: () => getEntityCount(),
+    throwOnError: () => {
+      enqueueSnackbar(snackbarMessages.errors.count, { variant: 'error' });
+      return true;
+    },
+  });
+
+  return {
+    dataIsLoading,
+    dataIsError,
+    data,
+    dataCountIsLoading,
+    dataCountIsError,
+    dataCount,
   };
 };
 

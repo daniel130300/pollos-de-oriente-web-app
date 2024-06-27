@@ -1,6 +1,9 @@
 import * as yup from 'yup';
 import { useState } from 'react';
-import { productFormsValidations, productSnackbarMessages } from 'src/constants';
+import {
+  productFormsValidations,
+  productSnackbarMessages,
+} from 'src/constants';
 import { Product } from './interface';
 import useAddEntity from '../common/useAddEntity';
 import { generateFilename } from 'src/utils';
@@ -18,7 +21,7 @@ const useAddProduct = () => {
         if (typeof value === 'string') return true;
         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
       })
-      .nullable()
+      .nullable(),
   });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -30,7 +33,10 @@ const useAddProduct = () => {
 
   const mutationFn = async (values: AddProduct) => {
     if (values.product_image) {
-      const image_file_name = generateFilename(values.name, values.product_image);
+      const image_file_name = generateFilename(
+        values.name,
+        values.product_image,
+      );
 
       const { data: image, error: imageError } = await supabase.storage
         .from('uploads')
@@ -40,39 +46,39 @@ const useAddProduct = () => {
         throw imageError;
       }
 
-      values.bucket_id = 'uploads'
-      values.file_name = image.path
+      values.bucket_id = 'uploads';
+      values.file_name = image.path;
     }
 
     const { product_image, ...rest } = values;
 
     const { data } = await supabase
-                        .from('products')
-                        .insert([rest])
-                        .select()
-                        .throwOnError();
+      .from('products')
+      .insert([rest])
+      .select()
+      .throwOnError();
     return data;
-  }
+  };
 
   const { formik, isLoading } = useAddEntity<AddProduct>({
     initialValues: {
       name: '',
       product_image: null,
       bucket_id: null,
-      file_name: null
+      file_name: null,
     },
     validationSchema: productSchema,
     onSuccessPath: '/products',
     successMessage: productSnackbarMessages.success.create,
     errorMessage: productSnackbarMessages.errors.create,
-    mutationFn
+    mutationFn,
   });
 
   return {
     formik,
     selectedFile,
     handleFileSelect,
-    isLoading
+    isLoading,
   };
 };
 

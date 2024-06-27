@@ -1,32 +1,31 @@
-import ListItem from "@mui/material/ListItem";
-import { Dispatch } from "react";
-import { Product } from "src/routes/_auth/stores/add-store.lazy";
-import AutoCompleteSelect from "../molecules/AutoCompleteSelect";
-import Stack from "@mui/material/Stack";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
-import ListItemText from "@mui/material/ListItemText";
-import InputField from "../atoms/InputField";
-import Tooltip from "@mui/material/Tooltip";
+import ListItem from '@mui/material/ListItem';
+import { Dispatch } from 'react';
+import AutoCompleteSelect from '../molecules/AutoCompleteSelect';
+import Stack from '@mui/material/Stack';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import ListItemText from '@mui/material/ListItemText';
+import InputField from '../atoms/InputField';
+import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import useEditProductToAddToStoreInventory from "src/hooks/stores/useEditProductToAddToStoreInventory";
-import { productFormsValidations } from "src/constants";
+import useEditProductToAddToStoreInventory from 'src/hooks/stores/useEditProductToAddToStoreInventory';
+import { productFormsValidations } from 'src/constants';
+import { EditableProduct } from 'src/hooks/products/interface';
 
 export const EditProductItem = ({
   index,
   product,
   productsList,
-  setProducts
-} : {
-  index: number,
-  product: Product, 
-  productsList: Product[],
-  setProducts:  Dispatch<React.SetStateAction<Product[]>>
+  setProducts,
+}: {
+  index: number;
+  product: EditableProduct;
+  productsList: EditableProduct[];
+  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
 }) => {
-
-  const { 
+  const {
     search,
     autoCompleteProducts,
     autoCompleteProductsLoading,
@@ -35,18 +34,23 @@ export const EditProductItem = ({
     setSearch,
     handleDeleteProduct,
     toggleProductEditable,
-  } = useEditProductToAddToStoreInventory({index, productsList, product, setProducts})
+  } = useEditProductToAddToStoreInventory({
+    index,
+    productsList,
+    product,
+    setProducts,
+  });
 
   return (
     <ListItem key={product.id}>
       {product.editable ? (
         <Stack direction="row" spacing={2}>
           <AutoCompleteSelect
-            id='id'
-            name='id'
-            label='Producto'
+            id="id"
+            name="id"
+            label="Producto"
             options={autoCompleteProducts}
-            onSelectChange={(option) => {
+            onSelectChange={option => {
               formik.setFieldValue('id', option.id);
               formik.setFieldValue('name', option.name);
             }}
@@ -61,14 +65,14 @@ export const EditProductItem = ({
             id="quantity"
             name="quantity"
             label="Cantidad"
-            type='number'
+            type="number"
             formik={formik}
           />
           <InputField
             id="sale_price"
             name="sale_price"
             label="Precio"
-            type='number'
+            type="number"
             formik={formik}
           />
         </Stack>
@@ -81,25 +85,37 @@ export const EditProductItem = ({
         {product.editable ? (
           <Stack direction="row" spacing={2}>
             <Tooltip title="Confirmar" sx={{ cursor: 'pointer' }}>
-              <CheckCircleIcon onClick={() => formik.handleSubmit()} color="success" />
+              <CheckCircleIcon
+                onClick={() => formik.handleSubmit()}
+                color="success"
+              />
             </Tooltip>
             <Tooltip title="Cancelar" sx={{ cursor: 'pointer' }}>
-              <CancelIcon onClick={() => toggleProductEditable(product.id)} color="error" />
+              <CancelIcon
+                onClick={() => toggleProductEditable(product.id)}
+                color="error"
+              />
             </Tooltip>
           </Stack>
         ) : (
           <Tooltip title="Editar" sx={{ cursor: 'pointer' }}>
-            <EditIcon onClick={() => toggleProductEditable(product.id)} color="primary" />
+            <EditIcon
+              onClick={() => toggleProductEditable(product.id)}
+              color="primary"
+            />
           </Tooltip>
         )}
         {!product.editable && (
           <Tooltip title="Eliminar" sx={{ cursor: 'pointer' }}>
-            <DeleteIcon onClick={() => handleDeleteProduct(product.id)} color="error" />
+            <DeleteIcon
+              onClick={() => handleDeleteProduct(product.id)}
+              color="error"
+            />
           </Tooltip>
         )}
       </ListItemSecondaryAction>
     </ListItem>
-  )
-}
+  );
+};
 
 export default EditProductItem;

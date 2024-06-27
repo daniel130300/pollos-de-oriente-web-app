@@ -3,24 +3,24 @@ import { expenseCategorySnackbarMessages } from 'src/constants';
 import useGetSingleEntity from 'src/hooks/common/useGetSingleEntity';
 
 const useGetExpenseCategory = ({ id }: { id: string }) => {
-  const { 
-    isLoading: expenseCategoryIsLoading, 
+  const {
+    isLoading: expenseCategoryIsLoading,
     isFetching: expenseCategoryIsFetching,
     isError: expenseCategoryIsError,
-    data: expenseCategory
+    data: expenseCategory,
   } = useGetSingleEntity({
     id,
     entity: 'expense_categories',
     queryKey: API_KEYS.FETCH_EXPENSE_CATEGORY,
-    snackbarMessages: expenseCategorySnackbarMessages
+    snackbarMessages: expenseCategorySnackbarMessages,
   });
 
   return {
-    expenseCategoryIsLoading, 
+    expenseCategoryIsLoading,
     expenseCategoryIsFetching,
     expenseCategoryIsError,
-    expenseCategory
-  }
+    expenseCategory,
+  };
 };
 
 export default useGetExpenseCategory;

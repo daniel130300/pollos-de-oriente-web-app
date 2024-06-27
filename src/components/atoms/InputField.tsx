@@ -12,7 +12,7 @@ export interface InputFieldProps extends BaseTextFieldProps {
 export const InputField: React.FC<InputFieldProps> = ({
   id,
   value,
-  variant = 'standard', 
+  variant = 'standard',
   label,
   formik,
   error = false,
@@ -21,8 +21,11 @@ export const InputField: React.FC<InputFieldProps> = ({
   ...rest
 }) => {
   const formikError = formik?.errors?.[id];
-  const inputError = formik ? (formik.touched?.[id] && Boolean(formikError)) : error;
-  const inputHelperText = formikError !== undefined ? String(formikError) : helperText;
+  const inputError = formik
+    ? formik.touched?.[id] && Boolean(formikError)
+    : error;
+  const inputHelperText =
+    formikError !== undefined ? String(formikError) : helperText;
   const handleChange = formik ? formik.handleChange : onChange;
   const displayValue = formik ? formik.values?.[id] : value;
 

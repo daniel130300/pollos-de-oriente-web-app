@@ -7,10 +7,10 @@ export interface ExpenseCategory {
 
 export enum ExpenseCategoryTypes {
   INVENTORY = 'inventory',
-  NON_INVENTORY = 'non-inventory'
+  NON_INVENTORY = 'non-inventory',
 }
 
 export enum EstablishmentTypes {
   STORE = 'store',
-  WAREHOUSE = 'warehouse'
+  WAREHOUSE = 'warehouse',
 }
