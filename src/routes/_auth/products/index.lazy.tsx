@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
 import Box from '@mui/material/Box';
@@ -11,10 +10,9 @@ import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
 import { formatTimestamp, parseToCurrency } from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
-import { useModalStore } from 'src/stores/useModalStore';
 import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
-import Loader from 'src/components/atoms/Loader';
 import { useGetProducts } from 'src/hooks/products/useGetProducts';
+import { Product } from 'src/hooks/products/interface';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products
@@ -32,8 +30,7 @@ const columns: ColumnDef<any, any>[] = [
 
 function Products() {
   const navigate = useNavigate();
-  const { handleOpen, handleClose } = useModalStore();
-  const { mutate, isLoading, productToDelete, setProductToDelete } = useDeleteProduct();
+  const { setProductToDelete } = useDeleteProduct();
   const {
     page,
     handleChangePage,
@@ -47,41 +44,17 @@ function Products() {
     productsCountIsLoading
   } = useGetProducts();
 
-  const handleViewRow = (product: any) => {
+  const handleViewRow = (product: Product) => {
     navigate({ to: '/products/$id', params: { id: product.id } })
   }
 
-  const handleEditRow = (product: any) => {
+  const handleEditRow = (product: Product) => {
     navigate({ to: '/products/$id/edit', params: { id: product.id } })
   }
 
-  const handleDelete = (product: any) => {
-    mutate(product);
-  }
-
-  const handleDeleteRow = (product: any) => {
+  const handleDeleteRow = (product: Product) => {
     setProductToDelete(product);
   }
-
-  useEffect(() => {
-    if(!productToDelete) return;
-
-    handleOpen({
-      title: 'Eliminar Producto', 
-      description: `¿Estas seguro que deseas eliminar el siguiente producto: ${productToDelete.name}?`,
-      buttons: <>
-        {(isLoading) ? (
-          <Loader />
-        ) : (
-          <Stack direction="row" spacing={1}>
-            <Button onClick={() => handleClose()} color="action">Cancelar</Button>
-            <Button onClick={() => handleDelete(productToDelete)} color="error">Eliminar</Button>
-          </Stack>
-        )}
-      </>
-    });
-
-  }, [isLoading, productToDelete]);
 
   return (
     <>

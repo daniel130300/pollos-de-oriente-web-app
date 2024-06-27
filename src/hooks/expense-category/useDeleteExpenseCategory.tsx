@@ -8,12 +8,13 @@ const useDeleteExpenseCategory = () => {
     entityToDelete: expenseCategoryToDelete,
     setEntityToDelete: setExpenseCategoryToDelete,
     mutate,
-    isLoading,
-   } = useDeleteEntity<ExpenseCategory>({
+    isLoading
+  } = useDeleteEntity<ExpenseCategory>({
     entityName: 'expense_categories',
     queryKey: API_KEYS.FETCH_EXPENSE_CATEGORIES,
     successMessage: expenseCategorySnackbarMessages.success.delete,
     errorMessage: expenseCategorySnackbarMessages.errors.delete,
+    entityDisplayName: 'Categoría de Gasto'
   });
 
   return {

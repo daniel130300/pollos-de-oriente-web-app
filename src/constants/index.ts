@@ -16,3 +16,7 @@ export {
   expenseCategoryTypeItems,
   establishmentItems
 } from './selectItems';
+
+export {
+  deleteModal
+} from './modals'

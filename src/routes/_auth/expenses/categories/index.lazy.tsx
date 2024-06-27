@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { ColumnDef } from "@tanstack/react-table";
 import Box from '@mui/material/Box';
@@ -11,10 +10,9 @@ import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
 import { formatTimestamp, translateEstablishment, translateExpenseCategoryType } from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
-import Loader from 'src/components/atoms/Loader';
 import useGetExpenseCategories from 'src/hooks/expense-category/useGetExpenseCategories';
 import useDeleteExpenseCategory from 'src/hooks/expense-category/useDeleteExpenseCategory';
-import { useModalStore } from 'src/stores/useModalStore';
+import { ExpenseCategory } from 'src/hooks/expense-category/interface';
 
 export const Route = createLazyFileRoute('/_auth/expenses/categories/')({
   component: ExpensesCategories
@@ -43,44 +41,19 @@ function ExpensesCategories() {
     expenseCategoriesCount,
     expenseCategoriesCountIsLoading
   } = useGetExpenseCategories();
-  const { handleOpen, handleClose } = useModalStore();
-  const { mutate, isLoading, expenseCategoryToDelete, setExpenseCategoryToDelete } = useDeleteExpenseCategory();
+  const { setExpenseCategoryToDelete } = useDeleteExpenseCategory();
 
-  const handleViewRow = (expense_category: any) => {
+  const handleViewRow = (expense_category: ExpenseCategory) => {
     navigate({ to: '/expenses/categories/$id', params: { id: expense_category.id } })
   }
 
-  const handleEditRow = (expense_category: any) => {
+  const handleEditRow = (expense_category: ExpenseCategory) => {
     navigate({ to: '/expenses/categories/$id/edit', params: { id: expense_category.id } })
   }
 
-  const handleDelete = (expense_category: any) => {
-    mutate(expense_category);
-  }
-
-  const handleDeleteRow = (expense_category: any) => {
+  const handleDeleteRow = (expense_category: ExpenseCategory) => {
     setExpenseCategoryToDelete(expense_category);
   }
-
-  useEffect(() => {
-    if(!expenseCategoryToDelete) return;
-
-    handleOpen({
-      title: 'Eliminar Categoría de Gasto', 
-      description: `¿Estas seguro que deseas eliminar la siguiente categoría de gasto: ${expenseCategoryToDelete.name}?`,
-      buttons: <>
-        {(isLoading) ? (
-          <Loader />
-        ) : (
-          <Stack direction="row" spacing={1}>
-            <Button onClick={() => handleClose()} color="action">Cancelar</Button>
-            <Button onClick={() => handleDelete(expenseCategoryToDelete)} color="error">Eliminar</Button>
-          </Stack>
-        )}
-      </>
-    });
-
-  }, [isLoading, expenseCategoryToDelete]);
 
   return (
     <>
