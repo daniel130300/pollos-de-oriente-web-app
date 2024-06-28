@@ -25,6 +25,7 @@ const useGetProduct = ({ id }: { id: string }) => {
     queryKey: API_KEYS.FETCH_PRODUCT,
     snackbarMessages: productSnackbarMessages,
     processData,
+    selectStatement: `*, expense_categories(name)`,
   });
 
   return {

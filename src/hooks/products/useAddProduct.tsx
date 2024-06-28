@@ -86,7 +86,7 @@ const useAddProduct = () => {
         child_product_id: detail.id,
         arithmetic_quantity: detail.arithmetic_quantity,
       }));
-      console.log('formattedProductDetail', formattedProductDetail);
+
       const { data: productDetailData } = await supabase
         .from('product_details')
         .insert(formattedProductDetail)

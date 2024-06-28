@@ -23,6 +23,7 @@ const useGetProducts = () => {
     countQueryKey: API_KEYS.FETCH_PRODUCTS_COUNT,
     entity: 'products',
     snackbarMessages: productSnackbarMessages,
+    selectStatement: `*, expense_categories(name)`,
   });
 
   return {

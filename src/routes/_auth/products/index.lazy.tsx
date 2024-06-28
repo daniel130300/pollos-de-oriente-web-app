@@ -59,9 +59,11 @@ const columns: ColumnDef<any, any>[] = [
     ),
   },
   {
-    accessorKey: 'expense_category_id',
+    accessorKey: 'expense_category',
     header: 'Se ingresa como',
-    cell: product => <span>{product.row.original.expense_category_id}</span>,
+    cell: product => (
+      <span>{product.row.original.expense_categories.name}</span>
+    ),
   },
   {
     accessorKey: 'created_at',

@@ -5,12 +5,15 @@ import { enqueueSnackbar } from 'notistack';
 interface UseGetEntityProps {
   id: string;
   entity: string;
-  queryKey: string;
+  queryKey: string | readonly string[];
+  selectStatement?: string;
+  equalField?: string;
   snackbarMessages: {
     errors: {
       detail: string;
     };
   };
+  shouldUseSingle?: boolean;
   processData?: (data: any) => any;
 }
 
@@ -20,17 +23,24 @@ const useGetEntity = ({
   queryKey,
   snackbarMessages,
   processData,
+  selectStatement = '*',
+  equalField = 'id',
+  shouldUseSingle = true,
 }: UseGetEntityProps) => {
   const getEntity = async () => {
-    const { data, error } = await supabase
+    let query = supabase
       .from(entity)
-      .select('*')
-      .eq('id', id)
-      .single()
-      .throwOnError();
-    if (error) {
-      throw error;
+      .select(selectStatement)
+      .eq(equalField, id);
+
+    if (shouldUseSingle) {
+      (query as any) = query.single();
     }
+
+    const { data, error } = await query.throwOnError();
+
+    if (error) throw error;
+
     return processData ? processData(data) : data;
   };
 

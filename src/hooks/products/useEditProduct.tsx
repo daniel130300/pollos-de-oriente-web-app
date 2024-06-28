@@ -7,9 +7,12 @@ import {
 import { generateFilename } from 'src/utils';
 import { supabase } from 'src/supabaseClient';
 import { useEditEntity } from '../common/useEditEntity';
-import { Product } from './interface';
+import { EditableProductDetail, Product } from './interface';
 
-type EditProduct = Omit<Product, 'id'>;
+type EditProduct = Omit<Product, 'id'> & {
+  has_product_detail: boolean;
+  product_detail: EditableProductDetail[];
+};
 
 const useEditProduct = ({
   id,
@@ -31,6 +34,8 @@ const useEditProduct = ({
         inventory_subtraction: product.inventory_subtraction,
         can_be_purchased_only: product.can_be_purchased_only,
         expense_category_id: product.expense_category_id,
+        has_product_detail: false,
+        product_detail: [],
       });
     }
   }, [product]);
@@ -94,6 +99,8 @@ const useEditProduct = ({
       inventory_subtraction: '',
       search_id: '',
       expense_category_id: '',
+      has_product_detail: false,
+      product_detail: [],
     },
     validationSchema: productSchema,
     successMessage: productSnackbarMessages.success.edit,
