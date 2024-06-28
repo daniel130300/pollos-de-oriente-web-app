@@ -1,9 +1,9 @@
-import { Dispatch, useState } from 'react';
-import useGetProducts from '../products/useGetProducts';
+import { Dispatch } from 'react';
+import useGetProducts from './useGetProducts';
 import * as yup from 'yup';
 import { productFormsValidations } from 'src/constants';
 import { useFormik } from 'formik';
-import { EditableProduct } from '../products/interface';
+import { EditableProduct } from './interface';
 
 const useAddProductToStoreInventory = ({
   productsList,
@@ -12,8 +12,9 @@ const useAddProductToStoreInventory = ({
   productsList: EditableProduct[];
   setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
 }) => {
-  const [search, setSearch] = useState('');
   const {
+    search,
+    setSearch,
     products: autoCompleteProducts,
     productsIsLoading: autoCompleteProductsLoading,
   } = useGetProducts();
@@ -26,11 +27,6 @@ const useAddProductToStoreInventory = ({
       .typeError(productFormsValidations.quantity.typeError)
       .required(productFormsValidations.quantity.required)
       .min(0, productFormsValidations.quantity.min(0)),
-    sale_price: yup
-      .number()
-      .typeError(productFormsValidations.sale_price.typeError)
-      .required(productFormsValidations.sale_price.required)
-      .min(0, productFormsValidations.sale_price.min(0)),
   });
 
   const formik = useFormik({
@@ -43,7 +39,7 @@ const useAddProductToStoreInventory = ({
     },
     validationSchema: productSchema,
     onSubmit: async values => {
-      const { id, quantity, sale_price } = values;
+      const { id, quantity } = values;
       const existingProductIndex = productsList.findIndex(
         product => product.id === id,
       );
@@ -51,7 +47,6 @@ const useAddProductToStoreInventory = ({
       if (existingProductIndex !== -1) {
         const updatedProducts = [...productsList];
         updatedProducts[existingProductIndex].quantity += quantity;
-        updatedProducts[existingProductIndex].sale_price = sale_price;
         setProducts(updatedProducts);
       } else {
         setProducts(previousProducts => [...previousProducts, values]);

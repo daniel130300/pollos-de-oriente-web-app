@@ -8,7 +8,11 @@ import { Link } from '@tanstack/react-router';
 import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
-import { formatTimestamp, parseToCurrency } from 'src/utils';
+import {
+  formatTimestamp,
+  translateEstablishment,
+  translateProductInventorySubtraction,
+} from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
 import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
 import useGetProducts from 'src/hooks/products/useGetProducts';
@@ -25,28 +29,39 @@ const columns: ColumnDef<any, any>[] = [
     cell: product => <span>{product.row.original.id}</span>,
   },
   {
+    accessorKey: 'search_id',
+    header: 'Id de Busqueda',
+    cell: product => <span>{product.row.original.search_id}</span>,
+  },
+  {
     accessorKey: 'name',
     header: 'Nombre',
     cell: product => <span>{product.row.original.name}</span>,
   },
   {
-    accessorKey: 'unity',
-    header: 'Unidad',
-    cell: product => <span>{product.row.original.unity}</span>,
-  },
-  {
-    accessorKey: 'sale_price',
-    header: 'Precio de Venta',
+    accessorKey: 'inventory_subtraction',
+    header: 'Se resta de manera',
     cell: product => (
-      <span>{parseToCurrency(product.row.original.sale_price)}</span>
+      <span>
+        {translateProductInventorySubtraction(
+          product.row.original.inventory_subtraction,
+        )}
+      </span>
     ),
   },
   {
-    accessorKey: 'purchase_price',
-    header: 'Precio de Compra',
+    accessorKey: 'can_be_purchased_only',
+    header: 'Solo se puede comprar en',
     cell: product => (
-      <span>{parseToCurrency(product.row.original.purchase_price)}</span>
+      <span>
+        {translateEstablishment(product.row.original.can_be_purchased_only)}
+      </span>
     ),
+  },
+  {
+    accessorKey: 'expense_category_id',
+    header: 'Se ingresa como',
+    cell: product => <span>{product.row.original.expense_category_id}</span>,
   },
   {
     accessorKey: 'created_at',

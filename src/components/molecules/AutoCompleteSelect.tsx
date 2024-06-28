@@ -10,7 +10,7 @@ interface AutoCompleteSelectProps {
   id: string;
   name: string;
   label: string;
-  options: any[] | null | undefined;
+  items: any[] | null | undefined;
   selectValue?: string;
   onSelectChange?: (selectedOption: any) => void;
   inputValue: string;
@@ -23,7 +23,7 @@ interface AutoCompleteSelectProps {
 const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
   id,
   name,
-  options,
+  items,
   inputValue,
   setInputValue,
   onSelectChange,
@@ -42,7 +42,7 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
   };
 
   const handleMenuItemClick = (option: any) => {
-    setInputValue(option.name);
+    setInputValue(option.label);
     setOpen(false);
     onSelectChange && onSelectChange(option);
   };
@@ -74,6 +74,7 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
         variant="standard"
         fullWidth
         error={error}
+        onFocus={() => setOpen(true)}
       />
       {open && (
         <>
@@ -92,13 +93,14 @@ const AutoCompleteSelect: React.FC<AutoCompleteSelectProps> = ({
                 overflowY: 'auto',
               }}
             >
-              {options &&
-                options.map(option => (
+              {items &&
+                items.map(selectItem => (
                   <MenuItem
-                    key={option.id}
-                    onClick={() => handleMenuItemClick(option)}
+                    key={selectItem.label}
+                    value={selectItem.value}
+                    onClick={() => handleMenuItemClick(selectItem)}
                   >
-                    {option.name}
+                    {selectItem.label}
                   </MenuItem>
                 ))}
             </Paper>

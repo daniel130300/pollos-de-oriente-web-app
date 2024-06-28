@@ -10,11 +10,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import useEditProductToAddToStoreInventory from 'src/hooks/stores/useEditProductToAddToStoreInventory';
+import useEditDetailProduct from 'src/hooks/products/useEditDetailProduct';
 import { productFormsValidations } from 'src/constants';
 import { EditableProduct } from 'src/hooks/products/interface';
+import { apiItems } from 'src/constants/selectItems';
 
-export const EditProductItem = ({
+export const EditDetailProductItem = ({
   index,
   product,
   productsList,
@@ -34,10 +35,9 @@ export const EditProductItem = ({
     setSearch,
     handleDeleteProduct,
     toggleProductEditable,
-  } = useEditProductToAddToStoreInventory({
+  } = useEditDetailProduct({
     index,
     productsList,
-    product,
     setProducts,
   });
 
@@ -49,12 +49,11 @@ export const EditProductItem = ({
             id="id"
             name="id"
             label="Producto"
-            options={autoCompleteProducts}
+            items={apiItems(autoCompleteProducts)}
             onSelectChange={option => {
-              formik.setFieldValue('id', option.id);
-              formik.setFieldValue('name', option.name);
+              formik.setFieldValue('id', option.value);
+              formik.setFieldValue('name', option.label);
             }}
-            selectValue={product.id}
             inputValue={search}
             setInputValue={setSearch}
             loading={autoCompleteProductsLoading}
@@ -68,22 +67,15 @@ export const EditProductItem = ({
             type="number"
             formik={formik}
           />
-          <InputField
-            id="sale_price"
-            name="sale_price"
-            label="Precio"
-            type="number"
-            formik={formik}
-          />
         </Stack>
       ) : (
         <ListItemText
-          primary={`Nombre: ${product.name}, Cantidad: ${product.quantity}, Precio: ${product.sale_price}`}
+          primary={`Nombre: ${product.name}, Cantidad: ${product.quantity}`}
         />
       )}
       <ListItemSecondaryAction>
         {product.editable ? (
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={1}>
             <Tooltip title="Confirmar" sx={{ cursor: 'pointer' }}>
               <CheckCircleIcon
                 onClick={() => formik.handleSubmit()}
@@ -118,4 +110,4 @@ export const EditProductItem = ({
   );
 };
 
-export default EditProductItem;
+export default EditDetailProductItem;

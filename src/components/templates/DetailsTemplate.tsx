@@ -26,6 +26,9 @@ export const DetailsTemplate: React.FC<DetailsTemplateProps> = ({
         <Typography variant="h1" mb={4}>
           {title}
         </Typography>
+        <Typography variant="h3" mb={4}>
+          Información General
+        </Typography>
         {children}
       </Grid>
     </Grid>

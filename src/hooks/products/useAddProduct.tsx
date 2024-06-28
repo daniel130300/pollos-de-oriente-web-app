@@ -25,10 +25,16 @@ const useAddProduct = () => {
   });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [hasProductDetail, setHasProductDetail] = useState<boolean>(false);
 
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
     formik.setFieldValue('product_image', file);
+  };
+
+  const handleProductDetail = (hasProductDetail: boolean) => {
+    setHasProductDetail(hasProductDetail);
+    formik.setFieldValue('has_product_detail', hasProductDetail);
   };
 
   const mutationFn = async (values: AddProduct) => {
@@ -66,6 +72,10 @@ const useAddProduct = () => {
       product_image: null,
       bucket_id: null,
       file_name: null,
+      expense_category_id: '',
+      can_be_purchased_only: '',
+      inventory_subtraction: '',
+      search_id: '',
     },
     validationSchema: productSchema,
     onSuccessPath: '/products',
@@ -78,6 +88,8 @@ const useAddProduct = () => {
     formik,
     selectedFile,
     handleFileSelect,
+    hasProductDetail,
+    handleProductDetail,
     isLoading,
   };
 };

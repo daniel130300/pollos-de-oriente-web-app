@@ -27,6 +27,10 @@ const useEditProduct = ({
         product_image: null,
         bucket_id: product.bucket_id,
         file_name: product.file_name,
+        search_id: product.search_id,
+        inventory_subtraction: product.inventory_subtraction,
+        can_be_purchased_only: product.can_be_purchased_only,
+        expense_category_id: product.expense_category_id,
       });
     }
   }, [product]);
@@ -86,6 +90,10 @@ const useEditProduct = ({
       product_image: null,
       bucket_id: null,
       file_name: null,
+      can_be_purchased_only: '',
+      inventory_subtraction: '',
+      search_id: '',
+      expense_category_id: '',
     },
     validationSchema: productSchema,
     successMessage: productSnackbarMessages.success.edit,

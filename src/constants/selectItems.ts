@@ -2,9 +2,11 @@ import {
   EstablishmentTypes,
   ExpenseCategoryTypes,
 } from 'src/hooks/expense-category/interface';
+import { ProductInventorySubtraction } from 'src/hooks/products/interface';
 import {
   translateEstablishment,
   translateExpenseCategoryType,
+  translateProductInventorySubtraction,
 } from 'src/utils';
 
 export const expenseCategoryTypeItems = [
@@ -28,3 +30,24 @@ export const establishmentItems = [
     value: EstablishmentTypes.WAREHOUSE,
   },
 ];
+
+export const inventorySubtractionItems = [
+  {
+    label: translateProductInventorySubtraction(
+      ProductInventorySubtraction.AUTOMATIC,
+    ),
+    value: ProductInventorySubtraction.AUTOMATIC,
+  },
+  {
+    label: translateProductInventorySubtraction(
+      ProductInventorySubtraction.MANUAL,
+    ),
+    value: ProductInventorySubtraction.MANUAL,
+  },
+];
+
+export const apiItems = (apiItems: any) =>
+  apiItems?.map((value: any) => ({
+    label: value.name,
+    value: value.id,
+  })) || [];
