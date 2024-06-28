@@ -17,9 +17,9 @@ export enum ProductInventorySubtraction {
   AUTOMATIC = 'automatic',
 }
 
-export interface EditableProduct {
+export interface EditableProductDetail {
   id: string;
   name: string;
-  quantity: string;
+  arithmetic_quantity: string;
   editable: boolean;
 }

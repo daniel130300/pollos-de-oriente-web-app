@@ -1,18 +1,20 @@
 import { productFormsValidations } from 'src/constants/formValidations';
 import useGetProducts from './useGetProducts';
 import * as yup from 'yup';
-import { Dispatch } from 'react';
+import { Dispatch, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { EditableProduct } from './interface';
+import { EditableProductDetail } from './interface';
 
 const useEditDetailProduct = ({
   index,
   productsList,
+  product,
   setProducts,
 }: {
   index: number;
-  productsList: EditableProduct[];
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  productsList: EditableProductDetail[];
+  product: EditableProductDetail;
+  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
 }) => {
   const {
     products: autoCompleteProducts,
@@ -21,10 +23,14 @@ const useEditDetailProduct = ({
     setSearch,
   } = useGetProducts();
 
+  useEffect(() => {
+    setSearch(product.name);
+  }, [product]);
+
   const productSchema = yup.object().shape({
     id: yup.string().required(),
     name: yup.string().required(),
-    quantity: yup
+    arithmetic_quantity: yup
       .number()
       .typeError(productFormsValidations.quantity.typeError)
       .required(productFormsValidations.quantity.required)
@@ -35,12 +41,12 @@ const useEditDetailProduct = ({
     initialValues: {
       id: '',
       name: '',
-      quantity: '',
+      arithmetic_quantity: '',
       editable: false,
     },
     validationSchema: productSchema,
     onSubmit: values => {
-      const { id, name, quantity } = values;
+      const { id, name, arithmetic_quantity } = values;
       const idExists =
         productsList.filter(
           (product, idx) => idx !== index && product.id === id,
@@ -54,7 +60,7 @@ const useEditDetailProduct = ({
             return {
               ...product,
               name,
-              quantity,
+              arithmetic_quantity,
               editable: false,
             };
           } else {
@@ -70,7 +76,7 @@ const useEditDetailProduct = ({
               ...product,
               id,
               name,
-              quantity,
+              arithmetic_quantity,
               editable: false,
             };
           } else {
@@ -109,7 +115,7 @@ const useEditDetailProduct = ({
         formik.setValues({
           id: productToEdit.id,
           name: productToEdit.name,
-          quantity: productToEdit.quantity,
+          arithmetic_quantity: productToEdit.arithmetic_quantity,
           editable: true,
         });
         setSearch(productToEdit.name);

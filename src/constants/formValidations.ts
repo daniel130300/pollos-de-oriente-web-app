@@ -21,25 +21,22 @@ export const productFormsValidations = {
   name: {
     required: 'El nombre es un campo requerido',
   },
-  unity: {
-    required: 'La unidad es un campo requerido',
+  search_id: {
+    required: 'El id de busqueda es un campo requerido',
   },
   quantity: {
     typeError: 'La cantidad debe ser un número',
     required: 'La cantidad es un campo requerido',
     min: (value: number) => `La cantidad debe ser mayor o igual a ${value}`,
   },
-  sale_price: {
-    typeError: 'El precio de venta debe ser un número',
-    required: 'El precio de venta es un campo requerido',
-    min: (value: number) =>
-      `El precio de venta debe ser mayor o igual a ${value}`,
+  inventory_subtraction: {
+    required: "El campo 'Se resta de manera' es requerido",
   },
-  purchase_price: {
-    typeError: 'El precio de compra debe ser un número',
-    required: 'El precio de venta es un campo requerido',
-    min: (value: number) =>
-      `El precio de compra debe ser mayor o igual a ${value}`,
+  can_be_purchased_only: {
+    required: "El campo 'Se ingresa como' es requerido",
+  },
+  expense_category_id: {
+    required: 'Seleccione una categoría de gasto',
   },
   product_image: 'La imagen debe ser un archivo de imagen válido',
 };

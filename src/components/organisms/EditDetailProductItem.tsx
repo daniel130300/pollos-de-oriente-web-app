@@ -12,7 +12,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import useEditDetailProduct from 'src/hooks/products/useEditDetailProduct';
 import { productFormsValidations } from 'src/constants';
-import { EditableProduct } from 'src/hooks/products/interface';
+import { EditableProductDetail } from 'src/hooks/products/interface';
 import { apiItems } from 'src/constants/selectItems';
 
 export const EditDetailProductItem = ({
@@ -22,9 +22,9 @@ export const EditDetailProductItem = ({
   setProducts,
 }: {
   index: number;
-  product: EditableProduct;
-  productsList: EditableProduct[];
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  product: EditableProductDetail;
+  productsList: EditableProductDetail[];
+  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
 }) => {
   const {
     search,
@@ -39,6 +39,7 @@ export const EditDetailProductItem = ({
     index,
     productsList,
     setProducts,
+    product,
   });
 
   return (
@@ -61,8 +62,8 @@ export const EditDetailProductItem = ({
             errorMessage={productFormsValidations.select_product.required}
           />
           <InputField
-            id="quantity"
-            name="quantity"
+            id="arithmetic_quantity"
+            name="arithmetic_quantity"
             label="Cantidad"
             type="number"
             formik={formik}
@@ -70,7 +71,7 @@ export const EditDetailProductItem = ({
         </Stack>
       ) : (
         <ListItemText
-          primary={`Nombre: ${product.name}, Cantidad: ${product.quantity}`}
+          primary={`Nombre: ${product.name}, Cantidad: ${product.arithmetic_quantity}`}
         />
       )}
       <ListItemSecondaryAction>

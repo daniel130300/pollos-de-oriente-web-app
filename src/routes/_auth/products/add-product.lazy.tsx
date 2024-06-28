@@ -17,10 +17,11 @@ import AutoCompleteSelect from 'src/components/molecules/AutoCompleteSelect';
 import Checkbox from 'src/components/atoms/Checkbox';
 import Divider from 'src/components/atoms/Divider';
 import Typography from '@mui/material/Typography';
-import { EditableProduct } from 'src/hooks/products/interface';
+import { EditableProductDetail } from 'src/hooks/products/interface';
 import { AddDetailProductItem } from 'src/components/organisms/AddDetailProductItem';
 import EditDetailProductItem from 'src/components/organisms/EditDetailProductItem';
 import List from '@mui/material/List';
+import { productFormsValidations } from 'src/constants';
 
 export const Route = createLazyFileRoute('/_auth/products/add-product')({
   component: AddProduct,
@@ -33,7 +34,7 @@ function AddProduct() {
     handleFileSelect,
     isLoading,
     hasProductDetail,
-    handleProductDetail,
+    handleHasProductDetail,
   } = useAddProduct();
 
   const {
@@ -43,7 +44,13 @@ function AddProduct() {
     setSearch: setExpenseCategorySearch,
   } = useGetExpenseCategories();
 
-  const [productDetail, setProductDetail] = useState<EditableProduct[]>([]);
+  const [productDetail, setProductDetail] = useState<EditableProductDetail[]>(
+    [],
+  );
+  const handleSubmit = () => {
+    formik.setValues({ ...formik.values, product_detail: productDetail });
+    formik.handleSubmit();
+  };
 
   return (
     <DetailsTemplate
@@ -95,13 +102,15 @@ function AddProduct() {
             inputValue={expenseCategorySearch}
             setInputValue={setExpenseCategorySearch}
             loading={expenseCategoriesIsLoading}
+            errorMessage={productFormsValidations.expense_category_id.required}
+            error={!!formik.errors.expense_category_id}
           />
           <Checkbox
             id="has_product_detail"
             name="has_product_detail"
             label="Es equivalente a otros productos?"
             checked={hasProductDetail}
-            onChange={e => handleProductDetail(e.target.checked)}
+            onChange={e => handleHasProductDetail(e.target.checked)}
           />
           {hasProductDetail && (
             <>
@@ -129,7 +138,7 @@ function AddProduct() {
             </>
           )}
         </Stack>
-        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>
+        <Button onClick={() => handleSubmit()} isLoading={isLoading}>
           Agregar Producto
         </Button>
       </>

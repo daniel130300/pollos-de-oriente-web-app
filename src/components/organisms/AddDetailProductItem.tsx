@@ -4,15 +4,15 @@ import InputField from '../atoms/InputField';
 import Button from '@mui/material/Button';
 import { productFormsValidations } from 'src/constants';
 import useAddProductDetail from 'src/hooks/products/useAddProductDetail';
-import { EditableProduct } from 'src/hooks/products/interface';
+import { EditableProductDetail } from 'src/hooks/products/interface';
 import { apiItems } from 'src/constants/selectItems';
 
 export const AddDetailProductItem = ({
   productsList,
   setProducts,
 }: {
-  productsList: EditableProduct[];
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  productsList: EditableProductDetail[];
+  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
 }) => {
   const {
     search,
@@ -41,8 +41,8 @@ export const AddDetailProductItem = ({
         errorMessage={productFormsValidations.select_product.required}
       />
       <InputField
-        id="quantity"
-        name="quantity"
+        id="arithmetic_quantity"
+        name="arithmetic_quantity"
         label="Cantidad"
         type="number"
         formik={formik}

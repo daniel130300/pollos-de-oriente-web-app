@@ -3,14 +3,14 @@ import useGetProducts from './useGetProducts';
 import * as yup from 'yup';
 import { productFormsValidations } from 'src/constants';
 import { useFormik } from 'formik';
-import { EditableProduct } from './interface';
+import { EditableProductDetail } from './interface';
 
-const useAddProductToStoreInventory = ({
+const useAddProductDetail = ({
   productsList,
   setProducts,
 }: {
-  productsList: EditableProduct[];
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  productsList: EditableProductDetail[];
+  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
 }) => {
   const {
     search,
@@ -22,7 +22,7 @@ const useAddProductToStoreInventory = ({
   const productSchema = yup.object().shape({
     id: yup.string().required(),
     name: yup.string().required(),
-    quantity: yup
+    arithmetic_quantity: yup
       .number()
       .typeError(productFormsValidations.quantity.typeError)
       .required(productFormsValidations.quantity.required)
@@ -33,20 +33,21 @@ const useAddProductToStoreInventory = ({
     initialValues: {
       id: '',
       name: '',
-      quantity: '',
+      arithmetic_quantity: '',
       sale_price: '',
       editable: false,
     },
     validationSchema: productSchema,
     onSubmit: async values => {
-      const { id, quantity } = values;
+      const { id, arithmetic_quantity } = values;
       const existingProductIndex = productsList.findIndex(
         product => product.id === id,
       );
 
       if (existingProductIndex !== -1) {
         const updatedProducts = [...productsList];
-        updatedProducts[existingProductIndex].quantity += quantity;
+        updatedProducts[existingProductIndex].arithmetic_quantity +=
+          arithmetic_quantity;
         setProducts(updatedProducts);
       } else {
         setProducts(previousProducts => [...previousProducts, values]);
@@ -69,4 +70,4 @@ const useAddProductToStoreInventory = ({
   };
 };
 
-export default useAddProductToStoreInventory;
+export default useAddProductDetail;
