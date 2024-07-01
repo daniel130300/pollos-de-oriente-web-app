@@ -40,16 +40,18 @@ const useAddProduct = () => {
   });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [hasProductDetail, setHasProductDetail] = useState<boolean>(false);
+  const [productDetail, setProductDetail] = useState<EditableProductDetail[]>(
+    [],
+  );
 
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
     formik.setFieldValue('product_image', file);
   };
 
-  const handleHasProductDetail = (hasProductDetail: boolean) => {
-    setHasProductDetail(hasProductDetail);
-    formik.setFieldValue('has_product_detail', hasProductDetail);
+  const handleSubmit = () => {
+    formik.setValues({ ...formik.values, product_detail: productDetail });
+    formik.handleSubmit();
   };
 
   const mutationFn = async (values: AddProduct) => {
@@ -80,7 +82,7 @@ const useAddProduct = () => {
       .select()
       .throwOnError();
 
-    if (hasProductDetail && product_detail.length !== 0) {
+    if (has_product_detail && product_detail.length !== 0) {
       const formattedProductDetail = product_detail.map(detail => ({
         parent_product_id: (productData as any)[0].id,
         child_product_id: detail.id,
@@ -123,9 +125,10 @@ const useAddProduct = () => {
     formik,
     selectedFile,
     handleFileSelect,
-    hasProductDetail,
-    handleHasProductDetail,
     isLoading,
+    productDetail,
+    setProductDetail,
+    handleSubmit,
   };
 };
 

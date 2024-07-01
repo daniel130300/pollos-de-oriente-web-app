@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import Stack from '@mui/material/Stack';
 import useAddProduct from 'src/hooks/products/useAddProduct';
@@ -17,7 +16,6 @@ import AutoCompleteSelect from 'src/components/molecules/AutoCompleteSelect';
 import Checkbox from 'src/components/atoms/Checkbox';
 import Divider from 'src/components/atoms/Divider';
 import Typography from '@mui/material/Typography';
-import { EditableProductDetail } from 'src/hooks/products/interface';
 import { AddDetailProductItem } from 'src/components/organisms/AddDetailProductItem';
 import EditDetailProductItem from 'src/components/organisms/EditDetailProductItem';
 import List from '@mui/material/List';
@@ -33,8 +31,9 @@ function AddProduct() {
     selectedFile,
     handleFileSelect,
     isLoading,
-    hasProductDetail,
-    handleHasProductDetail,
+    productDetail,
+    setProductDetail,
+    handleSubmit,
   } = useAddProduct();
 
   const {
@@ -43,14 +42,6 @@ function AddProduct() {
     search: expenseCategorySearch,
     setSearch: setExpenseCategorySearch,
   } = useGetExpenseCategories();
-
-  const [productDetail, setProductDetail] = useState<EditableProductDetail[]>(
-    [],
-  );
-  const handleSubmit = () => {
-    formik.setValues({ ...formik.values, product_detail: productDetail });
-    formik.handleSubmit();
-  };
 
   return (
     <DetailsTemplate
@@ -109,10 +100,9 @@ function AddProduct() {
             id="has_product_detail"
             name="has_product_detail"
             label="Es equivalente a otros productos?"
-            checked={hasProductDetail}
-            onChange={e => handleHasProductDetail(e.target.checked)}
+            formik={formik}
           />
-          {hasProductDetail && (
+          {formik.values.has_product_detail && (
             <>
               <Divider />
               <Typography variant="h3">Productos Relacionados</Typography>

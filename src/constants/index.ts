@@ -12,6 +12,11 @@ export {
   expenseCategoryFormsValidations,
 } from './formValidations';
 
-export { expenseCategoryTypeItems, establishmentItems } from './selectItems';
+export {
+  expenseCategoryTypeItems,
+  establishmentItems,
+  inventorySubtractionItems,
+  apiItems,
+} from './selectItems';
 
 export { deleteModal } from './modals';

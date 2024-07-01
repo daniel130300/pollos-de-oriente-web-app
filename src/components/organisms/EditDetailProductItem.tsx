@@ -72,6 +72,7 @@ export const EditDetailProductItem = ({
       ) : (
         <ListItemText
           primary={`Nombre: ${product.name}, Cantidad: ${product.arithmetic_quantity}`}
+          sx={{ mx: 0, px: 0 }}
         />
       )}
       <ListItemSecondaryAction>

@@ -63,14 +63,18 @@ function ProductComponent() {
           <Typography variant="body1">
             Actualizado: {formatTimestamp(product.updated_at)}
           </Typography>
-          <Divider />
-          <Typography variant="h3">Productos Relacionados</Typography>
-          {productDetails.map((productDetail: any) => (
-            <ListItemText
-              key={productDetail.id}
-              primary={`Nombre: ${productDetail.products.name}, Cantidad: ${productDetail.arithmetic_quantity}`}
-            />
-          ))}
+          {productDetails.length > 0 && (
+            <>
+              <Divider />
+              <Typography variant="h3">Productos Relacionados</Typography>
+              {productDetails.map((productDetail: any) => (
+                <ListItemText
+                  key={productDetail.id}
+                  primary={`Nombre: ${productDetail.products.name}, Cantidad: ${productDetail.arithmetic_quantity}`}
+                />
+              ))}
+            </>
+          )}
         </Stack>
       </Card>
     </DetailsTemplate>
