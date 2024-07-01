@@ -2,6 +2,7 @@ import {
   EstablishmentTypes,
   ExpenseCategoryTypes,
 } from 'src/hooks/expense-category/interface';
+import { ProductInventorySubtraction } from 'src/hooks/products/interface';
 
 export function translateExpenseCategoryType(category: ExpenseCategoryTypes) {
   switch (category) {
@@ -18,5 +19,16 @@ export function translateEstablishment(establishment: EstablishmentTypes) {
       return 'tienda';
     case EstablishmentTypes.WAREHOUSE:
       return 'bodega';
+  }
+}
+
+export function translateProductInventorySubtraction(
+  inventorySubtraction: ProductInventorySubtraction,
+) {
+  switch (inventorySubtraction) {
+    case ProductInventorySubtraction.AUTOMATIC:
+      return 'automatico';
+    case ProductInventorySubtraction.MANUAL:
+      return 'manual';
   }
 }

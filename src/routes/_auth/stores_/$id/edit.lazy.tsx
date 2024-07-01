@@ -34,8 +34,6 @@ function EditStore() {
 
   if (storeIsLoading) return <Loader type="cover" />;
 
-  console.log('STORE INFO', store);
-
   return (
     <DetailsTemplate
       title="Editar Tienda"

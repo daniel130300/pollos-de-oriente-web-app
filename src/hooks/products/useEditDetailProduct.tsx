@@ -1,54 +1,56 @@
 import { productFormsValidations } from 'src/constants/formValidations';
-import useGetProducts from '../products/useGetProducts';
+import useGetProducts from './useGetProducts';
 import * as yup from 'yup';
-import { Dispatch, useState } from 'react';
+import { Dispatch, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { EditableProduct } from '../products/interface';
+import { EditableProductDetail } from './interface';
 
-const useEditProductToAddToStoreInventory = ({
+const useEditDetailProduct = ({
   index,
   productsList,
   product,
   setProducts,
 }: {
   index: number;
-  productsList: EditableProduct[];
-  product: EditableProduct;
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  productsList: EditableProductDetail[];
+  product: EditableProductDetail;
+  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
 }) => {
-  const [search, setSearch] = useState(product.name);
   const {
     products: autoCompleteProducts,
     productsIsLoading: autoCompleteProductsLoading,
+    search,
+    setSearch,
   } = useGetProducts();
+
+  useEffect(() => {
+    setSearch(product.name);
+  }, [product]);
 
   const productSchema = yup.object().shape({
     id: yup.string().required(),
     name: yup.string().required(),
-    quantity: yup
+    arithmetic_quantity: yup
       .number()
       .typeError(productFormsValidations.quantity.typeError)
       .required(productFormsValidations.quantity.required)
       .min(0, productFormsValidations.quantity.min(0)),
-    sale_price: yup
-      .number()
-      .typeError(productFormsValidations.sale_price.typeError)
-      .required(productFormsValidations.sale_price.required)
-      .min(0, productFormsValidations.sale_price.min(0)),
   });
 
   const formik = useFormik({
     initialValues: {
       id: '',
       name: '',
-      quantity: '',
-      sale_price: '',
+      arithmetic_quantity: '',
       editable: false,
     },
     validationSchema: productSchema,
     onSubmit: values => {
-      const { id, name, quantity, sale_price } = values;
-      const idExists = productsList.some(product => product.id === id);
+      const { id, name, arithmetic_quantity } = values;
+      const idExists =
+        productsList.filter(
+          (product, idx) => idx !== index && product.id === id,
+        ).length > 0;
       let indexToRemove = -1;
 
       if (idExists) {
@@ -58,8 +60,7 @@ const useEditProductToAddToStoreInventory = ({
             return {
               ...product,
               name,
-              quantity,
-              sale_price,
+              arithmetic_quantity,
               editable: false,
             };
           } else {
@@ -75,8 +76,7 @@ const useEditProductToAddToStoreInventory = ({
               ...product,
               id,
               name,
-              quantity,
-              sale_price,
+              arithmetic_quantity,
               editable: false,
             };
           } else {
@@ -115,8 +115,7 @@ const useEditProductToAddToStoreInventory = ({
         formik.setValues({
           id: productToEdit.id,
           name: productToEdit.name,
-          quantity: productToEdit.quantity,
-          sale_price: productToEdit.sale_price,
+          arithmetic_quantity: productToEdit.arithmetic_quantity,
           editable: true,
         });
         setSearch(productToEdit.name);
@@ -136,4 +135,4 @@ const useEditProductToAddToStoreInventory = ({
   };
 };
 
-export default useEditProductToAddToStoreInventory;
+export default useEditDetailProduct;

@@ -10,20 +10,21 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import useEditProductToAddToStoreInventory from 'src/hooks/stores/useEditProductToAddToStoreInventory';
+import useEditDetailProduct from 'src/hooks/products/useEditDetailProduct';
 import { productFormsValidations } from 'src/constants';
-import { EditableProduct } from 'src/hooks/products/interface';
+import { EditableProductDetail } from 'src/hooks/products/interface';
+import { apiItems } from 'src/constants/selectItems';
 
-export const EditProductItem = ({
+export const EditDetailProductItem = ({
   index,
   product,
   productsList,
   setProducts,
 }: {
   index: number;
-  product: EditableProduct;
-  productsList: EditableProduct[];
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  product: EditableProductDetail;
+  productsList: EditableProductDetail[];
+  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
 }) => {
   const {
     search,
@@ -34,11 +35,11 @@ export const EditProductItem = ({
     setSearch,
     handleDeleteProduct,
     toggleProductEditable,
-  } = useEditProductToAddToStoreInventory({
+  } = useEditDetailProduct({
     index,
     productsList,
-    product,
     setProducts,
+    product,
   });
 
   return (
@@ -49,12 +50,11 @@ export const EditProductItem = ({
             id="id"
             name="id"
             label="Producto"
-            options={autoCompleteProducts}
+            items={apiItems(autoCompleteProducts)}
             onSelectChange={option => {
-              formik.setFieldValue('id', option.id);
-              formik.setFieldValue('name', option.name);
+              formik.setFieldValue('id', option.value);
+              formik.setFieldValue('name', option.label);
             }}
-            selectValue={product.id}
             inputValue={search}
             setInputValue={setSearch}
             loading={autoCompleteProductsLoading}
@@ -62,28 +62,22 @@ export const EditProductItem = ({
             errorMessage={productFormsValidations.select_product.required}
           />
           <InputField
-            id="quantity"
-            name="quantity"
+            id="arithmetic_quantity"
+            name="arithmetic_quantity"
             label="Cantidad"
-            type="number"
-            formik={formik}
-          />
-          <InputField
-            id="sale_price"
-            name="sale_price"
-            label="Precio"
             type="number"
             formik={formik}
           />
         </Stack>
       ) : (
         <ListItemText
-          primary={`Nombre: ${product.name}, Cantidad: ${product.quantity}, Precio: ${product.sale_price}`}
+          primary={`Nombre: ${product.name}, Cantidad: ${product.arithmetic_quantity}`}
+          sx={{ mx: 0, px: 0 }}
         />
       )}
       <ListItemSecondaryAction>
         {product.editable ? (
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={1}>
             <Tooltip title="Confirmar" sx={{ cursor: 'pointer' }}>
               <CheckCircleIcon
                 onClick={() => formik.handleSubmit()}
@@ -118,4 +112,4 @@ export const EditProductItem = ({
   );
 };
 
-export default EditProductItem;
+export default EditDetailProductItem;

@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import usePagination from 'src/hooks/common/usePagination';
 import useGetData from 'src/hooks/common/useGetEntity';
 import { API_KEYS } from 'src/query/keys/queryConfig';
 import { expenseCategorySnackbarMessages } from 'src/constants/snackbarMessages';
 
-const useGetExpenseCategories = () => {
+const useGetExpenseCategories = ({
+  searchTerm = '',
+}: { searchTerm?: string } = {}) => {
   const { page, handleChangePage, rowsPerPage, handleChangeRowsPerPage } =
     usePagination();
 
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    if (searchTerm) {
+      setSearch(searchTerm);
+    }
+  }, [searchTerm]);
 
   const {
     data: expenseCategories,

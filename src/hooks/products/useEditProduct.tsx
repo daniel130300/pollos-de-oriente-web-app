@@ -7,9 +7,13 @@ import {
 import { generateFilename } from 'src/utils';
 import { supabase } from 'src/supabaseClient';
 import { useEditEntity } from '../common/useEditEntity';
-import { Product } from './interface';
+import { EditableProductDetail, Product } from './interface';
+import useGetProductDetails from './useGetProductDetail';
 
-type EditProduct = Omit<Product, 'id'>;
+type EditProduct = Omit<Product, 'id'> & {
+  has_product_detail: boolean;
+  product_detail: EditableProductDetail[];
+};
 
 const useEditProduct = ({
   id,
@@ -19,17 +23,43 @@ const useEditProduct = ({
   product: EditProduct;
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [productDetail, setProductDetail] = useState<EditableProductDetail[]>(
+    [],
+  );
+
+  const { productDetails, productDetailsIsLoading } = useGetProductDetails({
+    parent_product_id: id,
+  });
 
   useEffect(() => {
-    if (product) {
+    if (product && productDetails && !productDetailsIsLoading) {
       formik.setValues({
         name: product.name,
         product_image: null,
         bucket_id: product.bucket_id,
         file_name: product.file_name,
+        search_id: product.search_id,
+        inventory_subtraction: product.inventory_subtraction,
+        can_be_purchased_only: product.can_be_purchased_only,
+        expense_category_id: product.expense_category_id,
+        has_product_detail: productDetails?.length > 0,
+        product_detail: productDetails || [],
       });
     }
-  }, [product]);
+  }, [product, productDetailsIsLoading, productDetails]);
+
+  useEffect(() => {
+    if (productDetails && !productDetailsIsLoading) {
+      const reformattedProductDetails = productDetails.map((detail: any) => ({
+        id: detail.products.id,
+        name: detail.products.name,
+        arithmetic_quantity: detail.arithmetic_quantity,
+        editable: false,
+      }));
+
+      setProductDetail(reformattedProductDetails);
+    }
+  }, [productDetails, productDetailsIsLoading]);
 
   const productSchema = yup.object().shape({
     name: yup.string().required(productFormsValidations.name.required),
@@ -86,6 +116,12 @@ const useEditProduct = ({
       product_image: null,
       bucket_id: null,
       file_name: null,
+      can_be_purchased_only: '',
+      inventory_subtraction: '',
+      search_id: '',
+      expense_category_id: '',
+      has_product_detail: false,
+      product_detail: [],
     },
     validationSchema: productSchema,
     successMessage: productSnackbarMessages.success.edit,
@@ -99,6 +135,8 @@ const useEditProduct = ({
     selectedFile,
     handleFileSelect,
     isLoading,
+    productDetail,
+    setProductDetail,
   };
 };
 

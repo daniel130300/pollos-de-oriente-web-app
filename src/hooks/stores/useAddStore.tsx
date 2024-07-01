@@ -20,29 +20,13 @@ const useAddStore = () => {
 
   const { isPending, mutate } = useMutation({
     mutationFn: async (values: AddStore) => {
-      const { products, ...rest } = values;
       const { data: storeData } = await supabase
         .from('stores')
-        .insert([rest])
+        .insert([values])
         .select()
         .throwOnError();
 
-      if (values.products?.length === 0) return storeData;
-
-      const insertProducts = products?.map(product => ({
-        store_id: storeData?.at(0).id,
-        product_id: product.id,
-        quantity: product.quantity,
-        sale_price: product.sale_price,
-      }));
-
-      const { data: productsData } = await supabase
-        .from('store_products')
-        .insert([insertProducts])
-        .select()
-        .throwOnError();
-
-      return { storeData, productsData };
+      return storeData;
     },
     onSuccess: () => {
       enqueueSnackbar(storeSnackbarMessages.success.create, {
@@ -61,7 +45,6 @@ const useAddStore = () => {
     initialValues: {
       name: '',
       is_main: false,
-      products: [],
     },
     validationSchema: storeSchema,
     onSubmit: async values => {
