@@ -1,7 +1,7 @@
 import { expenseCategorySnackbarMessages } from 'src/constants/snackbarMessages';
 import { API_KEYS } from 'src/query/keys/queryConfig';
 import { ExpenseCategory } from './interface';
-import useDeleteEntity from '../common/useDeleteEntity';
+import useSoftDeleteEntity from '../common/useSoftDeleteEntity';
 
 const useDeleteExpenseCategory = () => {
   const {
@@ -9,7 +9,7 @@ const useDeleteExpenseCategory = () => {
     setEntityToDelete: setExpenseCategoryToDelete,
     mutate,
     isLoading,
-  } = useDeleteEntity<ExpenseCategory>({
+  } = useSoftDeleteEntity<ExpenseCategory>({
     entityName: 'expense_categories',
     queryKey: API_KEYS.FETCH_EXPENSE_CATEGORIES,
     successMessage: expenseCategorySnackbarMessages.success.delete,

@@ -71,6 +71,7 @@ function ProductComponent() {
                 <ListItemText
                   key={productDetail.id}
                   primary={`Nombre: ${productDetail.products.name}, Cantidad: ${productDetail.arithmetic_quantity}`}
+                  disableTypography
                 />
               ))}
             </>

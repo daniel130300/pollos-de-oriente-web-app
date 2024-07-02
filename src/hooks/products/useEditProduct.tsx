@@ -4,12 +4,11 @@ import {
   productFormsValidations,
   productSnackbarMessages,
 } from 'src/constants';
-import { generateFilename } from 'src/utils';
+import { generateFilename, generateTimestampTZ } from 'src/utils';
 import { supabase } from 'src/supabaseClient';
 import { useEditEntity } from '../common/useEditEntity';
 import { EditableProductDetail, Product } from './interface';
 import useGetProductDetails from './useGetProductDetail';
-
 type EditProduct = Omit<Product, 'id'> & {
   has_product_detail: boolean;
   product_detail: EditableProductDetail[];
@@ -78,6 +77,11 @@ const useEditProduct = ({
     formik.setFieldValue('product_image', file);
   };
 
+  const handleSubmit = () => {
+    formik.setValues({ ...formik.values, product_detail: productDetail });
+    formik.handleSubmit();
+  };
+
   const mutationFn = async (values: EditProduct) => {
     if (values.product_image && values.product_image instanceof File) {
       const image_file_name = generateFilename(
@@ -97,16 +101,61 @@ const useEditProduct = ({
       values.file_name = image.path;
     }
 
-    const { product_image, ...rest } = values;
+    const { product_image, has_product_detail, product_detail, ...rest } =
+      values;
 
-    const { data } = await supabase
+    const { data: productData } = await supabase
       .from('products')
       .update(rest)
       .eq('id', id)
       .select()
       .throwOnError();
 
-    return data;
+    if (!has_product_detail && productDetail.length > 0) {
+      const { data: productDetailData } = await supabase
+        .from('product_details')
+        .update({ deleted_at: generateTimestampTZ() })
+        .eq('parent_product_id', id)
+        .throwOnError();
+
+      return { productData, productDetailData };
+    }
+
+    if (has_product_detail && product_detail.length !== 0) {
+      const formattedProductDetail = product_detail.map(detail => ({
+        parent_product_id: (productData as any)[0].id,
+        child_product_id: detail.id,
+        arithmetic_quantity: detail.arithmetic_quantity,
+      }));
+
+      const reformattedProductDetails = productDetails.map((detail: any) => ({
+        parent_product_id: (productData as any)[0].id,
+        child_product_id: detail.products.id,
+        arithmetic_quantity: detail.arithmetic_quantity,
+      }));
+
+      const productDetailsToDelete = reformattedProductDetails
+        .filter(
+          (pd: any) =>
+            !formattedProductDetail.some(
+              fpd => fpd.child_product_id === pd.child_product_id,
+            ),
+        )
+        .map((pd: any) => ({
+          ...pd,
+          deleted_at: generateTimestampTZ(),
+        }));
+
+      const { data: productDetailData } = await supabase
+        .from('product_details')
+        .upsert([...formattedProductDetail, ...productDetailsToDelete])
+        .select()
+        .throwOnError();
+
+      return { productData, productDetailData };
+    }
+
+    return { productData };
   };
 
   const { formik, isLoading } = useEditEntity<EditProduct>({
@@ -137,6 +186,7 @@ const useEditProduct = ({
     isLoading,
     productDetail,
     setProductDetail,
+    handleSubmit,
   };
 };
 
