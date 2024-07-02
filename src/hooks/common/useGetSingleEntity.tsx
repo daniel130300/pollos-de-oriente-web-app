@@ -31,6 +31,7 @@ const useGetEntity = ({
     let query = supabase
       .from(entity)
       .select(selectStatement)
+      .is('deleted_at', null)
       .eq(equalField, id);
 
     if (shouldUseSingle) {

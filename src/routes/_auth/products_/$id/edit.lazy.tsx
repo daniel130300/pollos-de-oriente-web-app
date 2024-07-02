@@ -41,6 +41,7 @@ function EditProduct() {
     handleFileSelect,
     productDetail,
     setProductDetail,
+    handleSubmit,
   } = useEditProduct({
     id,
     product,
@@ -164,7 +165,7 @@ function EditProduct() {
             </>
           )}
         </Stack>
-        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>
+        <Button onClick={() => handleSubmit()} isLoading={isLoading}>
           Editar Producto
         </Button>
       </>

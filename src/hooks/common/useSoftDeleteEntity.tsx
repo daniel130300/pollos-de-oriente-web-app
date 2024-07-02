@@ -11,10 +11,10 @@ type DeleteEntityOptions = {
   queryKey: string;
   successMessage: string;
   errorMessage: string;
-  entityDisplayName: string;
+  entityDisplayName?: string;
 };
 
-const useDeleteEntity = <T extends { id: string; name: string }>({
+const useSoftDeleteEntity = <T extends { id: string; name: string }>({
   entityName,
   queryKey,
   successMessage,
@@ -47,7 +47,7 @@ const useDeleteEntity = <T extends { id: string; name: string }>({
   });
 
   useEffect(() => {
-    if (!entityToDelete) return;
+    if (!entityToDelete || !entityDisplayName) return;
 
     handleOpen(
       deleteModal({
@@ -68,4 +68,4 @@ const useDeleteEntity = <T extends { id: string; name: string }>({
   };
 };
 
-export default useDeleteEntity;
+export default useSoftDeleteEntity;

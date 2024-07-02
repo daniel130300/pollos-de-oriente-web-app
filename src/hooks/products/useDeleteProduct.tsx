@@ -1,7 +1,7 @@
 import { productSnackbarMessages } from 'src/constants/snackbarMessages';
 import { API_KEYS } from 'src/query/keys/queryConfig';
 import { Product } from './interface';
-import useDeleteEntity from '../common/useDeleteEntity';
+import useSoftDeleteEntity from '../common/useSoftDeleteEntity';
 
 const useDeleteProduct = () => {
   const {
@@ -9,7 +9,7 @@ const useDeleteProduct = () => {
     setEntityToDelete: setProductToDelete,
     mutate,
     isLoading,
-  } = useDeleteEntity<Product>({
+  } = useSoftDeleteEntity<Product>({
     entityName: 'products',
     queryKey: API_KEYS.FETCH_PRODUCTS,
     successMessage: productSnackbarMessages.success.delete,
