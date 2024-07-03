@@ -27,8 +27,12 @@ function CategoryExpense() {
     <DetailsTemplate
       title="Detalle de la Categoría de Gasto"
       returnButtonProps={{ to: '/expenses/categories', params: {} }}
+      displaySubtitle={false}
     >
       <Card sx={{ p: 4 }}>
+        <Typography variant="h3" mb={4}>
+          Información General
+        </Typography>
         <Stack spacing={4}>
           <Typography variant="body1">Id: {expenseCategory.id}</Typography>
           <Typography variant="body1">
