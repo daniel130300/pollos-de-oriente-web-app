@@ -64,3 +64,19 @@ export const expenseCategorySnackbarMessages = {
     delete: 'Categoría de gasto eliminada exitosamente',
   },
 };
+
+export const combosSnackbarMessages = {
+  errors: {
+    create: 'Error creando el combo',
+    edit: 'Error editando el combo',
+    list: 'Error obteniendo el listado de combos',
+    count: 'Error obteniendo el conteo de combos',
+    detail: 'Error obteniendo el detalle del combo',
+    delete: 'Error eliminando el combo',
+  },
+  success: {
+    create: 'Combo creado exitosamente',
+    edit: 'Combo editado exitosamente',
+    delete: 'Combo eliminado exitosamente',
+  },
+};
