@@ -6,8 +6,8 @@ import { formatTimestamp } from 'src/utils';
 import Card from '@mui/material/Card';
 import { DynamicImage } from 'src/components/atoms/DynamicImage';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
-// import Divider from '@mui/material/Divider';
-// import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import useGetCombo from 'src/hooks/combos/useGetCombo';
 
@@ -18,9 +18,6 @@ export const Route = createLazyFileRoute('/_auth/combos/$id')({
 function ProductComponent() {
   const { id } = Route.useParams();
   const { combo, comboIsLoading } = useGetCombo({ id });
-  // const { productDetails, productDetailsIsLoading } = usetGetComboDetails({
-  //   parent_product_id: id,
-  // });
 
   if (comboIsLoading) return <Loader type="cover" />;
 
@@ -49,19 +46,15 @@ function ProductComponent() {
               <Typography variant="body1">
                 Actualizado: {formatTimestamp(combo.updated_at)}
               </Typography>
-              {/* {productDetails.length > 0 && (
-                <>
-                  <Divider />
-                  <Typography variant="h3">Productos Relacionados</Typography>
-                  {productDetails.map((productDetail: any) => (
-                    <ListItemText
-                      key={productDetail.id}
-                      primary={`Nombre: ${productDetail.products.name}, Cantidad: ${productDetail.arithmetic_quantity}`}
-                      disableTypography
-                    />
-                  ))}
-                </>
-              )} */}
+              <Divider />
+              <Typography variant="h3">Productos Relacionados</Typography>
+              {combo.combo_products.map((combo_product: any) => (
+                <ListItemText
+                  key={combo_product.product_id}
+                  primary={`Nombre: ${combo_product.products.name}, Cantidad: ${combo_product.quantity}`}
+                  disableTypography
+                />
+              ))}
             </Stack>
           </Grid>
           {combo.imagePublicUrl && (
