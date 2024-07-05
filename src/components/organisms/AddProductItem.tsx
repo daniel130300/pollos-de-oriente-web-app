@@ -1,19 +1,26 @@
-import { Dispatch } from 'react';
 import AutoCompleteSelect from '../molecules/AutoCompleteSelect';
 import InputField from '../atoms/InputField';
 import Button from '@mui/material/Button';
 import { productFormsValidations } from 'src/constants';
-import useAddProductDetail from 'src/hooks/products/useAddProductDetail';
-import { EditableProductDetail } from 'src/hooks/products/interface';
 import { apiItems } from 'src/constants/selectItems';
+import useAddProductDetail from 'src/hooks/products/useAddProductDetail';
+import useAddComboProduct from 'src/hooks/combos/useAddComboProduct';
+import { EditableProductDetail } from 'src/hooks/products/interface';
+import { EditableComboProduct } from 'src/hooks/combos/interface';
 
-export const AddDetailProductItem = ({
+interface AddProductItemProps {
+  productsList: EditableProductDetail[] | EditableComboProduct[];
+  setProducts:
+    | React.Dispatch<React.SetStateAction<EditableProductDetail[]>>
+    | React.Dispatch<React.SetStateAction<EditableComboProduct[]>>;
+  isCombo: boolean;
+}
+
+export const AddProductItem = ({
   productsList,
   setProducts,
-}: {
-  productsList: EditableProductDetail[];
-  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
-}) => {
+  isCombo,
+}: AddProductItemProps) => {
   const {
     search,
     autoCompleteProducts,
@@ -21,7 +28,19 @@ export const AddDetailProductItem = ({
     formik,
     productSelectError,
     setSearch,
-  } = useAddProductDetail({ productsList, setProducts });
+  } = isCombo
+    ? useAddComboProduct({
+        productsList: productsList as EditableComboProduct[],
+        setProducts: setProducts as React.Dispatch<
+          React.SetStateAction<EditableComboProduct[]>
+        >,
+      })
+    : useAddProductDetail({
+        productsList: productsList as EditableProductDetail[],
+        setProducts: setProducts as React.Dispatch<
+          React.SetStateAction<EditableProductDetail[]>
+        >,
+      });
 
   return (
     <>
@@ -41,8 +60,8 @@ export const AddDetailProductItem = ({
         errorMessage={productFormsValidations.select_product.required}
       />
       <InputField
-        id="arithmetic_quantity"
-        name="arithmetic_quantity"
+        id={isCombo ? 'quantity' : 'arithmetic_quantity'}
+        name={isCombo ? 'quantity' : 'arithmetic_quantity'}
         label="Cantidad"
         type="number"
         formik={formik}
@@ -54,4 +73,4 @@ export const AddDetailProductItem = ({
   );
 };
 
-export default AddDetailProductItem;
+export default AddProductItem;

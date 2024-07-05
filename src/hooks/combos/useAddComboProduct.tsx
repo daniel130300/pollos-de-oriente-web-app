@@ -1,16 +1,16 @@
 import { Dispatch } from 'react';
-import useGetProducts from './useGetProducts';
+import useGetProducts from '../products/useGetProducts';
 import * as yup from 'yup';
 import { productFormsValidations } from 'src/constants';
 import { useFormik } from 'formik';
-import { EditableProductDetail } from './interface';
+import { EditableComboProduct } from './interface';
 
-const useAddProductDetail = ({
+const useAddComboProduct = ({
   productsList,
   setProducts,
 }: {
-  productsList: EditableProductDetail[];
-  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
+  productsList: EditableComboProduct[];
+  setProducts: Dispatch<React.SetStateAction<EditableComboProduct[]>>;
 }) => {
   const {
     search,
@@ -22,7 +22,7 @@ const useAddProductDetail = ({
   const productSchema = yup.object().shape({
     id: yup.string().required(),
     name: yup.string().required(),
-    arithmetic_quantity: yup
+    quantity: yup
       .number()
       .typeError(productFormsValidations.quantity.typeError)
       .required(productFormsValidations.quantity.required)
@@ -33,20 +33,19 @@ const useAddProductDetail = ({
     initialValues: {
       id: '',
       name: '',
-      arithmetic_quantity: '',
+      quantity: '',
       editable: false,
     },
     validationSchema: productSchema,
     onSubmit: async values => {
-      const { id, arithmetic_quantity } = values;
+      const { id, quantity } = values;
       const existingProductIndex = productsList.findIndex(
         product => product.id === id,
       );
 
       if (existingProductIndex !== -1) {
         const updatedProducts = [...productsList];
-        updatedProducts[existingProductIndex].arithmetic_quantity +=
-          arithmetic_quantity;
+        updatedProducts[existingProductIndex].quantity += quantity;
         setProducts(updatedProducts);
       } else {
         setProducts(previousProducts => [...previousProducts, values]);
@@ -69,4 +68,4 @@ const useAddProductDetail = ({
   };
 };
 
-export default useAddProductDetail;
+export default useAddComboProduct;

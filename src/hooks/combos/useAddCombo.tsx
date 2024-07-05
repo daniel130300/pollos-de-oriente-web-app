@@ -4,9 +4,11 @@ import { comboFormsValidations, combosSnackbarMessages } from 'src/constants';
 import useAddEntity from '../common/useAddEntity';
 import { generateFilename } from 'src/utils';
 import { supabase } from 'src/supabaseClient';
-import { Combo } from './interface';
+import { Combo, EditableComboProduct } from './interface';
 
-type AddCombo = Omit<Combo, 'id'>;
+type AddCombo = Omit<Combo, 'id'> & {
+  combo_products: EditableComboProduct[];
+};
 
 const useAddCombo = () => {
   const comboSchema = yup.object().shape({
@@ -20,9 +22,22 @@ const useAddCombo = () => {
         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
       })
       .nullable(),
+    combo_products: yup
+      .array()
+      .of(
+        yup.object().shape({
+          id: yup.string().required(),
+          name: yup.string().required(),
+          quantity: yup.number().required(),
+        }),
+      )
+      .min(1, comboFormsValidations.combo_products.min(1)),
   });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [comboProducts, setComboProducts] = useState<EditableComboProduct[]>(
+    [],
+  );
 
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
@@ -30,7 +45,7 @@ const useAddCombo = () => {
   };
 
   const handleSubmit = () => {
-    formik.setValues({ ...formik.values });
+    formik.setValues({ ...formik.values, combo_products: comboProducts });
     formik.handleSubmit();
   };
 
@@ -50,7 +65,7 @@ const useAddCombo = () => {
       values.file_name = image.path;
     }
 
-    const { combo_image, ...rest } = values;
+    const { combo_image, combo_products, ...rest } = values;
 
     const { data: comboData } = await supabase
       .from('combos')
@@ -58,7 +73,19 @@ const useAddCombo = () => {
       .select()
       .throwOnError();
 
-    return { comboData };
+    const formattedComboProducts = combo_products.map(product => ({
+      combo_id: (comboData as any)[0].id,
+      product_id: product.id,
+      quantity: product.quantity,
+    }));
+
+    const { data: comboProducts } = await supabase
+      .from('combo_products')
+      .insert(formattedComboProducts)
+      .select()
+      .throwOnError();
+
+    return { comboData, comboProducts };
   };
 
   const { formik, isLoading } = useAddEntity<AddCombo>({
@@ -68,6 +95,7 @@ const useAddCombo = () => {
       bucket_id: null,
       file_name: null,
       search_id: '',
+      combo_products: [],
     },
     validationSchema: comboSchema,
     onSuccessPath: '/combos',
@@ -82,6 +110,8 @@ const useAddCombo = () => {
     handleFileSelect,
     isLoading,
     handleSubmit,
+    comboProducts,
+    setComboProducts,
   };
 };
 

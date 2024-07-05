@@ -16,8 +16,8 @@ import AutoCompleteSelect from 'src/components/molecules/AutoCompleteSelect';
 import Checkbox from 'src/components/atoms/Checkbox';
 import Divider from 'src/components/atoms/Divider';
 import Typography from '@mui/material/Typography';
-import { AddDetailProductItem } from 'src/components/organisms/AddDetailProductItem';
-import EditDetailProductItem from 'src/components/organisms/EditDetailProductItem';
+import AddProductItem from 'src/components/organisms/AddProductItem';
+import EditProductItem from 'src/components/organisms/EditProductItem';
 import List from '@mui/material/List';
 import { productFormsValidations } from 'src/constants';
 import Grid from '@mui/material/Grid';
@@ -112,19 +112,21 @@ function AddProduct() {
                   <Stack spacing={4}>
                     <List>
                       {productDetail.map((product, index) => (
-                        <EditDetailProductItem
+                        <EditProductItem
                           key={product.id}
                           index={index}
                           product={product}
                           productsList={productDetail}
                           setProducts={setProductDetail}
+                          isCombo={false}
                         />
                       ))}
                     </List>
                     <Stack direction="row" spacing={2}>
-                      <AddDetailProductItem
+                      <AddProductItem
                         productsList={productDetail}
                         setProducts={setProductDetail}
+                        isCombo={false}
                       />
                     </Stack>
                   </Stack>

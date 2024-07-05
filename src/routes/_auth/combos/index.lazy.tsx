@@ -9,10 +9,10 @@ import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
 import { formatTimestamp } from 'src/utils';
-// import { useNavigate } from '@tanstack/react-router';
-import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
-import { Product } from 'src/hooks/products/interface';
+import { useNavigate } from '@tanstack/react-router';
+import { Combo } from 'src/hooks/combos/interface';
 import useGetCombos from 'src/hooks/combos/useGetCombos';
+import useDeleteCombo from 'src/hooks/combos/useDeleteCombo';
 
 export const Route = createLazyFileRoute('/_auth/combos/')({
   component: Combos,
@@ -51,8 +51,8 @@ const columns: ColumnDef<any, any>[] = [
 ];
 
 function Combos() {
-  // const navigate = useNavigate();
-  const { setProductToDelete } = useDeleteProduct();
+  const navigate = useNavigate();
+  const { setComboToDelete } = useDeleteCombo();
   const {
     page,
     handleChangePage,
@@ -66,16 +66,16 @@ function Combos() {
     combosCountIsLoading,
   } = useGetCombos();
 
-  // const handleViewRow = (product: Product) => {
-  //   navigate({ to: '/combos/$id', params: { id: product.id } });
-  // };
+  const handleViewRow = (combo: Combo) => {
+    navigate({ to: '/combos/$id', params: { id: combo.id } });
+  };
 
   // const handleEditRow = (product: Product) => {
   //   navigate({ to: '/combos/$id/edit', params: { id: product.id } });
   // };
 
-  const handleDeleteRow = (product: Product) => {
-    setProductToDelete(product);
+  const handleDeleteRow = (combo: Combo) => {
+    setComboToDelete(combo);
   };
 
   return (
@@ -111,7 +111,7 @@ function Combos() {
       <TableUI
         data={combos || []}
         columns={columns}
-        emptyText="No se encontraron productos"
+        emptyText="No se encontraron combos"
         isFetching={combosIsLoading}
         page={page}
         handleChangePage={handleChangePage}
@@ -119,7 +119,7 @@ function Combos() {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         recordsCount={combosCount}
         recordsCountLoading={combosCountIsLoading}
-        // handleViewRow={handleViewRow}
+        handleViewRow={handleViewRow}
         // handleEditRow={handleEditRow}
         handleDeleteRow={handleDeleteRow}
       />

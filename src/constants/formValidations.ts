@@ -57,6 +57,9 @@ export const comboFormsValidations = {
     min: (value: number) => `La cantidad debe ser mayor o igual a ${value}`,
   },
   combo_image: 'La imagen debe ser un archivo de imagen válido',
+  combo_products: {
+    min: (value: number) => `El combo tener al menos ${value} producto`,
+  },
 };
 
 export const storeFormsValidations = {

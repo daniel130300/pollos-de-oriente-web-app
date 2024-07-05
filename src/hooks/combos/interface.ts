@@ -6,3 +6,10 @@ export interface Combo {
   file_name: string | null;
   combo_image: File | null;
 }
+
+export interface EditableComboProduct {
+  id: string;
+  name: string;
+  quantity: string;
+  editable: boolean;
+}
