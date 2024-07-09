@@ -22,8 +22,8 @@ import Checkbox from 'src/components/atoms/Checkbox';
 import Divider from 'src/components/atoms/Divider';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
-import EditDetailProductItem from 'src/components/organisms/EditDetailProductItem';
-import AddDetailProductItem from 'src/components/organisms/AddDetailProductItem';
+import EditProductItem from 'src/components/organisms/EditProductItem';
+import AddProductItem from 'src/components/organisms/AddProductItem';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
@@ -109,28 +109,22 @@ function EditProduct() {
                 items={inventorySubtractionItems}
                 formik={formik}
               />
-              <>
-                {expenseCategoriesIsLoading ? (
-                  <Loader />
-                ) : (
-                  <AutoCompleteSelect
-                    id="expense_category_id"
-                    name="expense_category_id"
-                    label="Se ingresa como"
-                    items={apiItems(expenseCategories)}
-                    onSelectChange={option => {
-                      formik.setFieldValue('expense_category_id', option.value);
-                    }}
-                    inputValue={expenseCategorySearch}
-                    setInputValue={setExpenseCategorySearch}
-                    loading={expenseCategoriesIsLoading}
-                    errorMessage={
-                      productFormsValidations.expense_category_id.required
-                    }
-                    error={!!formik.errors.expense_category_id}
-                  />
-                )}
-              </>
+              <AutoCompleteSelect
+                id="expense_category_id"
+                name="expense_category_id"
+                label="Se ingresa como"
+                items={apiItems(expenseCategories)}
+                onSelectChange={option => {
+                  formik.setFieldValue('expense_category_id', option.value);
+                }}
+                inputValue={expenseCategorySearch}
+                setInputValue={setExpenseCategorySearch}
+                loading={expenseCategoriesIsLoading}
+                errorMessage={
+                  productFormsValidations.expense_category_id.required
+                }
+                error={!!formik.errors.expense_category_id}
+              />
               <Checkbox
                 id="has_product_detail"
                 name="has_product_detail"
@@ -144,19 +138,21 @@ function EditProduct() {
                   <Stack spacing={4}>
                     <List>
                       {productDetail.map((product, index) => (
-                        <EditDetailProductItem
+                        <EditProductItem
                           key={product.id}
                           index={index}
                           product={product}
                           productsList={productDetail}
                           setProducts={setProductDetail}
+                          isCombo={false}
                         />
                       ))}
                     </List>
                     <Stack direction="row" spacing={2}>
-                      <AddDetailProductItem
+                      <AddProductItem
                         productsList={productDetail}
                         setProducts={setProductDetail}
+                        isCombo={false}
                       />
                     </Stack>
                   </Stack>

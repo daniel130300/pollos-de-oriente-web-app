@@ -61,7 +61,19 @@ const useEditProduct = ({
   }, [productDetails, productDetailsIsLoading]);
 
   const productSchema = yup.object().shape({
+    search_id: yup
+      .string()
+      .required(productFormsValidations.search_id.required),
     name: yup.string().required(productFormsValidations.name.required),
+    can_be_purchased_only: yup
+      .string()
+      .required(productFormsValidations.can_be_purchased_only.required),
+    inventory_subtraction: yup
+      .string()
+      .required(productFormsValidations.inventory_subtraction.required),
+    expense_category_id: yup
+      .string()
+      .required(productFormsValidations.expense_category_id.required),
     product_image: yup
       .mixed()
       .test('fileType', productFormsValidations.product_image, (value: any) => {
@@ -126,6 +138,7 @@ const useEditProduct = ({
         parent_product_id: (productData as any)[0].id,
         child_product_id: detail.id,
         arithmetic_quantity: detail.arithmetic_quantity,
+        deleted_at: null,
       }));
 
       const reformattedProductDetails = productDetails.map((detail: any) => ({

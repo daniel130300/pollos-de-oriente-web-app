@@ -3,6 +3,7 @@ import {
   EXPENSE_CATEGORIES_API_KEYS,
   USER_API_KEYS,
   STORE_API_KEYS,
+  COMBOS_API_KEYS,
 } from './index';
 
 export const API_KEYS = {
@@ -10,4 +11,5 @@ export const API_KEYS = {
   ...USER_API_KEYS,
   ...STORE_API_KEYS,
   ...EXPENSE_CATEGORIES_API_KEYS,
+  ...COMBOS_API_KEYS,
 };

@@ -14,17 +14,23 @@ import useEditDetailProduct from 'src/hooks/products/useEditDetailProduct';
 import { productFormsValidations } from 'src/constants';
 import { EditableProductDetail } from 'src/hooks/products/interface';
 import { apiItems } from 'src/constants/selectItems';
+import { EditableComboProduct } from 'src/hooks/combos/interface';
+import useEditComboProduct from 'src/hooks/combos/useEditComboProduct';
 
-export const EditDetailProductItem = ({
+export const EditProductItem = ({
   index,
   product,
   productsList,
   setProducts,
+  isCombo,
 }: {
   index: number;
-  product: EditableProductDetail;
-  productsList: EditableProductDetail[];
-  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
+  product: EditableProductDetail | EditableComboProduct;
+  productsList: EditableProductDetail[] | EditableComboProduct[];
+  setProducts:
+    | Dispatch<React.SetStateAction<EditableProductDetail[]>>
+    | Dispatch<React.SetStateAction<EditableComboProduct[]>>;
+  isCombo: boolean;
 }) => {
   const {
     search,
@@ -35,12 +41,23 @@ export const EditDetailProductItem = ({
     setSearch,
     handleDeleteProduct,
     toggleProductEditable,
-  } = useEditDetailProduct({
-    index,
-    productsList,
-    setProducts,
-    product,
-  });
+  } = isCombo
+    ? useEditComboProduct({
+        index,
+        productsList: productsList as EditableComboProduct[],
+        setProducts: setProducts as Dispatch<
+          React.SetStateAction<EditableComboProduct[]>
+        >,
+        product: product as EditableComboProduct,
+      })
+    : useEditDetailProduct({
+        index,
+        productsList: productsList as EditableProductDetail[],
+        setProducts: setProducts as Dispatch<
+          React.SetStateAction<EditableProductDetail[]>
+        >,
+        product: product as EditableProductDetail,
+      });
 
   return (
     <ListItem key={product.id}>
@@ -62,8 +79,8 @@ export const EditDetailProductItem = ({
             errorMessage={productFormsValidations.select_product.required}
           />
           <InputField
-            id="arithmetic_quantity"
-            name="arithmetic_quantity"
+            id={isCombo ? 'quantity' : 'arithmetic_quantity'}
+            name={isCombo ? 'quantity' : 'arithmetic_quantity'}
             label="Cantidad"
             type="number"
             formik={formik}
@@ -71,7 +88,7 @@ export const EditDetailProductItem = ({
         </Stack>
       ) : (
         <ListItemText
-          primary={`Nombre: ${product.name}, Cantidad: ${product.arithmetic_quantity}`}
+          primary={`Nombre: ${product.name}, Cantidad: ${isCombo ? (product as EditableComboProduct).quantity : (product as EditableProductDetail).arithmetic_quantity}`}
           disableTypography
         />
       )}
@@ -112,4 +129,4 @@ export const EditDetailProductItem = ({
   );
 };
 
-export default EditDetailProductItem;
+export default EditProductItem;
