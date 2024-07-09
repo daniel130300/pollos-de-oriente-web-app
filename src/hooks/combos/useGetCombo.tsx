@@ -25,7 +25,6 @@ const useGetCombo = ({ id }: { id: string }) => {
     queryKey: API_KEYS.FETCH_COMBO,
     snackbarMessages: combosSnackbarMessages,
     processData,
-    selectStatement: `*, combo_products(*, products(*)))`,
   });
 
   return {

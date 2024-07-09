@@ -6,10 +6,11 @@ import { formatTimestamp } from 'src/utils';
 import Card from '@mui/material/Card';
 import { DynamicImage } from 'src/components/atoms/DynamicImage';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
-import Divider from '@mui/material/Divider';
+import Divider from 'src/components/atoms/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import useGetCombo from 'src/hooks/combos/useGetCombo';
+import useGetComboProducts from 'src/hooks/combos/useGetComboProduct';
 
 export const Route = createLazyFileRoute('/_auth/combos/$id')({
   component: ProductComponent,
@@ -18,8 +19,11 @@ export const Route = createLazyFileRoute('/_auth/combos/$id')({
 function ProductComponent() {
   const { id } = Route.useParams();
   const { combo, comboIsLoading } = useGetCombo({ id });
+  const { comboProducts, comboProductsIsLoading } = useGetComboProducts({
+    combo_id: id,
+  });
 
-  if (comboIsLoading) return <Loader type="cover" />;
+  if (comboIsLoading || comboProductsIsLoading) return <Loader type="cover" />;
 
   return (
     <DetailsTemplate
@@ -48,7 +52,7 @@ function ProductComponent() {
               </Typography>
               <Divider />
               <Typography variant="h3">Productos Relacionados</Typography>
-              {combo.combo_products.map((combo_product: any) => (
+              {comboProducts.map((combo_product: any) => (
                 <ListItemText
                   key={combo_product.product_id}
                   primary={`Nombre: ${combo_product.products.name}, Cantidad: ${combo_product.quantity}`}

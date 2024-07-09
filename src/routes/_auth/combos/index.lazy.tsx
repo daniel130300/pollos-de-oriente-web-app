@@ -70,9 +70,9 @@ function Combos() {
     navigate({ to: '/combos/$id', params: { id: combo.id } });
   };
 
-  // const handleEditRow = (product: Product) => {
-  //   navigate({ to: '/combos/$id/edit', params: { id: product.id } });
-  // };
+  const handleEditRow = (combo: Combo) => {
+    navigate({ to: '/combos/$id/edit', params: { id: combo.id } });
+  };
 
   const handleDeleteRow = (combo: Combo) => {
     setComboToDelete(combo);
@@ -120,7 +120,7 @@ function Combos() {
         recordsCount={combosCount}
         recordsCountLoading={combosCountIsLoading}
         handleViewRow={handleViewRow}
-        // handleEditRow={handleEditRow}
+        handleEditRow={handleEditRow}
         handleDeleteRow={handleDeleteRow}
       />
     </>

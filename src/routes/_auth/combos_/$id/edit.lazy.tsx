@@ -1,36 +1,61 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 import Stack from '@mui/material/Stack';
-import ImageUploadCard from 'src/components/molecules/ImageUploadCard';
 import InputField from 'src/components/atoms/InputField';
-import Button from 'src/components/atoms/Button';
+import { Button } from 'src/components/atoms/Button';
+import Loader from 'src/components/atoms/Loader';
+import ImageUploadCard from 'src/components/molecules/ImageUploadCard';
+import useDeleteFile from 'src/hooks/common/useDeleteFile';
+import { API_KEYS } from 'src/query/keys/queryConfig';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import useAddCombo from 'src/hooks/combos/useAddCombo';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from 'src/components/atoms/Divider';
-import AddProductItem from 'src/components/organisms/AddProductItem';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
 import EditProductItem from 'src/components/organisms/EditProductItem';
+import AddProductItem from 'src/components/organisms/AddProductItem';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import useGetCombo from 'src/hooks/combos/useGetCombo';
+import useEditCombo from 'src/hooks/combos/useEditCombo';
 
-export const Route = createLazyFileRoute('/_auth/combos/add-combo')({
-  component: AddCombo,
+export const Route = createLazyFileRoute('/_auth/combos/$id/edit')({
+  component: EditCombo,
 });
 
-function AddCombo() {
+function EditCombo() {
+  const { id } = Route.useParams();
+  const { combo, comboIsLoading, comboIsFetching } = useGetCombo({
+    id,
+  });
   const {
     formik,
+    isLoading,
     selectedFile,
     handleFileSelect,
-    isLoading,
+    comboProduct,
+    setComboProduct,
     handleSubmit,
-    comboProducts,
-    setComboProducts,
-  } = useAddCombo();
+  } = useEditCombo({
+    id,
+    combo,
+  });
+
+  const { mutate, isLoading: deleteImageIsLoading } = useDeleteFile();
+
+  const handleDeleteImage = () => {
+    mutate({
+      id: combo.id,
+      tableName: 'combos',
+      bucket_id: combo.bucket_id,
+      file_name: combo.file_name,
+      invalidators: [API_KEYS.FETCH_COMBO],
+    });
+  };
+
+  if (comboIsLoading) return <Loader type="cover" />;
 
   return (
     <DetailsTemplate
-      title="Agregar Combo"
+      title="Editar Combo"
       returnButtonProps={{ to: '/combos', params: {} }}
       gridSizes={{ xs: 10, sm: 10, md: 12 }}
     >
@@ -56,21 +81,21 @@ function AddCombo() {
               <Typography variant="h3">Productos Combo</Typography>
               <Stack spacing={4}>
                 <List>
-                  {comboProducts.map((product, index) => (
+                  {comboProduct.map((product, index) => (
                     <EditProductItem
                       key={product.id}
                       index={index}
                       product={product}
-                      productsList={comboProducts}
-                      setProducts={setComboProducts}
+                      productsList={comboProduct}
+                      setProducts={setComboProduct}
                       isCombo={true}
                     />
                   ))}
                 </List>
                 <Stack direction="row" spacing={2}>
                   <AddProductItem
-                    productsList={comboProducts}
-                    setProducts={setComboProducts}
+                    productsList={comboProduct}
+                    setProducts={setComboProduct}
                     isCombo={true}
                   />
                 </Stack>
@@ -81,12 +106,15 @@ function AddCombo() {
             <ImageUploadCard
               file={selectedFile}
               setSelectedFile={handleFileSelect}
+              src={combo.imagePublicUrl}
+              handleDelete={handleDeleteImage}
+              loading={deleteImageIsLoading || comboIsFetching}
             />
           </Grid>
         </Grid>
         <Box sx={{ display: 'flex', mt: 4, justifyContent: 'end' }}>
           <Button onClick={() => handleSubmit()} isLoading={isLoading}>
-            Agregar Combo
+            Editar Combo
           </Button>
         </Box>
       </>
@@ -94,4 +122,4 @@ function AddCombo() {
   );
 }
 
-export default AddCombo;
+export default EditCombo;

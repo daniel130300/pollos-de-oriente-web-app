@@ -11,7 +11,7 @@ import {
 import Card from '@mui/material/Card';
 import { DynamicImage } from 'src/components/atoms/DynamicImage';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
-import Divider from '@mui/material/Divider';
+import Divider from 'src/components/atoms/Divider';
 import useGetProductDetails from 'src/hooks/products/useGetProductDetail';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
