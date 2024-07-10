@@ -1,45 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from 'src/supabaseClient';
-import { enqueueSnackbar } from 'notistack';
-import { storeSnackbarMessages } from 'src/constants';
 import { API_KEYS } from 'src/query/keys/queryConfig';
+import { storeSnackbarMessages } from 'src/constants';
+import useGetSingleEntity from 'src/hooks/common/useGetSingleEntity';
 
-interface UseGetStoreProps {
-  id: string;
-}
-
-const useGetStore = ({ id }: UseGetStoreProps) => {
-  const getStore = async ({ id }: { id: string }) => {
-    const { data } = await supabase
-      .from('stores')
-      .select(
-        `
-                            *,
-                            store_products (
-                              store_id
-                            )
-                          `,
-      )
-      .eq('id', id)
-      .single()
-      .throwOnError();
-    return data;
-  };
-
+const useGetStore = ({ id }: { id: string }) => {
   const {
     isLoading: storeIsLoading,
     isFetching: storeIsFetching,
-    data: store,
     isError: storeIsError,
-  } = useQuery({
-    queryKey: [API_KEYS.FETCH_STORE, { id }],
-    queryFn: () => getStore({ id }),
-    throwOnError: () => {
-      enqueueSnackbar(storeSnackbarMessages.errors.detail, {
-        variant: 'error',
-      });
-      return true;
-    },
+    data: store,
+  } = useGetSingleEntity({
+    id,
+    entity: 'establishments',
+    queryKey: API_KEYS.FETCH_STORE,
+    snackbarMessages: storeSnackbarMessages,
   });
 
   return {

@@ -23,10 +23,6 @@ export function formatTimestamp(timestamp: string): string {
   return new Date(timestamp).toLocaleString();
 }
 
-export function formatBooleanToStringLabel(value: boolean): string {
-  return value ? 'Si' : 'No';
-}
-
 export function formatStringToBoolean(input: string): boolean | null {
   const lowerCaseInput = input.toLowerCase().trim();
 

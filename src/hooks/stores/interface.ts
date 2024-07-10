@@ -1,5 +1,9 @@
+import { EstablishmentTypes } from '../expense-category/interface';
+
 export interface Store {
   id: string;
   name: string;
-  is_main: boolean;
+  has_delivery: boolean;
+  has_pos: boolean;
+  type: EstablishmentTypes | '';
 }

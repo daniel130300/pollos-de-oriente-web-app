@@ -11,6 +11,8 @@ interface UseGetEntityProps {
   searchField?: string;
   entity: string;
   selectStatement?: string;
+  equalField?: string;
+  equalFieldSearch?: string;
   snackbarMessages: {
     errors: {
       list: string;
@@ -29,6 +31,8 @@ const useGetEntity = ({
   snackbarMessages,
   dataQueryKey,
   countQueryKey,
+  equalField,
+  equalFieldSearch,
 }: UseGetEntityProps) => {
   const getEntity = async () => {
     const start = page * rowsPerPage;
@@ -38,6 +42,10 @@ const useGetEntity = ({
       .from(entity)
       .select(selectStatement)
       .is('deleted_at', null);
+
+    if (equalField) {
+      query = query.eq(equalField, equalFieldSearch);
+    }
 
     if (search) {
       query = query.ilike(searchField, `%${search}%`);

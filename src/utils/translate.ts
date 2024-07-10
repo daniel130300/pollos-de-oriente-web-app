@@ -32,3 +32,7 @@ export function translateProductInventorySubtraction(
       return 'manual';
   }
 }
+
+export function translateBooleanToString(value: boolean): string {
+  return value ? 'Si' : 'No';
+}

@@ -1,59 +1,62 @@
-import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useNavigate } from '@tanstack/react-router';
-import { useMutation } from '@tanstack/react-query';
 import { storeFormsValidations, storeSnackbarMessages } from 'src/constants';
-import { supabase } from 'src/supabaseClient';
+import useEditEntity from '../common/useEditEntity';
 import { Store } from './interface';
+import { supabase } from 'src/supabaseClient';
+import { useEffect } from 'react';
+import { EstablishmentTypes } from '../expense-category/interface';
 
 type EditStore = Omit<Store, 'id'>;
 
-const useEditStore = ({ id }: { id: string }) => {
-  const { enqueueSnackbar } = useSnackbar();
-  const navigate = useNavigate();
+const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
+  useEffect(() => {
+    if (store) {
+      formik.setValues({
+        name: store.name,
+        type: store.type || EstablishmentTypes.STORE,
+        has_delivery: store.has_delivery,
+        has_pos: store.has_pos,
+      });
+    }
+  }, [store]);
 
   const storeSchema = yup.object().shape({
     name: yup.string().required(storeFormsValidations.name.required),
-    is_main: yup.string().required(storeFormsValidations.is_main.required),
+    has_delivery: yup
+      .string()
+      .required(storeFormsValidations.has_delivery.required),
+    has_pos: yup.string().required(storeFormsValidations.has_pos.required),
   });
 
-  const { isPending, mutate } = useMutation({
-    mutationFn: async (values: EditStore) => {
-      const { data } = await supabase
-        .from('stores')
-        .update(values)
-        .eq('id', id)
-        .select()
-        .throwOnError();
-      return data;
-    },
-    onSuccess: () => {
-      enqueueSnackbar(storeSnackbarMessages.success.edit, {
-        variant: 'success',
-      });
-      navigate({ to: '/stores' });
-    },
-    onError: () => {
-      enqueueSnackbar(storeSnackbarMessages.errors.edit, { variant: 'error' });
-    },
-  });
+  const mutationFn = async (values: EditStore) => {
+    const { data } = await supabase
+      .from('establishments')
+      .update(values)
+      .eq('id', id)
+      .select()
+      .throwOnError();
 
-  const formik = useFormik<EditStore>({
+    return data;
+  };
+
+  const { formik, isLoading } = useEditEntity({
+    id,
     initialValues: {
       name: '',
-      is_main: false,
+      type: EstablishmentTypes.STORE,
+      has_delivery: false,
+      has_pos: false,
     },
     validationSchema: storeSchema,
-    onSubmit: async values => {
-      mutate(values);
-    },
-    enableReinitialize: true,
+    onSuccessPath: '/establishments/stores',
+    successMessage: storeSnackbarMessages.success.edit,
+    errorMessage: storeSnackbarMessages.errors.edit,
+    mutationFn,
   });
 
   return {
     formik,
-    isLoading: isPending,
+    isLoading,
   };
 };
 

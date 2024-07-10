@@ -8,11 +8,7 @@ import Button from 'src/components/atoms/Button';
 import SelectField from 'src/components/atoms/SelectField';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 import useAddStore from 'src/hooks/stores/useAddStore';
-
-const selectItems = [
-  { label: 'Si', value: 'true' },
-  { label: 'No', value: 'false' },
-];
+import { booleanItems } from 'src/constants/selectItems';
 
 const AddStore = () => {
   const { formik, isLoading } = useAddStore();
@@ -24,7 +20,7 @@ const AddStore = () => {
   return (
     <DetailsTemplate
       title="Agregar Tienda"
-      returnButtonProps={{ to: '/stores', params: {} }}
+      returnButtonProps={{ to: '/establishments/stores', params: {} }}
     >
       <Stack spacing={4} mb={4}>
         <Card sx={{ px: 4, pb: 4 }}>
@@ -41,10 +37,17 @@ const AddStore = () => {
                 formik={formik}
               />
               <SelectField
-                id="is_main"
-                name="is_main"
-                label="Principal"
-                items={selectItems}
+                id="has_delivery"
+                name="has_delivery"
+                label="Tiene Delivery?"
+                items={booleanItems}
+                formik={formik}
+              />
+              <SelectField
+                id="has_pos"
+                name="has_pos"
+                label="Tiene POS?"
+                items={booleanItems}
                 formik={formik}
               />
             </Stack>
@@ -58,7 +61,9 @@ const AddStore = () => {
   );
 };
 
-export const Route = createLazyFileRoute('/_auth/stores/add-store')({
+export const Route = createLazyFileRoute(
+  '/_auth/establishments/stores/add-store',
+)({
   component: AddStore,
 });
 

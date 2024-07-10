@@ -17,12 +17,17 @@ export const Route = createLazyFileRoute('/_auth/expenses/categories/$id/edit')(
 
 function EditExpenseCategory() {
   const { id } = Route.useParams();
-  const { expenseCategory, expenseCategoryIsLoading } = useGetExpenseCategory({
+  const {
+    expenseCategory,
+    expenseCategoryIsLoading,
+    expenseCategoryIsFetching,
+  } = useGetExpenseCategory({
     id,
   });
   const { formik, isLoading } = useEditExpenseCategory({ id, expenseCategory });
 
-  if (expenseCategoryIsLoading) return <Loader type="cover" />;
+  if (expenseCategoryIsLoading || expenseCategoryIsFetching)
+    return <Loader type="cover" />;
 
   return (
     <DetailsTemplate

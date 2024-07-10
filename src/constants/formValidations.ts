@@ -66,8 +66,11 @@ export const storeFormsValidations = {
   name: {
     required: 'El nombre es un campo requerido',
   },
-  is_main: {
-    required: 'Es necesario especificar si la tienda es la principal o no',
+  has_delivery: {
+    required: 'Es necesario especificar si la tienda tiene delivery o no',
+  },
+  has_pos: {
+    required: 'Es necesario especificar si la tienda tiene pos o no',
   },
 };
 
