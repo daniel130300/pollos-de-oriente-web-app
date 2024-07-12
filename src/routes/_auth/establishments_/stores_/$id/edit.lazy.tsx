@@ -8,6 +8,11 @@ import DetailsTemplate from 'src/components/templates/DetailsTemplate';
 import useGetStore from 'src/hooks/stores/useGetStore';
 import useEditStore from 'src/hooks/stores/useEditStore';
 import { booleanItems } from 'src/constants/selectItems';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import { EditStoreItem } from 'src/components/organisms/EditStoreItem';
+import { AddStoreItem } from 'src/components/organisms/AddStoreItem';
 
 export const Route = createLazyFileRoute(
   '/_auth/establishments/stores/$id/edit',
@@ -20,7 +25,11 @@ function EditStore() {
   const { store, storeIsLoading, storeIsFetching } = useGetStore({
     id,
   });
-  const { formik, isLoading } = useEditStore({ id, store });
+  const { formik, isLoading, combos, setCombos, products, setProducts } =
+    useEditStore({
+      id,
+      store,
+    });
 
   if (storeIsLoading || storeIsFetching) return <Loader type="cover" />;
 
@@ -52,6 +61,52 @@ function EditStore() {
             items={booleanItems}
             formik={formik}
           />
+          <Divider />
+          <Typography variant="h3">Menu</Typography>
+          <Typography variant="h4">Productos</Typography>
+          <Stack spacing={4}>
+            <List>
+              {products.map((product, index) => (
+                <EditStoreItem
+                  key={product.id}
+                  index={index}
+                  item={product}
+                  itemsList={products}
+                  setItems={setProducts}
+                  isProduct={true}
+                />
+              ))}
+            </List>
+            <Stack direction="row" spacing={2}>
+              <AddStoreItem
+                itemsList={products}
+                setItems={setProducts}
+                isProduct={true}
+              />
+            </Stack>
+          </Stack>
+          <Typography variant="h4">Combos</Typography>
+          <Stack spacing={4}>
+            <List>
+              {combos.map((combo, index) => (
+                <EditStoreItem
+                  key={combo.id}
+                  index={index}
+                  item={combo}
+                  itemsList={combos}
+                  setItems={setCombos}
+                  isProduct={false}
+                />
+              ))}
+            </List>
+            <Stack direction="row" spacing={2}>
+              <AddStoreItem
+                itemsList={combos}
+                setItems={setCombos}
+                isProduct={false}
+              />
+            </Stack>
+          </Stack>
         </Stack>
         <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>
           Editar Tienda

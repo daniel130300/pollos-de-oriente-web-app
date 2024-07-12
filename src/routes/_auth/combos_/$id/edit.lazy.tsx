@@ -31,8 +31,8 @@ function EditCombo() {
     isLoading,
     selectedFile,
     handleFileSelect,
-    comboProduct,
-    setComboProduct,
+    products,
+    setProducts,
     handleSubmit,
   } = useEditCombo({
     id,
@@ -81,21 +81,21 @@ function EditCombo() {
               <Typography variant="h3">Productos Combo</Typography>
               <Stack spacing={4}>
                 <List>
-                  {comboProduct.map((product, index) => (
+                  {products.map((product, index) => (
                     <EditProductItem
                       key={product.id}
                       index={index}
                       product={product}
-                      productsList={comboProduct}
-                      setProducts={setComboProduct}
+                      productsList={products}
+                      setProducts={setProducts}
                       isCombo={true}
                     />
                   ))}
                 </List>
                 <Stack direction="row" spacing={2}>
                   <AddProductItem
-                    productsList={comboProduct}
-                    setProducts={setComboProduct}
+                    productsList={products}
+                    setProducts={setProducts}
                     isCombo={true}
                   />
                 </Stack>

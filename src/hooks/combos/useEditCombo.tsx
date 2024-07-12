@@ -13,7 +13,7 @@ type EditCombo = Omit<Combo, 'id'> & {
 
 const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [comboProduct, setComboProduct] = useState<EditableComboProduct[]>([]);
+  const [products, setProducts] = useState<EditableComboProduct[]>([]);
 
   const { comboProducts, comboProductsIsLoading } = useGetComboProducts({
     comboId: id,
@@ -21,14 +21,12 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
 
   useEffect(() => {
     if (combo && comboProducts && !comboProductsIsLoading) {
-      const formattedComboProducts = comboProducts.map(
-        (combo_product: any) => ({
-          id: combo_product.product_id,
-          name: combo_product.products.name,
-          quantity: combo_product.quantity,
-          editable: false,
-        }),
-      );
+      const formattedComboProducts = comboProducts.map((comboProduct: any) => ({
+        id: comboProduct.product_id,
+        name: comboProduct.products.name,
+        quantity: comboProduct.quantity,
+        editable: false,
+      }));
       formik.setValues({
         name: combo.name,
         combo_image: null,
@@ -37,7 +35,7 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
         search_id: combo.search_id,
         combo_products: formattedComboProducts || [],
       });
-      setComboProduct(formattedComboProducts);
+      setProducts(formattedComboProducts);
     }
   }, [combo, comboProducts, comboProductsIsLoading]);
 
@@ -70,7 +68,7 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
   };
 
   const handleSubmit = () => {
-    formik.setValues({ ...formik.values, combo_products: comboProduct });
+    formik.setValues({ ...formik.values, combo_products: products });
     formik.handleSubmit();
   };
 
@@ -106,13 +104,11 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
       deleted_at: null,
     }));
 
-    const reformattedComboProducts = comboProducts.map(
-      (combo_product: any) => ({
-        combo_id: (comboData as any)[0].id,
-        product_id: combo_product.product_id,
-        quantity: combo_product.quantity,
-      }),
-    );
+    const reformattedComboProducts = comboProducts.map((comboProduct: any) => ({
+      combo_id: (comboData as any)[0].id,
+      product_id: comboProduct.product_id,
+      quantity: comboProduct.quantity,
+    }));
 
     const comboProductsToDelete = reformattedComboProducts
       .filter(
@@ -158,8 +154,8 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
     selectedFile,
     handleFileSelect,
     isLoading,
-    comboProduct,
-    setComboProduct,
+    products,
+    setProducts,
     handleSubmit,
   };
 };
