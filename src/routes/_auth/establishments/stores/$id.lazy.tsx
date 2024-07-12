@@ -32,8 +32,12 @@ function StoreComponent() {
     <DetailsTemplate
       title="Detalle de la Tienda"
       returnButtonProps={{ to: '/establishments/stores', params: {} }}
+      displaySubtitle={false}
     >
       <Card sx={{ p: 4 }}>
+        <Typography variant="h3" mb={4}>
+          Información General
+        </Typography>
         <Stack spacing={4}>
           <Typography variant="body1">Id: {store.id}</Typography>
           <Typography variant="body1">Nombre: {store.name}</Typography>
