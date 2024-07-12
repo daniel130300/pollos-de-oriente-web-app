@@ -7,3 +7,17 @@ export interface Store {
   has_pos: boolean;
   type: EstablishmentTypes | '';
 }
+
+export interface EditableStoreProduct {
+  id: string;
+  name: string;
+  sale_price: string;
+  editable: boolean;
+}
+
+export interface EditableStoreCombo {
+  id: string;
+  name: string;
+  sale_price: string;
+  editable: boolean;
+}

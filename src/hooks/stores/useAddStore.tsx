@@ -1,9 +1,10 @@
 import { storeFormsValidations, storeSnackbarMessages } from 'src/constants';
-import { Store } from './interface';
+import { EditableStoreCombo, EditableStoreProduct, Store } from './interface';
 import useAddEntity from '../common/useAddEntity';
 import * as yup from 'yup';
 import { supabase } from 'src/supabaseClient';
 import { EstablishmentTypes } from '../expense-category/interface';
+import { useState } from 'react';
 
 type AddStore = Omit<Store, 'id'>;
 
@@ -15,6 +16,11 @@ const useAddStore = () => {
       .required(storeFormsValidations.has_delivery.required),
     has_pos: yup.string().required(storeFormsValidations.has_pos.required),
   });
+
+  const [storeProducts, setStoreProducts] = useState<EditableStoreProduct[]>(
+    [],
+  );
+  const [storeCombos, setStoreCombos] = useState<EditableStoreCombo[]>([]);
 
   const mutationFn = async (values: AddStore) => {
     const { data } = await supabase
@@ -42,6 +48,10 @@ const useAddStore = () => {
   return {
     formik,
     isLoading,
+    storeProducts,
+    setStoreProducts,
+    storeCombos,
+    setStoreCombos,
   };
 };
 
