@@ -3,10 +3,10 @@ import InputField from '../atoms/InputField';
 import Button from '@mui/material/Button';
 import { apiItems, productFormsValidations } from 'src/constants';
 import { EditableStoreProduct } from 'src/hooks/stores/interface';
-import useAddStoreProductItem from 'src/hooks/stores/useAddStoreProductItem';
+import useAddStoreProduct from 'src/hooks/stores/useAddStoreProduct';
 import { comboFormsValidations } from 'src/constants';
 import { EditableStoreCombo } from 'src/hooks/stores/interface';
-import useAddStoreComboItem from 'src/hooks/stores/useAddStoreComboItem';
+import useAddStoreCombo from 'src/hooks/stores/useAddStoreCombo';
 
 interface AddStoreItemProps {
   itemsList: EditableStoreProduct[] | EditableStoreCombo[];
@@ -29,8 +29,8 @@ export const AddStoreItem = ({
     itemSelectError,
     setSearch,
   } = isProduct
-    ? useAddStoreProductItem({ productsList: itemsList, setProducts: setItems })
-    : useAddStoreComboItem({ combosList: itemsList, setCombos: setItems });
+    ? useAddStoreProduct({ productsList: itemsList, setProducts: setItems })
+    : useAddStoreCombo({ combosList: itemsList, setCombos: setItems });
 
   return (
     <>

@@ -20,7 +20,7 @@ function ProductComponent() {
   const { id } = Route.useParams();
   const { combo, comboIsLoading } = useGetCombo({ id });
   const { comboProducts, comboProductsIsLoading } = useGetComboProducts({
-    combo_id: id,
+    comboId: id,
   });
 
   if (comboIsLoading || comboProductsIsLoading) return <Loader type="cover" />;
@@ -52,10 +52,10 @@ function ProductComponent() {
               </Typography>
               <Divider />
               <Typography variant="h3">Productos Relacionados</Typography>
-              {comboProducts.map((combo_product: any) => (
+              {comboProducts.map((comboProduct: any) => (
                 <ListItemText
-                  key={combo_product.product_id}
-                  primary={`Nombre: ${combo_product.products.name}, Cantidad: ${combo_product.quantity}`}
+                  key={comboProduct.product_id}
+                  primary={`Nombre: ${comboProduct.products.name}, Cantidad: ${comboProduct.quantity}`}
                   disableTypography
                 />
               ))}

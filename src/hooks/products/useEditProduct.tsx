@@ -27,7 +27,7 @@ const useEditProduct = ({
   );
 
   const { productDetails, productDetailsIsLoading } = useGetProductDetails({
-    parent_product_id: id,
+    parentProductId: id,
   });
 
   useEffect(() => {

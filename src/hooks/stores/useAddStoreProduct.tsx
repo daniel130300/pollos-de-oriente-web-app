@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import { EditableStoreProduct } from './interface';
 import useGetProducts from '../products/useGetProducts';
 
-const useAddStoreProductItem = ({
+const useAddStoreProduct = ({
   productsList,
   setProducts,
 }: {
@@ -68,4 +68,4 @@ const useAddStoreProductItem = ({
   };
 };
 
-export default useAddStoreProductItem;
+export default useAddStoreProduct;

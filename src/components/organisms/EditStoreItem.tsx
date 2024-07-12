@@ -16,8 +16,8 @@ import {
   EditableStoreProduct,
   EditableStoreCombo,
 } from 'src/hooks/stores/interface';
-import useEditStoreProductItem from 'src/hooks/stores/useEditStoreProductItem';
-import useEditStoreComboItem from 'src/hooks/stores/useEditStoreComboItem';
+import useEditStoreProduct from 'src/hooks/stores/useEditStoreProduct';
+import useEditStoreCombo from 'src/hooks/stores/useEditStoreCombo';
 
 export const EditStoreItem = ({
   isProduct,
@@ -44,13 +44,13 @@ export const EditStoreItem = ({
     handleDeleteItem,
     toggleItemEditable,
   } = isProduct
-    ? useEditStoreProductItem({
+    ? useEditStoreProduct({
         index,
         productsList: itemsList,
         setProducts: setItems,
         product: item,
       })
-    : useEditStoreComboItem({
+    : useEditStoreCombo({
         index,
         combosList: itemsList,
         setCombos: setItems,

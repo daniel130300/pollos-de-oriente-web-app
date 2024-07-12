@@ -16,7 +16,7 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
   const [comboProduct, setComboProduct] = useState<EditableComboProduct[]>([]);
 
   const { comboProducts, comboProductsIsLoading } = useGetComboProducts({
-    combo_id: id,
+    comboId: id,
   });
 
   useEffect(() => {

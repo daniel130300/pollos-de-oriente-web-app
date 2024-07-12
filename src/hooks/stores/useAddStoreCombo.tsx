@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import { EditableStoreCombo } from './interface';
 import useGetCombos from '../combos/useGetCombos';
 
-const useAddStoreComboItem = ({
+const useAddStoreCombo = ({
   combosList,
   setCombos,
 }: {
@@ -68,4 +68,4 @@ const useAddStoreComboItem = ({
   };
 };
 
-export default useAddStoreComboItem;
+export default useAddStoreCombo;
