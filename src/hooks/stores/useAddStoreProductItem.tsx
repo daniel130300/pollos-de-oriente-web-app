@@ -15,8 +15,8 @@ const useAddStoreProductItem = ({
   const {
     search,
     setSearch,
-    products: autoCompleteProducts,
-    productsIsLoading: autoCompleteProductsLoading,
+    products: autoCompleteItems,
+    productsIsLoading: autoCompleteItemsLoading,
   } = useGetProducts();
 
   const productSchema = yup.object().shape({
@@ -56,15 +56,15 @@ const useAddStoreProductItem = ({
     enableReinitialize: true,
   });
 
-  const productSelectError = !!formik.errors.id && !!formik.errors.name;
+  const itemSelectError = !!formik.errors.id && !!formik.errors.name;
 
   return {
     search,
     setSearch,
-    autoCompleteProducts,
-    autoCompleteProductsLoading,
+    autoCompleteItems,
+    autoCompleteItemsLoading,
     formik,
-    productSelectError,
+    itemSelectError,
   };
 };
 

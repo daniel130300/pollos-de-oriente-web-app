@@ -17,8 +17,8 @@ const useEditStoreProductItem = ({
   setProducts: Dispatch<React.SetStateAction<EditableStoreProduct[]>>;
 }) => {
   const {
-    products: autoCompleteProducts,
-    productsIsLoading: autoCompleteProductsLoading,
+    products: autoCompleteItems,
+    productsIsLoading: autoCompleteItemsLoading,
     search,
     setSearch,
   } = useGetProducts();
@@ -91,16 +91,16 @@ const useEditStoreProductItem = ({
     enableReinitialize: true,
   });
 
-  const productSelectError = !!formik.errors.id && !!formik.errors.name;
+  const itemSelectError = !!formik.errors.id && !!formik.errors.name;
 
-  const handleDeleteProduct = (productId: string) => {
+  const handleDeleteItem = (productId: string) => {
     const filteredProducts = productsList.filter(
       product => product.id !== productId,
     );
     setProducts(filteredProducts);
   };
 
-  const toggleProductEditable = (productId: string) => {
+  const toggleItemEditable = (productId: string) => {
     const updatedProducts = productsList.map(product =>
       product.id === productId
         ? { ...product, editable: !product.editable }
@@ -126,12 +126,12 @@ const useEditStoreProductItem = ({
   return {
     search,
     setSearch,
-    autoCompleteProducts,
-    autoCompleteProductsLoading,
-    handleDeleteProduct,
-    toggleProductEditable,
+    autoCompleteItems,
+    autoCompleteItemsLoading,
+    handleDeleteItem,
+    toggleItemEditable,
     formik,
-    productSelectError,
+    itemSelectError,
   };
 };
 

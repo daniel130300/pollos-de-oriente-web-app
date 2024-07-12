@@ -17,8 +17,8 @@ const useEditStoreComboItem = ({
   setCombos: Dispatch<React.SetStateAction<EditableStoreCombo[]>>;
 }) => {
   const {
-    combos: autoCompleteCombos,
-    combosIsLoading: autoCompleteCombosLoading,
+    combos: autoCompleteItems,
+    combosIsLoading: autoCompleteItemsLoading,
     search,
     setSearch,
   } = useGetCombos();
@@ -90,14 +90,14 @@ const useEditStoreComboItem = ({
     enableReinitialize: true,
   });
 
-  const comboSelectError = !!formik.errors.id && !!formik.errors.name;
+  const itemSelectError = !!formik.errors.id && !!formik.errors.name;
 
-  const handleDeleteCombo = (comboId: string) => {
+  const handleDeleteItem = (comboId: string) => {
     const filteredCombos = combosList.filter(combo => combo.id !== comboId);
     setCombos(filteredCombos);
   };
 
-  const toggleComboEditable = (comboId: string) => {
+  const toggleItemEditable = (comboId: string) => {
     const updatedCombos = combosList.map(combo =>
       combo.id === comboId
         ? { ...combo, editable: !combo.editable }
@@ -121,12 +121,12 @@ const useEditStoreComboItem = ({
   return {
     search,
     setSearch,
-    autoCompleteCombos,
-    autoCompleteCombosLoading,
-    handleDeleteCombo,
-    toggleComboEditable,
+    autoCompleteItems,
+    autoCompleteItemsLoading,
+    handleDeleteItem,
+    toggleItemEditable,
     formik,
-    comboSelectError,
+    itemSelectError,
   };
 };
 

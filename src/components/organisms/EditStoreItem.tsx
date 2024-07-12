@@ -12,53 +12,68 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { productFormsValidations } from 'src/constants';
 import { apiItems } from 'src/constants/selectItems';
-import { EditableStoreCombo } from 'src/hooks/stores/interface';
-import useEditStoreComboItem from 'src/hooks/stores/useEditStoreComoItem';
+import {
+  EditableStoreProduct,
+  EditableStoreCombo,
+} from 'src/hooks/stores/interface';
+import useEditStoreProductItem from 'src/hooks/stores/useEditStoreProductItem';
+import useEditStoreComboItem from 'src/hooks/stores/useEditStoreComboItem';
 
-export const EditStoreComboItem = ({
+export const EditStoreItem = ({
+  isProduct,
   index,
-  combo,
-  combosList,
-  setCombos,
+  item,
+  itemsList,
+  setItems,
 }: {
   index: number;
-  combo: EditableStoreCombo;
-  combosList: EditableStoreCombo[];
-  setCombos: Dispatch<React.SetStateAction<EditableStoreCombo[]>>;
+  item: EditableStoreProduct | EditableStoreCombo;
+  itemsList: (EditableStoreProduct | EditableStoreCombo)[];
+  setItems: Dispatch<
+    React.SetStateAction<EditableStoreProduct[] | EditableStoreCombo[]>
+  >;
+  isProduct: boolean;
 }) => {
   const {
     search,
-    autoCompleteCombos,
-    autoCompleteCombosLoading,
+    autoCompleteItems,
+    autoCompleteItemsLoading,
     formik,
-    comboSelectError,
+    itemSelectError,
     setSearch,
-    handleDeleteCombo,
-    toggleComboEditable,
-  } = useEditStoreComboItem({
-    index,
-    combosList,
-    setCombos,
-    combo,
-  });
+    handleDeleteItem,
+    toggleItemEditable,
+  } = isProduct
+    ? useEditStoreProductItem({
+        index,
+        productsList: itemsList,
+        setProducts: setItems,
+        product: item,
+      })
+    : useEditStoreComboItem({
+        index,
+        combosList: itemsList,
+        setCombos: setItems,
+        combo: item,
+      });
 
   return (
-    <ListItem key={combo.id}>
-      {combo.editable ? (
+    <ListItem key={item.id}>
+      {item.editable ? (
         <Stack direction="row" spacing={2}>
           <AutoCompleteSelect
             id="id"
             name="id"
-            label="Combo"
-            items={apiItems(autoCompleteCombos)}
+            label={isProduct ? 'Producto' : 'Combo'}
+            items={apiItems(autoCompleteItems)}
             onSelectChange={option => {
               formik.setFieldValue('id', option.value);
               formik.setFieldValue('name', option.label);
             }}
             inputValue={search}
             setInputValue={setSearch}
-            loading={autoCompleteCombosLoading}
-            error={comboSelectError}
+            loading={autoCompleteItemsLoading}
+            error={itemSelectError}
             errorMessage={productFormsValidations.select_product.required}
           />
           <InputField
@@ -71,12 +86,12 @@ export const EditStoreComboItem = ({
         </Stack>
       ) : (
         <ListItemText
-          primary={`Nombre: ${combo.name}, Precio de Venta: ${combo.sale_price}`}
+          primary={`Nombre: ${item.name}, Precio de Venta: ${item.sale_price}`}
           disableTypography
         />
       )}
       <ListItemSecondaryAction>
-        {combo.editable ? (
+        {item.editable ? (
           <Stack direction="row" spacing={1}>
             <Tooltip title="Confirmar" sx={{ cursor: 'pointer' }}>
               <CheckCircleIcon
@@ -86,7 +101,7 @@ export const EditStoreComboItem = ({
             </Tooltip>
             <Tooltip title="Cancelar" sx={{ cursor: 'pointer' }}>
               <CancelIcon
-                onClick={() => toggleComboEditable(combo.id)}
+                onClick={() => toggleItemEditable(item.id)}
                 color="error"
               />
             </Tooltip>
@@ -94,15 +109,15 @@ export const EditStoreComboItem = ({
         ) : (
           <Tooltip title="Editar" sx={{ cursor: 'pointer' }}>
             <EditIcon
-              onClick={() => toggleComboEditable(combo.id)}
+              onClick={() => toggleItemEditable(item.id)}
               color="primary"
             />
           </Tooltip>
         )}
-        {!combo.editable && (
+        {!item.editable && (
           <Tooltip title="Eliminar" sx={{ cursor: 'pointer' }}>
             <DeleteIcon
-              onClick={() => handleDeleteCombo(combo.id)}
+              onClick={() => handleDeleteItem(item.id)}
               color="error"
             />
           </Tooltip>
@@ -112,4 +127,4 @@ export const EditStoreComboItem = ({
   );
 };
 
-export default EditStoreComboItem;
+export default EditStoreItem;

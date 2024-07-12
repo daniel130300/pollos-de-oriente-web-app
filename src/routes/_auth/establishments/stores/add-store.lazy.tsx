@@ -9,10 +9,8 @@ import useAddStore from 'src/hooks/stores/useAddStore';
 import { booleanItems } from 'src/constants/selectItems';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import AddStoreProductItem from 'src/components/organisms/AddStoreProductItem';
-import EditStoreProductItem from 'src/components/organisms/EditStoreProductItem';
-import AddStoreComboItem from 'src/components/organisms/AddStoreComboItem';
-import EditStoreComboItem from 'src/components/organisms/EditStoreComboItem';
+import AddStoreItem from 'src/components/organisms/AddStoreItem';
+import EditStoreItem from 'src/components/organisms/EditStoreItem';
 
 const AddStore = () => {
   const {
@@ -59,19 +57,21 @@ const AddStore = () => {
           <Stack spacing={4}>
             <List>
               {storeProducts.map((product, index) => (
-                <EditStoreProductItem
+                <EditStoreItem
                   key={product.id}
                   index={index}
-                  product={product}
-                  productsList={storeProducts}
-                  setProducts={setStoreProducts}
+                  item={product}
+                  itemsList={storeProducts}
+                  setItems={setStoreProducts}
+                  isProduct={true}
                 />
               ))}
             </List>
             <Stack direction="row" spacing={2}>
-              <AddStoreProductItem
-                productsList={storeProducts}
-                setProducts={setStoreProducts}
+              <AddStoreItem
+                itemsList={storeProducts}
+                setItems={setStoreProducts}
+                isProduct={true}
               />
             </Stack>
           </Stack>
@@ -79,19 +79,21 @@ const AddStore = () => {
           <Stack spacing={4}>
             <List>
               {storeCombos.map((combo, index) => (
-                <EditStoreComboItem
+                <EditStoreItem
                   key={combo.id}
                   index={index}
-                  combo={combo}
-                  combosList={storeCombos}
-                  setCombos={setStoreCombos}
+                  item={combo}
+                  itemsList={storeCombos}
+                  setItems={setStoreCombos}
+                  isProduct={false}
                 />
               ))}
             </List>
             <Stack direction="row" spacing={2}>
-              <AddStoreComboItem
-                combosList={storeCombos}
-                setCombos={setStoreCombos}
+              <AddStoreItem
+                itemsList={storeCombos}
+                setItems={setStoreCombos}
+                isProduct={false}
               />
             </Stack>
           </Stack>

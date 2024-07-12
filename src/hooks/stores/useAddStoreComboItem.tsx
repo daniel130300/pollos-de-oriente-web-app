@@ -15,8 +15,8 @@ const useAddStoreComboItem = ({
   const {
     search,
     setSearch,
-    combos: autoCompleteCombos,
-    combosIsLoading: autoCompleteCombosLoading,
+    combos: autoCompleteItems,
+    combosIsLoading: autoCompleteItemsLoading,
   } = useGetCombos();
 
   const comboSchema = yup.object().shape({
@@ -56,15 +56,15 @@ const useAddStoreComboItem = ({
     enableReinitialize: true,
   });
 
-  const comboSelectError = !!formik.errors.id && !!formik.errors.name;
+  const itemSelectError = !!formik.errors.id && !!formik.errors.name;
 
   return {
     search,
     setSearch,
-    autoCompleteCombos,
-    autoCompleteCombosLoading,
+    autoCompleteItems,
+    autoCompleteItemsLoading,
     formik,
-    comboSelectError,
+    itemSelectError,
   };
 };
 
