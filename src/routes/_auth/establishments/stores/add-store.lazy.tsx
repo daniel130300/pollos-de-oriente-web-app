@@ -20,6 +20,7 @@ const AddStore = () => {
     setStoreProducts,
     storeCombos,
     setStoreCombos,
+    handleSubmit,
   } = useAddStore();
 
   return (
@@ -98,7 +99,7 @@ const AddStore = () => {
             </Stack>
           </Stack>
         </Stack>
-        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>
+        <Button onClick={() => handleSubmit()} isLoading={isLoading}>
           Agregar Tienda
         </Button>
       </>

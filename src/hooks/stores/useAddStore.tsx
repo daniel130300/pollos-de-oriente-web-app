@@ -6,7 +6,10 @@ import { supabase } from 'src/supabaseClient';
 import { EstablishmentTypes } from '../expense-category/interface';
 import { useState } from 'react';
 
-type AddStore = Omit<Store, 'id'>;
+type AddStore = Omit<Store, 'id'> & {
+  store_combos: EditableStoreCombo[];
+  store_products: EditableStoreProduct[];
+};
 
 const useAddStore = () => {
   const storeSchema = yup.object().shape({
@@ -23,12 +26,48 @@ const useAddStore = () => {
   const [storeCombos, setStoreCombos] = useState<EditableStoreCombo[]>([]);
 
   const mutationFn = async (values: AddStore) => {
-    const { data } = await supabase
+    const { store_combos, store_products, ...rest } = values;
+
+    const { data: storeData } = await supabase
       .from('establishments')
-      .insert([values])
+      .insert([rest])
       .select()
       .throwOnError();
-    return data;
+
+    const formattedStoreProducts = store_products.map(product => ({
+      establishment_id: (storeData as any)[0].id,
+      product_id: product.id,
+      sale_price: product.sale_price,
+    }));
+
+    const formattedStoreCombos = store_combos.map(combo => ({
+      establishment_id: (storeData as any)[0].id,
+      combo_id: combo.id,
+      sale_price: combo.sale_price,
+    }));
+
+    const { data: storeProducts } = await supabase
+      .from('establishment_products_menu')
+      .insert(formattedStoreProducts)
+      .select()
+      .throwOnError();
+
+    const { data: storeCombos } = await supabase
+      .from('establishment_combos_menu')
+      .insert(formattedStoreCombos)
+      .select()
+      .throwOnError();
+
+    return { storeData, storeProducts, storeCombos };
+  };
+
+  const handleSubmit = () => {
+    formik.setValues({
+      ...formik.values,
+      store_combos: storeCombos,
+      store_products: storeProducts,
+    });
+    formik.handleSubmit();
   };
 
   const { formik, isLoading } = useAddEntity<AddStore>({
@@ -37,6 +76,8 @@ const useAddStore = () => {
       type: EstablishmentTypes.STORE,
       has_delivery: false,
       has_pos: false,
+      store_combos: [],
+      store_products: [],
     },
     validationSchema: storeSchema,
     onSuccessPath: '/establishments/stores',
@@ -52,6 +93,7 @@ const useAddStore = () => {
     setStoreProducts,
     storeCombos,
     setStoreCombos,
+    handleSubmit,
   };
 };
 
