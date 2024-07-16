@@ -4,7 +4,11 @@ import {
   productFormsValidations,
   productSnackbarMessages,
 } from 'src/constants';
-import { generateFilename, generateTimestampTZ } from 'src/utils';
+import {
+  findElementsToDelete,
+  generateFilename,
+  generateTimestampTZ,
+} from 'src/utils';
 import { supabase } from 'src/supabaseClient';
 import { useEditEntity } from '../common/useEditEntity';
 import { EditableProductDetail, Product } from './interface';
@@ -147,17 +151,10 @@ const useEditProduct = ({
         arithmetic_quantity: detail.arithmetic_quantity,
       }));
 
-      const productDetailsToDelete = reformattedProductDetails
-        .filter(
-          (pd: any) =>
-            !formattedProductDetail.some(
-              fpd => fpd.child_product_id === pd.child_product_id,
-            ),
-        )
-        .map((pd: any) => ({
-          ...pd,
-          deleted_at: generateTimestampTZ(),
-        }));
+      const productDetailsToDelete = findElementsToDelete(
+        formattedProductDetail,
+        reformattedProductDetails,
+      );
 
       const { data: productDetailData } = await supabase
         .from('product_details')

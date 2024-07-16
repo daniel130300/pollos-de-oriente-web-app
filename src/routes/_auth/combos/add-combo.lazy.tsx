@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Divider from 'src/components/atoms/Divider';
 import AddProductItem from 'src/components/organisms/AddProductItem';
 import EditProductItem from 'src/components/organisms/EditProductItem';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export const Route = createLazyFileRoute('/_auth/combos/add-combo')({
   component: AddCombo,
@@ -74,6 +75,11 @@ function AddCombo() {
                     isCombo={true}
                   />
                 </Stack>
+                {Boolean(formik.errors.combo_products) && (
+                  <FormHelperText error={Boolean(formik.errors.combo_products)}>
+                    {String(formik.errors.combo_products)}
+                  </FormHelperText>
+                )}
               </Stack>
             </Stack>
           </Grid>

@@ -49,3 +49,18 @@ export function generateTimestampTZ(): string {
   const now = new Date();
   return now.toISOString();
 }
+
+export function findElementsToDelete(
+  formattedElements: any[],
+  reformattedElements: any[],
+) {
+  return reformattedElements
+    .filter(
+      (element: any) =>
+        !formattedElements.some(fe => fe.product_id === element.product_id),
+    )
+    .map((element: any) => ({
+      ...element,
+      deleted_at: generateTimestampTZ(),
+    }));
+}

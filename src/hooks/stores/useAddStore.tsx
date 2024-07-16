@@ -12,13 +12,41 @@ type AddStore = Omit<Store, 'id'> & {
 };
 
 const useAddStore = () => {
-  const storeSchema = yup.object().shape({
-    name: yup.string().required(storeFormsValidations.name.required),
-    has_delivery: yup
-      .string()
-      .required(storeFormsValidations.has_delivery.required),
-    has_pos: yup.string().required(storeFormsValidations.has_pos.required),
+  const itemSchema = yup.object().shape({
+    id: yup.string().required(),
+    name: yup.string().required(),
+    sale_price: yup.number().required(),
   });
+
+  const storeSchema = yup
+    .object()
+    .shape({
+      name: yup.string().required(storeFormsValidations.name.required),
+      has_delivery: yup
+        .string()
+        .required(storeFormsValidations.has_delivery.required),
+      has_pos: yup.string().required(storeFormsValidations.has_pos.required),
+      store_products: yup.array().of(itemSchema),
+      store_combos: yup.array().of(itemSchema),
+    })
+    .when(['store_products', 'store_combos'], {
+      is: (store_products: any, store_combos: any) =>
+        !store_products && !store_combos,
+      then: yup.object().shape({
+        store_products: yup
+          .array()
+          .min(
+            1,
+            'Either store_products or store_combos must have at least one item.',
+          ),
+        store_combos: yup
+          .array()
+          .min(
+            1,
+            'Either store_products or store_combos must have at least one item.',
+          ),
+      }) as any,
+    });
 
   const [storeProducts, setStoreProducts] = useState<EditableStoreProduct[]>(
     [],

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { comboFormsValidations, combosSnackbarMessages } from 'src/constants';
-import { generateFilename, generateTimestampTZ } from 'src/utils';
+import { findElementsToDelete, generateFilename } from 'src/utils';
 import { supabase } from 'src/supabaseClient';
 import { useEditEntity } from '../common/useEditEntity';
 import { Combo, EditableComboProduct } from './interface';
@@ -97,10 +97,10 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
       .select()
       .throwOnError();
 
-    const formattedComboProducts = combo_products.map((combo_product: any) => ({
+    const formattedComboProducts = combo_products.map((comboProduct: any) => ({
       combo_id: (comboData as any)[0].id,
-      product_id: combo_product.id,
-      quantity: combo_product.quantity,
+      product_id: comboProduct.id,
+      quantity: comboProduct.quantity,
       deleted_at: null,
     }));
 
@@ -110,15 +110,10 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
       quantity: comboProduct.quantity,
     }));
 
-    const comboProductsToDelete = reformattedComboProducts
-      .filter(
-        (cp: any) =>
-          !formattedComboProducts.some(fcp => fcp.product_id === cp.product_id),
-      )
-      .map((pd: any) => ({
-        ...pd,
-        deleted_at: generateTimestampTZ(),
-      }));
+    const comboProductsToDelete = findElementsToDelete(
+      formattedComboProducts,
+      reformattedComboProducts,
+    );
 
     const { data: productsCombo } = await supabase
       .from('combo_products')

@@ -7,8 +7,12 @@ import { useEffect, useState } from 'react';
 import { EstablishmentTypes } from '../expense-category/interface';
 import useGetStoreProducts from './useGetStoreProducts';
 import useGetStoreCombos from './useGetStoreCombos';
+import { findElementsToDelete } from 'src/utils';
 
-type EditStore = Omit<Store, 'id'>;
+type EditStore = Omit<Store, 'id'> & {
+  store_combos: EditableStoreCombo[];
+  store_products: EditableStoreProduct[];
+};
 
 const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
   const [products, setProducts] = useState<EditableStoreProduct[]>([]);
@@ -23,10 +27,10 @@ const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
   });
 
   useEffect(() => {
-    const formattedStoreCombos = storeProducts.map((storeProduct: any) => ({
-      id: storeProduct.product_id,
-      name: storeProduct.products.name,
-      sale_price: storeProduct.sale_price,
+    const formattedStoreCombos = storeCombos.map((storeCombo: any) => ({
+      id: storeCombo.combo_id,
+      name: storeCombo.combos.name,
+      sale_price: storeCombo.sale_price,
       editable: false,
     }));
 
@@ -69,17 +73,103 @@ const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
       .string()
       .required(storeFormsValidations.has_delivery.required),
     has_pos: yup.string().required(storeFormsValidations.has_pos.required),
+    store_combos: yup
+      .array()
+      .of(
+        yup.object().shape({
+          id: yup.string().required(),
+          name: yup.string().required(),
+          sale_price: yup.number().required(),
+        }),
+      )
+      .min(1, storeFormsValidations.combo_store_or_products.min(1))
+      .when('store_combos', {
+        is: (store_combos: any) => !store_combos || store_combos.length === 0,
+        then: yup
+          .array()
+          .min(1, storeFormsValidations.combo_store_or_products.min(1)) as any,
+      }),
+    store_products: yup
+      .array()
+      .of(
+        yup.object().shape({
+          id: yup.string().required(),
+          name: yup.string().required(),
+          sale_price: yup.number().required(),
+        }),
+      )
+      .min(1, storeFormsValidations.combo_store_or_products.min(1))
+      .when('store_combos', {
+        is: (store_combos: any) => !store_combos || store_combos.length === 0,
+        then: yup
+          .array()
+          .min(1, storeFormsValidations.combo_store_or_products.min(1)) as any,
+      }),
   });
 
   const mutationFn = async (values: EditStore) => {
-    const { data } = await supabase
+    const { store_products, store_combos, ...rest } = values;
+
+    const { data: storeData } = await supabase
       .from('establishments')
-      .update(values)
+      .update(rest)
       .eq('id', id)
       .select()
       .throwOnError();
 
-    return data;
+    const formattedStoreCombos = store_combos.map((storeCombo: any) => ({
+      establishment_id: (storeData as any)[0].id,
+      combo_id: storeCombo.id,
+      sale_price: storeCombo.sale_price,
+      deleted_at: null,
+    }));
+
+    const reformattedStoreCombos = storeCombos.map((storeCombo: any) => ({
+      establishment_id: (storeData as any)[0].id,
+      combo_id: storeCombo.product_id,
+      sale_price: storeCombo.sale_price,
+    }));
+
+    const storeCombosToDelete = findElementsToDelete(
+      formattedStoreCombos,
+      reformattedStoreCombos,
+    );
+
+    const { data: storeMenuCombos } = await supabase
+      .from('establishment_combos_menu')
+      .upsert([...formattedStoreCombos, ...storeCombosToDelete])
+      .select()
+      .throwOnError();
+
+    const formattedStoreProducts = store_products.map((storeProduct: any) => ({
+      establishment_id: (storeData as any)[0].id,
+      product_id: storeProduct.id,
+      sale_price: storeProduct.sale_price,
+      deleted_at: null,
+    }));
+
+    const reformattedStoreProducts = storeProducts.map((storeProduct: any) => ({
+      establishment_id: (storeData as any)[0].id,
+      product_id: storeProduct.product_id,
+      sale_price: storeProduct.sale_price,
+    }));
+
+    const storeProductsToDelete = findElementsToDelete(
+      formattedStoreProducts,
+      reformattedStoreProducts,
+    );
+
+    const { data: storeMenuProducts } = await supabase
+      .from('establishment_products_menu')
+      .upsert([...formattedStoreProducts, ...storeProductsToDelete])
+      .select()
+      .throwOnError();
+
+    return {
+      storeData,
+      storeMenuCombos,
+      storeMenuProducts,
+    };
   };
 
   const { formik, isLoading } = useEditEntity({

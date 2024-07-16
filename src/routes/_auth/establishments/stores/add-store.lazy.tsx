@@ -11,6 +11,7 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import AddStoreItem from 'src/components/organisms/AddStoreItem';
 import EditStoreItem from 'src/components/organisms/EditStoreItem';
+import FormHelperText from '@mui/material/FormHelperText';
 
 const AddStore = () => {
   const {
@@ -98,6 +99,17 @@ const AddStore = () => {
               />
             </Stack>
           </Stack>
+          {Boolean(
+            formik.errors.store_combos || formik.errors.store_products,
+          ) && (
+            <FormHelperText
+              error={Boolean(
+                formik.errors.store_combos || formik.errors.store_products,
+              )}
+            >
+              {String(formik.errors.store_products)}
+            </FormHelperText>
+          )}
         </Stack>
         <Button onClick={() => handleSubmit()} isLoading={isLoading}>
           Agregar Tienda

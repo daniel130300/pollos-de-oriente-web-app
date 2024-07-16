@@ -82,6 +82,10 @@ export const storeFormsValidations = {
   has_pos: {
     required: 'Es necesario especificar si la tienda tiene pos o no',
   },
+  combo_store_or_products: {
+    min: (value: number) =>
+      `El menu de la tienda debe tener al menos ${value} 1 combo o producto`,
+  },
 };
 
 export const expenseCategoryFormsValidations = {
