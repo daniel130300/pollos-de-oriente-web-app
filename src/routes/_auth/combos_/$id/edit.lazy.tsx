@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import useGetCombo from 'src/hooks/combos/useGetCombo';
 import useEditCombo from 'src/hooks/combos/useEditCombo';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export const Route = createLazyFileRoute('/_auth/combos/$id/edit')({
   component: EditCombo,
@@ -34,6 +35,7 @@ function EditCombo() {
     products,
     setProducts,
     handleSubmit,
+    productsError,
   } = useEditCombo({
     id,
     combo,
@@ -100,6 +102,11 @@ function EditCombo() {
                   />
                 </Stack>
               </Stack>
+              {Boolean(productsError) && (
+                <FormHelperText error={Boolean(productsError)}>
+                  {String(productsError)}
+                </FormHelperText>
+              )}
             </Stack>
           </Grid>
           <Grid item xs={12} sm={12} md={6}>

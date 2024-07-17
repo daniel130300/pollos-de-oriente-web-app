@@ -4,7 +4,7 @@ import useAddEntity from '../common/useAddEntity';
 import * as yup from 'yup';
 import { supabase } from 'src/supabaseClient';
 import { EstablishmentTypes } from '../expense-category/interface';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type AddStore = Omit<Store, 'id'> & {
   store_combos: EditableStoreCombo[];
@@ -12,46 +12,25 @@ type AddStore = Omit<Store, 'id'> & {
 };
 
 const useAddStore = () => {
-  const itemSchema = yup.object().shape({
-    id: yup.string().required(),
-    name: yup.string().required(),
-    sale_price: yup.number().required(),
+  const storeSchema = yup.object().shape({
+    name: yup.string().required(storeFormsValidations.name.required),
+    has_delivery: yup
+      .string()
+      .required(storeFormsValidations.has_delivery.required),
+    has_pos: yup.string().required(storeFormsValidations.has_pos.required),
   });
-
-  const storeSchema = yup
-    .object()
-    .shape({
-      name: yup.string().required(storeFormsValidations.name.required),
-      has_delivery: yup
-        .string()
-        .required(storeFormsValidations.has_delivery.required),
-      has_pos: yup.string().required(storeFormsValidations.has_pos.required),
-      store_products: yup.array().of(itemSchema),
-      store_combos: yup.array().of(itemSchema),
-    })
-    .when(['store_products', 'store_combos'], {
-      is: (store_products: any, store_combos: any) =>
-        !store_products && !store_combos,
-      then: yup.object().shape({
-        store_products: yup
-          .array()
-          .min(
-            1,
-            'Either store_products or store_combos must have at least one item.',
-          ),
-        store_combos: yup
-          .array()
-          .min(
-            1,
-            'Either store_products or store_combos must have at least one item.',
-          ),
-      }) as any,
-    });
 
   const [storeProducts, setStoreProducts] = useState<EditableStoreProduct[]>(
     [],
   );
   const [storeCombos, setStoreCombos] = useState<EditableStoreCombo[]>([]);
+  const [storeDetailError, setStoreDetailError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (storeProducts.length > 0 || storeCombos.length > 0) {
+      setStoreDetailError(storeFormsValidations.combo_store_or_products.min(1));
+    }
+  }, [storeProducts, storeCombos]);
 
   const mutationFn = async (values: AddStore) => {
     const { store_combos, store_products, ...rest } = values;
@@ -95,6 +74,10 @@ const useAddStore = () => {
       store_combos: storeCombos,
       store_products: storeProducts,
     });
+    if (storeProducts.length === 0 || storeCombos.length === 0) {
+      setStoreDetailError(storeFormsValidations.combo_store_or_products.min(1));
+      return;
+    }
     formik.handleSubmit();
   };
 
@@ -122,6 +105,7 @@ const useAddStore = () => {
     storeCombos,
     setStoreCombos,
     handleSubmit,
+    storeDetailError,
   };
 };
 

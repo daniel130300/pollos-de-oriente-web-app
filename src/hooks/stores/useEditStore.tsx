@@ -26,21 +26,9 @@ const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
     storeId: id,
   });
 
+  const [storeDetailError, setStoreDetailError] = useState<null | string>(null);
+
   useEffect(() => {
-    const formattedStoreCombos = storeCombos.map((storeCombo: any) => ({
-      id: storeCombo.combo_id,
-      name: storeCombo.combos.name,
-      sale_price: storeCombo.sale_price,
-      editable: false,
-    }));
-
-    const formattedStoreProducts = storeProducts.map((storeProduct: any) => ({
-      id: storeProduct.product_id,
-      name: storeProduct.products.name,
-      sale_price: storeProduct.sale_price,
-      editable: false,
-    }));
-
     if (
       store &&
       storeCombos &&
@@ -48,6 +36,20 @@ const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
       storeProducts &&
       !storeProductsIsLoading
     ) {
+      const formattedStoreCombos = storeCombos.map((storeCombo: any) => ({
+        id: storeCombo.combo_id,
+        name: storeCombo.combos.name,
+        sale_price: storeCombo.sale_price,
+        editable: false,
+      }));
+
+      const formattedStoreProducts = storeProducts.map((storeProduct: any) => ({
+        id: storeProduct.product_id,
+        name: storeProduct.products.name,
+        sale_price: storeProduct.sale_price,
+        editable: false,
+      }));
+
       formik.setValues({
         name: store.name,
         type: store.type || EstablishmentTypes.STORE,
@@ -67,45 +69,32 @@ const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
     storeProductsIsLoading,
   ]);
 
+  useEffect(() => {
+    if (products.length > 0 || combos.length > 0) {
+      setStoreDetailError(null);
+    }
+  }, [products, combos]);
+
   const storeSchema = yup.object().shape({
     name: yup.string().required(storeFormsValidations.name.required),
     has_delivery: yup
       .string()
       .required(storeFormsValidations.has_delivery.required),
     has_pos: yup.string().required(storeFormsValidations.has_pos.required),
-    store_combos: yup
-      .array()
-      .of(
-        yup.object().shape({
-          id: yup.string().required(),
-          name: yup.string().required(),
-          sale_price: yup.number().required(),
-        }),
-      )
-      .min(1, storeFormsValidations.combo_store_or_products.min(1))
-      .when('store_combos', {
-        is: (store_combos: any) => !store_combos || store_combos.length === 0,
-        then: yup
-          .array()
-          .min(1, storeFormsValidations.combo_store_or_products.min(1)) as any,
-      }),
-    store_products: yup
-      .array()
-      .of(
-        yup.object().shape({
-          id: yup.string().required(),
-          name: yup.string().required(),
-          sale_price: yup.number().required(),
-        }),
-      )
-      .min(1, storeFormsValidations.combo_store_or_products.min(1))
-      .when('store_combos', {
-        is: (store_combos: any) => !store_combos || store_combos.length === 0,
-        then: yup
-          .array()
-          .min(1, storeFormsValidations.combo_store_or_products.min(1)) as any,
-      }),
   });
+
+  const handleSubmit = () => {
+    formik.setValues({
+      ...formik.values,
+      store_combos: combos,
+      store_products: products,
+    });
+    if (products.length === 0 || combos.length === 0) {
+      setStoreDetailError(storeFormsValidations.combo_store_or_products.min(1));
+      return;
+    }
+    formik.handleSubmit();
+  };
 
   const mutationFn = async (values: EditStore) => {
     const { store_products, store_combos, ...rest } = values;
@@ -172,7 +161,7 @@ const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
     };
   };
 
-  const { formik, isLoading } = useEditEntity({
+  const { formik, isLoading } = useEditEntity<EditStore>({
     id,
     initialValues: {
       name: '',
@@ -196,6 +185,8 @@ const useEditStore = ({ id, store }: { id: string; store: EditStore }) => {
     setProducts,
     combos,
     setCombos,
+    handleSubmit,
+    storeDetailError,
   };
 };
 

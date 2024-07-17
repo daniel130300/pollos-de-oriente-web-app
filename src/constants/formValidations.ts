@@ -84,7 +84,7 @@ export const storeFormsValidations = {
   },
   combo_store_or_products: {
     min: (value: number) =>
-      `El menu de la tienda debe tener al menos ${value} 1 combo o producto`,
+      `El menu de la tienda debe tener al menos ${value} combo o ${value} producto`,
   },
 };
 

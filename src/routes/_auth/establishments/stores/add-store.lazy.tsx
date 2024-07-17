@@ -22,6 +22,7 @@ const AddStore = () => {
     storeCombos,
     setStoreCombos,
     handleSubmit,
+    storeDetailError,
   } = useAddStore();
 
   return (
@@ -99,15 +100,9 @@ const AddStore = () => {
               />
             </Stack>
           </Stack>
-          {Boolean(
-            formik.errors.store_combos || formik.errors.store_products,
-          ) && (
-            <FormHelperText
-              error={Boolean(
-                formik.errors.store_combos || formik.errors.store_products,
-              )}
-            >
-              {String(formik.errors.store_products)}
+          {Boolean(storeDetailError) && (
+            <FormHelperText error={Boolean(storeDetailError)}>
+              {String(storeDetailError)}
             </FormHelperText>
           )}
         </Stack>

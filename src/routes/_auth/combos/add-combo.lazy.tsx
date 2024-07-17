@@ -27,6 +27,7 @@ function AddCombo() {
     handleSubmit,
     comboProducts,
     setComboProducts,
+    comboProductsError,
   } = useAddCombo();
 
   return (
@@ -75,9 +76,9 @@ function AddCombo() {
                     isCombo={true}
                   />
                 </Stack>
-                {Boolean(formik.errors.combo_products) && (
-                  <FormHelperText error={Boolean(formik.errors.combo_products)}>
-                    {String(formik.errors.combo_products)}
+                {Boolean(comboProductsError) && (
+                  <FormHelperText error={Boolean(comboProductsError)}>
+                    {String(comboProductsError)}
                   </FormHelperText>
                 )}
               </Stack>

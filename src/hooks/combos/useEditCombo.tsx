@@ -14,6 +14,13 @@ type EditCombo = Omit<Combo, 'id'> & {
 const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [products, setProducts] = useState<EditableComboProduct[]>([]);
+  const [productsError, setProductsError] = useState<null | string>(null);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      setProductsError(null);
+    }
+  }, [products]);
 
   const { comboProducts, comboProductsIsLoading } = useGetComboProducts({
     comboId: id,
@@ -50,16 +57,6 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
       })
       .nullable(),
-    combo_products: yup
-      .array()
-      .of(
-        yup.object().shape({
-          id: yup.string().required(),
-          name: yup.string().required(),
-          quantity: yup.number().required(),
-        }),
-      )
-      .min(1, comboFormsValidations.combo_products.min(1)),
   });
 
   const handleFileSelect = (file: File | null) => {
@@ -69,6 +66,10 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
 
   const handleSubmit = () => {
     formik.setValues({ ...formik.values, combo_products: products });
+    if (products.length === 0) {
+      setProductsError(comboFormsValidations.combo_products.min(1));
+      return;
+    }
     formik.handleSubmit();
   };
 
@@ -152,6 +153,7 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
     products,
     setProducts,
     handleSubmit,
+    productsError,
   };
 };
 

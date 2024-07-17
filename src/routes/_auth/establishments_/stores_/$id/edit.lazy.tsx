@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import { EditStoreItem } from 'src/components/organisms/EditStoreItem';
 import { AddStoreItem } from 'src/components/organisms/AddStoreItem';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export const Route = createLazyFileRoute(
   '/_auth/establishments/stores/$id/edit',
@@ -25,11 +26,19 @@ function EditStore() {
   const { store, storeIsLoading, storeIsFetching } = useGetStore({
     id,
   });
-  const { formik, isLoading, combos, setCombos, products, setProducts } =
-    useEditStore({
-      id,
-      store,
-    });
+  const {
+    formik,
+    isLoading,
+    combos,
+    setCombos,
+    products,
+    setProducts,
+    handleSubmit,
+    storeDetailError,
+  } = useEditStore({
+    id,
+    store,
+  });
 
   if (storeIsLoading || storeIsFetching) return <Loader type="cover" />;
 
@@ -107,8 +116,13 @@ function EditStore() {
               />
             </Stack>
           </Stack>
+          {Boolean(storeDetailError) && (
+            <FormHelperText error={Boolean(storeDetailError)}>
+              {String(storeDetailError)}
+            </FormHelperText>
+          )}
         </Stack>
-        <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>
+        <Button onClick={() => handleSubmit()} isLoading={isLoading}>
           Editar Tienda
         </Button>
       </>
