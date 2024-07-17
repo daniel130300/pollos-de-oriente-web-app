@@ -39,11 +39,16 @@ export const productFormsValidations = {
     required: 'Seleccione una categoría de gasto',
   },
   product_image: 'La imagen debe ser un archivo de imagen válido',
+  sale_price: {
+    typeError: 'El precio de venta debe ser un número',
+    required: 'El precio de venta es requerido',
+    min: (value: number) => `La cantidad debe ser mayor o igual a ${value}`,
+  },
 };
 
 export const comboFormsValidations = {
-  select_product: {
-    required: 'Debes seleccionar un producto',
+  select_combo: {
+    required: 'Debes seleccionar un combo',
   },
   name: {
     required: 'El nombre es un campo requerido',
@@ -60,14 +65,26 @@ export const comboFormsValidations = {
   combo_products: {
     min: (value: number) => `El combo tener al menos ${value} producto`,
   },
+  sale_price: {
+    typeError: 'El precio de venta debe ser un número',
+    required: 'El precio de venta es requerido',
+    min: (value: number) => `La cantidad debe ser mayor o igual a ${value}`,
+  },
 };
 
 export const storeFormsValidations = {
   name: {
     required: 'El nombre es un campo requerido',
   },
-  is_main: {
-    required: 'Es necesario especificar si la tienda es la principal o no',
+  has_delivery: {
+    required: 'Es necesario especificar si la tienda tiene delivery o no',
+  },
+  has_pos: {
+    required: 'Es necesario especificar si la tienda tiene pos o no',
+  },
+  combo_store_or_products: {
+    min: (value: number) =>
+      `El menu de la tienda debe tener al menos ${value} combo o ${value} producto`,
   },
 };
 

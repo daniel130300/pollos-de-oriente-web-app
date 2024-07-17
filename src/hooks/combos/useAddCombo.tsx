@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { comboFormsValidations, combosSnackbarMessages } from 'src/constants';
 import useAddEntity from '../common/useAddEntity';
 import { generateFilename } from 'src/utils';
@@ -22,22 +22,21 @@ const useAddCombo = () => {
         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
       })
       .nullable(),
-    combo_products: yup
-      .array()
-      .of(
-        yup.object().shape({
-          id: yup.string().required(),
-          name: yup.string().required(),
-          quantity: yup.number().required(),
-        }),
-      )
-      .min(1, comboFormsValidations.combo_products.min(1)),
   });
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [comboProducts, setComboProducts] = useState<EditableComboProduct[]>(
     [],
   );
+  const [comboProductsError, setComboProductsError] = useState<null | string>(
+    null,
+  );
+
+  useEffect(() => {
+    if (comboProducts.length > 0) {
+      setComboProductsError(null);
+    }
+  }, [comboProducts]);
 
   const handleFileSelect = (file: File | null) => {
     setSelectedFile(file);
@@ -46,6 +45,10 @@ const useAddCombo = () => {
 
   const handleSubmit = () => {
     formik.setValues({ ...formik.values, combo_products: comboProducts });
+    if (comboProducts.length === 0) {
+      setComboProductsError(comboFormsValidations.combo_products.min(1));
+      return;
+    }
     formik.handleSubmit();
   };
 
@@ -112,6 +115,7 @@ const useAddCombo = () => {
     handleSubmit,
     comboProducts,
     setComboProducts,
+    comboProductsError,
   };
 };
 

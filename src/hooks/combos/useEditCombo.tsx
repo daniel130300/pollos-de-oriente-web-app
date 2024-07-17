@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { comboFormsValidations, combosSnackbarMessages } from 'src/constants';
-import { generateFilename, generateTimestampTZ } from 'src/utils';
+import { findElementsToDelete, generateFilename } from 'src/utils';
 import { supabase } from 'src/supabaseClient';
 import { useEditEntity } from '../common/useEditEntity';
 import { Combo, EditableComboProduct } from './interface';
@@ -13,22 +13,27 @@ type EditCombo = Omit<Combo, 'id'> & {
 
 const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [comboProduct, setComboProduct] = useState<EditableComboProduct[]>([]);
+  const [products, setProducts] = useState<EditableComboProduct[]>([]);
+  const [productsError, setProductsError] = useState<null | string>(null);
+
+  useEffect(() => {
+    if (products.length > 0) {
+      setProductsError(null);
+    }
+  }, [products]);
 
   const { comboProducts, comboProductsIsLoading } = useGetComboProducts({
-    combo_id: id,
+    comboId: id,
   });
 
   useEffect(() => {
     if (combo && comboProducts && !comboProductsIsLoading) {
-      const formattedComboProducts = comboProducts.map(
-        (combo_product: any) => ({
-          id: combo_product.product_id,
-          name: combo_product.products.name,
-          quantity: combo_product.quantity,
-          editable: false,
-        }),
-      );
+      const formattedComboProducts = comboProducts.map((comboProduct: any) => ({
+        id: comboProduct.product_id,
+        name: comboProduct.products.name,
+        quantity: comboProduct.quantity,
+        editable: false,
+      }));
       formik.setValues({
         name: combo.name,
         combo_image: null,
@@ -37,7 +42,7 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
         search_id: combo.search_id,
         combo_products: formattedComboProducts || [],
       });
-      setComboProduct(formattedComboProducts);
+      setProducts(formattedComboProducts);
     }
   }, [combo, comboProducts, comboProductsIsLoading]);
 
@@ -52,16 +57,6 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
         return ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type);
       })
       .nullable(),
-    combo_products: yup
-      .array()
-      .of(
-        yup.object().shape({
-          id: yup.string().required(),
-          name: yup.string().required(),
-          quantity: yup.number().required(),
-        }),
-      )
-      .min(1, comboFormsValidations.combo_products.min(1)),
   });
 
   const handleFileSelect = (file: File | null) => {
@@ -70,7 +65,11 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
   };
 
   const handleSubmit = () => {
-    formik.setValues({ ...formik.values, combo_products: comboProduct });
+    formik.setValues({ ...formik.values, combo_products: products });
+    if (products.length === 0) {
+      setProductsError(comboFormsValidations.combo_products.min(1));
+      return;
+    }
     formik.handleSubmit();
   };
 
@@ -99,30 +98,23 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
       .select()
       .throwOnError();
 
-    const formattedComboProducts = combo_products.map((combo_product: any) => ({
+    const formattedComboProducts = combo_products.map((comboProduct: any) => ({
       combo_id: (comboData as any)[0].id,
-      product_id: combo_product.id,
-      quantity: combo_product.quantity,
+      product_id: comboProduct.id,
+      quantity: comboProduct.quantity,
       deleted_at: null,
     }));
 
-    const reformattedComboProducts = comboProducts.map(
-      (combo_product: any) => ({
-        combo_id: (comboData as any)[0].id,
-        product_id: combo_product.product_id,
-        quantity: combo_product.quantity,
-      }),
-    );
+    const reformattedComboProducts = comboProducts.map((comboProduct: any) => ({
+      combo_id: (comboData as any)[0].id,
+      product_id: comboProduct.product_id,
+      quantity: comboProduct.quantity,
+    }));
 
-    const comboProductsToDelete = reformattedComboProducts
-      .filter(
-        (cp: any) =>
-          !formattedComboProducts.some(fcp => fcp.product_id === cp.product_id),
-      )
-      .map((pd: any) => ({
-        ...pd,
-        deleted_at: generateTimestampTZ(),
-      }));
+    const comboProductsToDelete = findElementsToDelete(
+      formattedComboProducts,
+      reformattedComboProducts,
+    );
 
     const { data: productsCombo } = await supabase
       .from('combo_products')
@@ -158,9 +150,10 @@ const useEditCombo = ({ id, combo }: { id: string; combo: EditCombo }) => {
     selectedFile,
     handleFileSelect,
     isLoading,
-    comboProduct,
-    setComboProduct,
+    products,
+    setProducts,
     handleSubmit,
+    productsError,
   };
 };
 

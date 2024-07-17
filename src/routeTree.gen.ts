@@ -23,13 +23,8 @@ const NoauthSigninLazyImport = createFileRoute('/_no_auth/signin')()
 const NoauthResetPasswordLazyImport = createFileRoute(
   '/_no_auth/reset-password',
 )()
-const AuthStoresIndexLazyImport = createFileRoute('/_auth/stores/')()
 const AuthProductsIndexLazyImport = createFileRoute('/_auth/products/')()
 const AuthCombosIndexLazyImport = createFileRoute('/_auth/combos/')()
-const AuthStoresAddStoreLazyImport = createFileRoute(
-  '/_auth/stores/add-store',
-)()
-const AuthStoresIdLazyImport = createFileRoute('/_auth/stores/$id')()
 const AuthProfileUpdatePasswordLazyImport = createFileRoute(
   '/_auth/profile/update-password',
 )()
@@ -44,7 +39,9 @@ const AuthCombosIdLazyImport = createFileRoute('/_auth/combos/$id')()
 const AuthExpensesCategoriesIndexLazyImport = createFileRoute(
   '/_auth/expenses/categories/',
 )()
-const AuthStoresIdEditLazyImport = createFileRoute('/_auth/stores/$id/edit')()
+const AuthEstablishmentsStoresIndexLazyImport = createFileRoute(
+  '/_auth/establishments/stores/',
+)()
 const AuthProductsIdEditLazyImport = createFileRoute(
   '/_auth/products/$id/edit',
 )()
@@ -54,9 +51,18 @@ const AuthExpensesCategoriesAddCategoryLazyImport = createFileRoute(
 const AuthExpensesCategoriesIdLazyImport = createFileRoute(
   '/_auth/expenses/categories/$id',
 )()
+const AuthEstablishmentsStoresAddStoreLazyImport = createFileRoute(
+  '/_auth/establishments/stores/add-store',
+)()
+const AuthEstablishmentsStoresIdLazyImport = createFileRoute(
+  '/_auth/establishments/stores/$id',
+)()
 const AuthCombosIdEditLazyImport = createFileRoute('/_auth/combos/$id/edit')()
 const AuthExpensesCategoriesIdEditLazyImport = createFileRoute(
   '/_auth/expenses/categories/$id/edit',
+)()
+const AuthEstablishmentsStoresIdEditLazyImport = createFileRoute(
+  '/_auth/establishments/stores/$id/edit',
 )()
 
 // Create/Update Routes
@@ -90,13 +96,6 @@ const NoauthResetPasswordLazyRoute = NoauthResetPasswordLazyImport.update({
   import('./routes/_no_auth/reset-password.lazy').then((d) => d.Route),
 )
 
-const AuthStoresIndexLazyRoute = AuthStoresIndexLazyImport.update({
-  path: '/stores/',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./routes/_auth/stores/index.lazy').then((d) => d.Route),
-)
-
 const AuthProductsIndexLazyRoute = AuthProductsIndexLazyImport.update({
   path: '/products/',
   getParentRoute: () => AuthRoute,
@@ -109,20 +108,6 @@ const AuthCombosIndexLazyRoute = AuthCombosIndexLazyImport.update({
   getParentRoute: () => AuthRoute,
 } as any).lazy(() =>
   import('./routes/_auth/combos/index.lazy').then((d) => d.Route),
-)
-
-const AuthStoresAddStoreLazyRoute = AuthStoresAddStoreLazyImport.update({
-  path: '/stores/add-store',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./routes/_auth/stores/add-store.lazy').then((d) => d.Route),
-)
-
-const AuthStoresIdLazyRoute = AuthStoresIdLazyImport.update({
-  path: '/stores/$id',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./routes/_auth/stores/$id.lazy').then((d) => d.Route),
 )
 
 const AuthProfileUpdatePasswordLazyRoute =
@@ -173,12 +158,15 @@ const AuthExpensesCategoriesIndexLazyRoute =
     ),
   )
 
-const AuthStoresIdEditLazyRoute = AuthStoresIdEditLazyImport.update({
-  path: '/stores/$id/edit',
-  getParentRoute: () => AuthRoute,
-} as any).lazy(() =>
-  import('./routes/_auth/stores_/$id/edit.lazy').then((d) => d.Route),
-)
+const AuthEstablishmentsStoresIndexLazyRoute =
+  AuthEstablishmentsStoresIndexLazyImport.update({
+    path: '/establishments/stores/',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments/stores/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const AuthProductsIdEditLazyRoute = AuthProductsIdEditLazyImport.update({
   path: '/products/$id/edit',
@@ -205,6 +193,26 @@ const AuthExpensesCategoriesIdLazyRoute =
     import('./routes/_auth/expenses/categories/$id.lazy').then((d) => d.Route),
   )
 
+const AuthEstablishmentsStoresAddStoreLazyRoute =
+  AuthEstablishmentsStoresAddStoreLazyImport.update({
+    path: '/establishments/stores/add-store',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments/stores/add-store.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthEstablishmentsStoresIdLazyRoute =
+  AuthEstablishmentsStoresIdLazyImport.update({
+    path: '/establishments/stores/$id',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments/stores/$id.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthCombosIdEditLazyRoute = AuthCombosIdEditLazyImport.update({
   path: '/combos/$id/edit',
   getParentRoute: () => AuthRoute,
@@ -218,6 +226,16 @@ const AuthExpensesCategoriesIdEditLazyRoute =
     getParentRoute: () => AuthRoute,
   } as any).lazy(() =>
     import('./routes/_auth/expenses_/categories_/$id/edit.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthEstablishmentsStoresIdEditLazyRoute =
+  AuthEstablishmentsStoresIdEditLazyImport.update({
+    path: '/establishments/stores/$id/edit',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments_/stores_/$id/edit.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -266,14 +284,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProfileUpdatePasswordLazyImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/stores/$id': {
-      preLoaderRoute: typeof AuthStoresIdLazyImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/stores/add-store': {
-      preLoaderRoute: typeof AuthStoresAddStoreLazyImport
-      parentRoute: typeof AuthImport
-    }
     '/_auth/combos/': {
       preLoaderRoute: typeof AuthCombosIndexLazyImport
       parentRoute: typeof AuthImport
@@ -282,12 +292,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProductsIndexLazyImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/stores/': {
-      preLoaderRoute: typeof AuthStoresIndexLazyImport
-      parentRoute: typeof AuthImport
-    }
     '/_auth/combos/$id/edit': {
       preLoaderRoute: typeof AuthCombosIdEditLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/establishments/stores/$id': {
+      preLoaderRoute: typeof AuthEstablishmentsStoresIdLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/establishments/stores/add-store': {
+      preLoaderRoute: typeof AuthEstablishmentsStoresAddStoreLazyImport
       parentRoute: typeof AuthImport
     }
     '/_auth/expenses/categories/$id': {
@@ -302,12 +316,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProductsIdEditLazyImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/stores/$id/edit': {
-      preLoaderRoute: typeof AuthStoresIdEditLazyImport
+    '/_auth/establishments/stores/': {
+      preLoaderRoute: typeof AuthEstablishmentsStoresIndexLazyImport
       parentRoute: typeof AuthImport
     }
     '/_auth/expenses/categories/': {
       preLoaderRoute: typeof AuthExpensesCategoriesIndexLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/establishments/stores/$id/edit': {
+      preLoaderRoute: typeof AuthEstablishmentsStoresIdEditLazyImport
       parentRoute: typeof AuthImport
     }
     '/_auth/expenses/categories/$id/edit': {
@@ -327,17 +345,17 @@ export const routeTree = rootRoute.addChildren([
     AuthProductsIdLazyRoute,
     AuthProductsAddProductLazyRoute,
     AuthProfileUpdatePasswordLazyRoute,
-    AuthStoresIdLazyRoute,
-    AuthStoresAddStoreLazyRoute,
     AuthCombosIndexLazyRoute,
     AuthProductsIndexLazyRoute,
-    AuthStoresIndexLazyRoute,
     AuthCombosIdEditLazyRoute,
+    AuthEstablishmentsStoresIdLazyRoute,
+    AuthEstablishmentsStoresAddStoreLazyRoute,
     AuthExpensesCategoriesIdLazyRoute,
     AuthExpensesCategoriesAddCategoryLazyRoute,
     AuthProductsIdEditLazyRoute,
-    AuthStoresIdEditLazyRoute,
+    AuthEstablishmentsStoresIndexLazyRoute,
     AuthExpensesCategoriesIndexLazyRoute,
+    AuthEstablishmentsStoresIdEditLazyRoute,
     AuthExpensesCategoriesIdEditLazyRoute,
   ]),
   NoauthRoute.addChildren([

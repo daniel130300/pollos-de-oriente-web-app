@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import Divider from 'src/components/atoms/Divider';
 import AddProductItem from 'src/components/organisms/AddProductItem';
 import EditProductItem from 'src/components/organisms/EditProductItem';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export const Route = createLazyFileRoute('/_auth/combos/add-combo')({
   component: AddCombo,
@@ -26,6 +27,7 @@ function AddCombo() {
     handleSubmit,
     comboProducts,
     setComboProducts,
+    comboProductsError,
   } = useAddCombo();
 
   return (
@@ -74,6 +76,11 @@ function AddCombo() {
                     isCombo={true}
                   />
                 </Stack>
+                {Boolean(comboProductsError) && (
+                  <FormHelperText error={Boolean(comboProductsError)}>
+                    {String(comboProductsError)}
+                  </FormHelperText>
+                )}
               </Stack>
             </Stack>
           </Grid>

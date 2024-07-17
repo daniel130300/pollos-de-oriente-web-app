@@ -69,7 +69,7 @@ function EditProduct() {
     });
   };
 
-  if (productIsLoading) return <Loader type="cover" />;
+  if (productIsLoading || productIsFetching) return <Loader type="cover" />;
 
   return (
     <DetailsTemplate

@@ -15,7 +15,13 @@ export const sideBarRoutes = [
     title: 'Establecimientos',
     href: '/establishments',
     icon: StoreIcon,
-    subMenu: [],
+    subMenu: [
+      {
+        title: 'Tiendas',
+        href: '/stores',
+        icon: null,
+      },
+    ],
   },
   {
     title: 'Combos',

@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import useGetCombo from 'src/hooks/combos/useGetCombo';
 import useEditCombo from 'src/hooks/combos/useEditCombo';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export const Route = createLazyFileRoute('/_auth/combos/$id/edit')({
   component: EditCombo,
@@ -31,9 +32,10 @@ function EditCombo() {
     isLoading,
     selectedFile,
     handleFileSelect,
-    comboProduct,
-    setComboProduct,
+    products,
+    setProducts,
     handleSubmit,
+    productsError,
   } = useEditCombo({
     id,
     combo,
@@ -81,25 +83,30 @@ function EditCombo() {
               <Typography variant="h3">Productos Combo</Typography>
               <Stack spacing={4}>
                 <List>
-                  {comboProduct.map((product, index) => (
+                  {products.map((product, index) => (
                     <EditProductItem
                       key={product.id}
                       index={index}
                       product={product}
-                      productsList={comboProduct}
-                      setProducts={setComboProduct}
+                      productsList={products}
+                      setProducts={setProducts}
                       isCombo={true}
                     />
                   ))}
                 </List>
                 <Stack direction="row" spacing={2}>
                   <AddProductItem
-                    productsList={comboProduct}
-                    setProducts={setComboProduct}
+                    productsList={products}
+                    setProducts={setProducts}
                     isCombo={true}
                   />
                 </Stack>
               </Stack>
+              {Boolean(productsError) && (
+                <FormHelperText error={Boolean(productsError)}>
+                  {String(productsError)}
+                </FormHelperText>
+              )}
             </Stack>
           </Grid>
           <Grid item xs={12} sm={12} md={6}>

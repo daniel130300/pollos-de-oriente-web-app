@@ -24,7 +24,7 @@ function ProductComponent() {
   const { id } = Route.useParams();
   const { product, productIsLoading } = useGetProduct({ id });
   const { productDetails, productDetailsIsLoading } = useGetProductDetails({
-    parent_product_id: id,
+    parentProductId: id,
   });
 
   if (productIsLoading || productDetailsIsLoading)

@@ -51,3 +51,14 @@ export const apiItems = (apiItems: any) =>
     label: value.name,
     value: value.id,
   })) || [];
+
+export const booleanItems = [
+  {
+    label: 'Si',
+    value: 'true',
+  },
+  {
+    label: 'No',
+    value: 'false',
+  },
+];

@@ -23,10 +23,6 @@ export function formatTimestamp(timestamp: string): string {
   return new Date(timestamp).toLocaleString();
 }
 
-export function formatBooleanToStringLabel(value: boolean): string {
-  return value ? 'Si' : 'No';
-}
-
 export function formatStringToBoolean(input: string): boolean | null {
   const lowerCaseInput = input.toLowerCase().trim();
 
@@ -52,4 +48,19 @@ export function capitalizeFirstLetter(str: string): string {
 export function generateTimestampTZ(): string {
   const now = new Date();
   return now.toISOString();
+}
+
+export function findElementsToDelete(
+  formattedElements: any[],
+  reformattedElements: any[],
+) {
+  return reformattedElements
+    .filter(
+      (element: any) =>
+        !formattedElements.some(fe => fe.product_id === element.product_id),
+    )
+    .map((element: any) => ({
+      ...element,
+      deleted_at: generateTimestampTZ(),
+    }));
 }

@@ -3,9 +3,9 @@ import { productSnackbarMessages } from 'src/constants';
 import useGetSingleEntity from 'src/hooks/common/useGetSingleEntity';
 
 const useGetProductDetails = ({
-  parent_product_id,
+  parentProductId,
 }: {
-  parent_product_id: string;
+  parentProductId: string;
 }) => {
   const {
     isLoading: productDetailsIsLoading,
@@ -13,13 +13,13 @@ const useGetProductDetails = ({
     isError: productDetailsIsError,
     data: productDetails,
   } = useGetSingleEntity({
-    id: parent_product_id,
+    id: parentProductId,
     equalField: 'parent_product_id',
     entity: 'product_details',
     queryKey: API_KEYS.FETCH_PRODUCT_DETAIL,
     snackbarMessages: productSnackbarMessages,
     shouldUseSingle: false,
-    selectStatement: 'arithmetic_quantity, products!child_product_id(*)',
+    selectStatement: '*, products!child_product_id(*)',
   });
 
   return {
