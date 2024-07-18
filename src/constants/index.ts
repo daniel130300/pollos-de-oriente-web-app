@@ -4,6 +4,7 @@ export {
   storeSnackbarMessages,
   expenseCategorySnackbarMessages,
   combosSnackbarMessages,
+  warehouseSnackbarMessages,
 } from './snackbarMessages';
 
 export {

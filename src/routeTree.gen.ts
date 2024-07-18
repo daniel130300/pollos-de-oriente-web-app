@@ -39,6 +39,9 @@ const AuthCombosIdLazyImport = createFileRoute('/_auth/combos/$id')()
 const AuthExpensesCategoriesIndexLazyImport = createFileRoute(
   '/_auth/expenses/categories/',
 )()
+const AuthEstablishmentsWarehousesIndexLazyImport = createFileRoute(
+  '/_auth/establishments/warehouses/',
+)()
 const AuthEstablishmentsStoresIndexLazyImport = createFileRoute(
   '/_auth/establishments/stores/',
 )()
@@ -51,6 +54,12 @@ const AuthExpensesCategoriesAddCategoryLazyImport = createFileRoute(
 const AuthExpensesCategoriesIdLazyImport = createFileRoute(
   '/_auth/expenses/categories/$id',
 )()
+const AuthEstablishmentsWarehousesAddWarehouseLazyImport = createFileRoute(
+  '/_auth/establishments/warehouses/add-warehouse',
+)()
+const AuthEstablishmentsWarehousesIdLazyImport = createFileRoute(
+  '/_auth/establishments/warehouses/$id',
+)()
 const AuthEstablishmentsStoresAddStoreLazyImport = createFileRoute(
   '/_auth/establishments/stores/add-store',
 )()
@@ -60,6 +69,9 @@ const AuthEstablishmentsStoresIdLazyImport = createFileRoute(
 const AuthCombosIdEditLazyImport = createFileRoute('/_auth/combos/$id/edit')()
 const AuthExpensesCategoriesIdEditLazyImport = createFileRoute(
   '/_auth/expenses/categories/$id/edit',
+)()
+const AuthEstablishmentsWarehousesIdEditLazyImport = createFileRoute(
+  '/_auth/establishments/warehouses/$id/edit',
 )()
 const AuthEstablishmentsStoresIdEditLazyImport = createFileRoute(
   '/_auth/establishments/stores/$id/edit',
@@ -158,6 +170,16 @@ const AuthExpensesCategoriesIndexLazyRoute =
     ),
   )
 
+const AuthEstablishmentsWarehousesIndexLazyRoute =
+  AuthEstablishmentsWarehousesIndexLazyImport.update({
+    path: '/establishments/warehouses/',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments/warehouses/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthEstablishmentsStoresIndexLazyRoute =
   AuthEstablishmentsStoresIndexLazyImport.update({
     path: '/establishments/stores/',
@@ -193,6 +215,26 @@ const AuthExpensesCategoriesIdLazyRoute =
     import('./routes/_auth/expenses/categories/$id.lazy').then((d) => d.Route),
   )
 
+const AuthEstablishmentsWarehousesAddWarehouseLazyRoute =
+  AuthEstablishmentsWarehousesAddWarehouseLazyImport.update({
+    path: '/establishments/warehouses/add-warehouse',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments/warehouses/add-warehouse.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthEstablishmentsWarehousesIdLazyRoute =
+  AuthEstablishmentsWarehousesIdLazyImport.update({
+    path: '/establishments/warehouses/$id',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments/warehouses/$id.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthEstablishmentsStoresAddStoreLazyRoute =
   AuthEstablishmentsStoresAddStoreLazyImport.update({
     path: '/establishments/stores/add-store',
@@ -226,6 +268,16 @@ const AuthExpensesCategoriesIdEditLazyRoute =
     getParentRoute: () => AuthRoute,
   } as any).lazy(() =>
     import('./routes/_auth/expenses_/categories_/$id/edit.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthEstablishmentsWarehousesIdEditLazyRoute =
+  AuthEstablishmentsWarehousesIdEditLazyImport.update({
+    path: '/establishments/warehouses/$id/edit',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments_/warehouses_/$id/edit.lazy').then(
       (d) => d.Route,
     ),
   )
@@ -304,6 +356,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthEstablishmentsStoresAddStoreLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/establishments/warehouses/$id': {
+      preLoaderRoute: typeof AuthEstablishmentsWarehousesIdLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/establishments/warehouses/add-warehouse': {
+      preLoaderRoute: typeof AuthEstablishmentsWarehousesAddWarehouseLazyImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/expenses/categories/$id': {
       preLoaderRoute: typeof AuthExpensesCategoriesIdLazyImport
       parentRoute: typeof AuthImport
@@ -320,12 +380,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthEstablishmentsStoresIndexLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/establishments/warehouses/': {
+      preLoaderRoute: typeof AuthEstablishmentsWarehousesIndexLazyImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/expenses/categories/': {
       preLoaderRoute: typeof AuthExpensesCategoriesIndexLazyImport
       parentRoute: typeof AuthImport
     }
     '/_auth/establishments/stores/$id/edit': {
       preLoaderRoute: typeof AuthEstablishmentsStoresIdEditLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/establishments/warehouses/$id/edit': {
+      preLoaderRoute: typeof AuthEstablishmentsWarehousesIdEditLazyImport
       parentRoute: typeof AuthImport
     }
     '/_auth/expenses/categories/$id/edit': {
@@ -350,12 +418,16 @@ export const routeTree = rootRoute.addChildren([
     AuthCombosIdEditLazyRoute,
     AuthEstablishmentsStoresIdLazyRoute,
     AuthEstablishmentsStoresAddStoreLazyRoute,
+    AuthEstablishmentsWarehousesIdLazyRoute,
+    AuthEstablishmentsWarehousesAddWarehouseLazyRoute,
     AuthExpensesCategoriesIdLazyRoute,
     AuthExpensesCategoriesAddCategoryLazyRoute,
     AuthProductsIdEditLazyRoute,
     AuthEstablishmentsStoresIndexLazyRoute,
+    AuthEstablishmentsWarehousesIndexLazyRoute,
     AuthExpensesCategoriesIndexLazyRoute,
     AuthEstablishmentsStoresIdEditLazyRoute,
+    AuthEstablishmentsWarehousesIdEditLazyRoute,
     AuthExpensesCategoriesIdEditLazyRoute,
   ]),
   NoauthRoute.addChildren([

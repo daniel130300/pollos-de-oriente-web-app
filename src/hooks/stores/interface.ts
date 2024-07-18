@@ -5,7 +5,7 @@ export interface Store {
   name: string;
   has_delivery: boolean;
   has_pos: boolean;
-  type: EstablishmentTypes | '';
+  type: EstablishmentTypes.STORE | '';
 }
 
 export interface EditableStoreProduct {

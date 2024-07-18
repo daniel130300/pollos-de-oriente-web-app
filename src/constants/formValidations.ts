@@ -88,6 +88,12 @@ export const storeFormsValidations = {
   },
 };
 
+export const warehouseFormsValidations = {
+  name: {
+    required: 'El nombre es un campo requerido',
+  },
+};
+
 export const expenseCategoryFormsValidations = {
   name: {
     required: 'El nombre es un campo requerido',

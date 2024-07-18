@@ -21,6 +21,11 @@ export const sideBarRoutes = [
         href: '/stores',
         icon: null,
       },
+      {
+        title: 'Bodegas',
+        href: '/warehouses',
+        icon: null,
+      },
     ],
   },
   {
