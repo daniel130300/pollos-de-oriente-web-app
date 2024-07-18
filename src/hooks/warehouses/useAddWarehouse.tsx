@@ -1,18 +1,16 @@
-import {
-  expenseCategoryFormsValidations,
-  warehouseSnackbarMessages,
-} from 'src/constants';
+import { warehouseSnackbarMessages } from 'src/constants';
 import { Warehouse } from './inteface';
 import useAddEntity from '../common/useAddEntity';
 import * as yup from 'yup';
 import { supabase } from 'src/supabaseClient';
 import { EstablishmentTypes } from '../expense-category/interface';
+import { warehouseFormsValidations } from 'src/constants/formValidations';
 
 type AddWarehouse = Omit<Warehouse, 'id'>;
 
 const useAddWarehouse = () => {
   const warehouseSchema = yup.object().shape({
-    name: yup.string().required(expenseCategoryFormsValidations.name.required),
+    name: yup.string().required(warehouseFormsValidations.name.required),
   });
 
   const mutationFn = async (values: AddWarehouse) => {

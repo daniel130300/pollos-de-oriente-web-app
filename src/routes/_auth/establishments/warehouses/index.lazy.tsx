@@ -103,9 +103,9 @@ function Warehouses() {
             endIcon={<AddCircleIcon />}
             sx={{ mx: 'auto', mb: 2 }}
             component={Link}
-            to="/establishments/stores/add-warehouse"
+            to="/establishments/warehouses/add-warehouse"
           >
-            Agregar Tienda
+            Agregar Bodega
           </Button>
         </Stack>
       </Box>

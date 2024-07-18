@@ -16,7 +16,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as NoauthImport } from './routes/_no_auth'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
-import { Route as AuthEstablishmentsWarehousesAddWarehouseImport } from './routes/_auth/establishments/warehouses/add-warehouse'
 
 // Create Virtual Routes
 
@@ -54,6 +53,12 @@ const AuthExpensesCategoriesAddCategoryLazyImport = createFileRoute(
 )()
 const AuthExpensesCategoriesIdLazyImport = createFileRoute(
   '/_auth/expenses/categories/$id',
+)()
+const AuthEstablishmentsWarehousesAddWarehouseLazyImport = createFileRoute(
+  '/_auth/establishments/warehouses/add-warehouse',
+)()
+const AuthEstablishmentsWarehousesIdLazyImport = createFileRoute(
+  '/_auth/establishments/warehouses/$id',
 )()
 const AuthEstablishmentsStoresAddStoreLazyImport = createFileRoute(
   '/_auth/establishments/stores/add-store',
@@ -210,6 +215,26 @@ const AuthExpensesCategoriesIdLazyRoute =
     import('./routes/_auth/expenses/categories/$id.lazy').then((d) => d.Route),
   )
 
+const AuthEstablishmentsWarehousesAddWarehouseLazyRoute =
+  AuthEstablishmentsWarehousesAddWarehouseLazyImport.update({
+    path: '/establishments/warehouses/add-warehouse',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments/warehouses/add-warehouse.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthEstablishmentsWarehousesIdLazyRoute =
+  AuthEstablishmentsWarehousesIdLazyImport.update({
+    path: '/establishments/warehouses/$id',
+    getParentRoute: () => AuthRoute,
+  } as any).lazy(() =>
+    import('./routes/_auth/establishments/warehouses/$id.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 const AuthEstablishmentsStoresAddStoreLazyRoute =
   AuthEstablishmentsStoresAddStoreLazyImport.update({
     path: '/establishments/stores/add-store',
@@ -236,12 +261,6 @@ const AuthCombosIdEditLazyRoute = AuthCombosIdEditLazyImport.update({
 } as any).lazy(() =>
   import('./routes/_auth/combos_/$id/edit.lazy').then((d) => d.Route),
 )
-
-const AuthEstablishmentsWarehousesAddWarehouseRoute =
-  AuthEstablishmentsWarehousesAddWarehouseImport.update({
-    path: '/establishments/warehouses/add-warehouse',
-    getParentRoute: () => AuthRoute,
-  } as any)
 
 const AuthExpensesCategoriesIdEditLazyRoute =
   AuthExpensesCategoriesIdEditLazyImport.update({
@@ -325,10 +344,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProductsIndexLazyImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/establishments/warehouses/add-warehouse': {
-      preLoaderRoute: typeof AuthEstablishmentsWarehousesAddWarehouseImport
-      parentRoute: typeof AuthImport
-    }
     '/_auth/combos/$id/edit': {
       preLoaderRoute: typeof AuthCombosIdEditLazyImport
       parentRoute: typeof AuthImport
@@ -339,6 +354,14 @@ declare module '@tanstack/react-router' {
     }
     '/_auth/establishments/stores/add-store': {
       preLoaderRoute: typeof AuthEstablishmentsStoresAddStoreLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/establishments/warehouses/$id': {
+      preLoaderRoute: typeof AuthEstablishmentsWarehousesIdLazyImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/establishments/warehouses/add-warehouse': {
+      preLoaderRoute: typeof AuthEstablishmentsWarehousesAddWarehouseLazyImport
       parentRoute: typeof AuthImport
     }
     '/_auth/expenses/categories/$id': {
@@ -392,10 +415,11 @@ export const routeTree = rootRoute.addChildren([
     AuthProfileUpdatePasswordLazyRoute,
     AuthCombosIndexLazyRoute,
     AuthProductsIndexLazyRoute,
-    AuthEstablishmentsWarehousesAddWarehouseRoute,
     AuthCombosIdEditLazyRoute,
     AuthEstablishmentsStoresIdLazyRoute,
     AuthEstablishmentsStoresAddStoreLazyRoute,
+    AuthEstablishmentsWarehousesIdLazyRoute,
+    AuthEstablishmentsWarehousesAddWarehouseLazyRoute,
     AuthExpensesCategoriesIdLazyRoute,
     AuthExpensesCategoriesAddCategoryLazyRoute,
     AuthProductsIdEditLazyRoute,
