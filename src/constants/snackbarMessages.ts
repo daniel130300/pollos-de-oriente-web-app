@@ -39,13 +39,28 @@ export const storeSnackbarMessages = {
     list: 'Error obteniendo el listado de tiendas',
     count: 'Error obteniendo el conteo de tiendas',
     detail: 'Error obteniendo el detalle de la tienda',
-    imageDelete: 'Error eliminando la imagen de la tienda',
     delete: 'Error eliminando la tienda',
   },
   success: {
     create: 'Tienda creada exitosamente',
     edit: 'Tienda editada exitosamente',
     delete: 'Tienda eliminada exitosamente',
+  },
+};
+
+export const warehouseSnackbarMessages = {
+  errors: {
+    create: 'Error creando la bodega',
+    edit: 'Error editando la bodega',
+    list: 'Error obteniendo el listado de bodegas',
+    count: 'Error obteniendo el conteo de bodegas',
+    detail: 'Error obteniendo el detalle de la bodega',
+    delete: 'Error eliminando la bodega',
+  },
+  success: {
+    create: 'Bodega creada exitosamente',
+    edit: 'Bodega editada exitosamente',
+    delete: 'Bodega eliminada exitosamente',
   },
 };
 
