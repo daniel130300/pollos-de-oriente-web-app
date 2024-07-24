@@ -3,6 +3,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 export const sideBarRoutes = [
   {
@@ -27,6 +28,12 @@ export const sideBarRoutes = [
         icon: null,
       },
     ],
+  },
+  {
+    title: 'Usuarios',
+    href: '/users',
+    icon: PeopleAltIcon,
+    subMenu: [],
   },
   {
     title: 'Combos',

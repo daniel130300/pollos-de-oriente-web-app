@@ -95,3 +95,19 @@ export const combosSnackbarMessages = {
     delete: 'Combo eliminado exitosamente',
   },
 };
+
+export const userSnackbarMessages = {
+  errors: {
+    create: 'Error creando el usuario',
+    edit: 'Error editando el usuario',
+    list: 'Error obteniendo el listado de usuarios',
+    count: 'Error obteniendo el conteo de usuarios',
+    detail: 'Error obteniendo el detalle del usuario',
+    delete: 'Error eliminando el usuario',
+  },
+  success: {
+    create: 'Usuario creado exitosamente',
+    edit: 'Usuario editado exitosamente',
+    delete: 'Usuario eliminado exitosamente',
+  },
+};

@@ -105,3 +105,22 @@ export const expenseCategoryFormsValidations = {
     required: 'El campo disponible en es un campo requerido',
   },
 };
+
+export const userFormsValidations = {
+  first_name: {
+    required: 'El nombre es un campo requerido',
+  },
+  last_name: {
+    required: 'El apellido es un campo requerido',
+  },
+  phone_number: {
+    required: 'El telefono es un campo requerido',
+  },
+  email: {
+    required: 'El correo es un campo requerido',
+    format: 'El formato del correo es incorrecto',
+  },
+  select_store: {
+    required: 'Debes seleccionar una tienda',
+  },
+};
