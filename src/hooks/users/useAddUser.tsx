@@ -24,11 +24,15 @@ const useAddUser = () => {
 
   const mutationFn = async (values: AddUser) => {
     const { email, ...rest } = values;
-    const { data } = await supabase.auth.admin.createUser({
+    const { data, error } = await supabase.auth.signUp({
       email: email,
       password: 'password',
-      user_metadata: rest,
+      options: {
+        data: rest,
+      },
     });
+
+    if (error) throw error;
 
     return data;
   };
