@@ -3,17 +3,35 @@ import Stack from '@mui/material/Stack';
 import InputField from 'src/components/atoms/InputField';
 import Button from 'src/components/atoms/Button';
 import DetailsTemplate from 'src/components/templates/DetailsTemplate';
-import { apiItems, userFormsValidations } from 'src/constants';
+import {
+  apiItems,
+  roleFormsValidations,
+  userFormsValidations,
+} from 'src/constants';
 import useGetStores from 'src/hooks/stores/useGetStores';
 import AutoCompleteSelect from 'src/components/molecules/AutoCompleteSelect';
 import useAddUser from 'src/hooks/users/useAddUser';
+import usGetRoles from 'src/hooks/roles/useGetRoles';
 
 export const Route = createLazyFileRoute('/_auth/users/add-user')({
   component: AddUser,
 });
 
 function AddUser() {
-  const { stores, storesIsLoading, search, setSearch } = useGetStores();
+  const {
+    stores,
+    storesIsLoading,
+    search: storeSearch,
+    setSearch: setStoreSearch,
+  } = useGetStores();
+
+  const {
+    roles,
+    rolesIsLoading,
+    search: roleSearch,
+    setSearch: setRoleSearch,
+  } = usGetRoles();
+
   const { formik, isLoading } = useAddUser();
 
   return (
@@ -54,16 +72,30 @@ function AddUser() {
           <AutoCompleteSelect
             id="store"
             name="store"
-            label={'Tienda'}
+            label="Tienda"
             items={apiItems(stores)}
             onSelectChange={option => {
               formik.setFieldValue('establishment_id', option.value);
             }}
-            inputValue={search}
-            setInputValue={setSearch}
+            inputValue={storeSearch}
+            setInputValue={setStoreSearch}
             loading={storesIsLoading}
             error={!!formik.errors.establishment_id}
             errorMessage={userFormsValidations.select_store.required}
+          />
+          <AutoCompleteSelect
+            id="role"
+            name="role"
+            label="Rol"
+            items={apiItems(roles)}
+            onSelectChange={option => {
+              formik.setFieldValue('role_id', option.value);
+            }}
+            inputValue={roleSearch}
+            setInputValue={setRoleSearch}
+            loading={rolesIsLoading}
+            error={!!formik.errors.role_id}
+            errorMessage={roleFormsValidations.select_role.required}
           />
         </Stack>
         <Button onClick={() => formik.handleSubmit()} isLoading={isLoading}>

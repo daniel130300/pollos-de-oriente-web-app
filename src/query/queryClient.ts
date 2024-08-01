@@ -12,7 +12,7 @@ export const queryClient = new QueryClient({
       gcTime: getMinutesInMilliSeconds(5),
     },
     mutations: {
-      retry: 1,
+      retry: 0,
     },
   },
 });

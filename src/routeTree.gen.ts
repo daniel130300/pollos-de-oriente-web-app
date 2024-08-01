@@ -27,6 +27,7 @@ const AuthUsersIndexLazyImport = createFileRoute('/_auth/users/')()
 const AuthProductsIndexLazyImport = createFileRoute('/_auth/products/')()
 const AuthCombosIndexLazyImport = createFileRoute('/_auth/combos/')()
 const AuthUsersAddUserLazyImport = createFileRoute('/_auth/users/add-user')()
+const AuthUsersIdLazyImport = createFileRoute('/_auth/users/$id')()
 const AuthProfileUpdatePasswordLazyImport = createFileRoute(
   '/_auth/profile/update-password',
 )()
@@ -136,6 +137,13 @@ const AuthUsersAddUserLazyRoute = AuthUsersAddUserLazyImport.update({
   getParentRoute: () => AuthRoute,
 } as any).lazy(() =>
   import('./routes/_auth/users/add-user.lazy').then((d) => d.Route),
+)
+
+const AuthUsersIdLazyRoute = AuthUsersIdLazyImport.update({
+  path: '/users/$id',
+  getParentRoute: () => AuthRoute,
+} as any).lazy(() =>
+  import('./routes/_auth/users/$id.lazy').then((d) => d.Route),
 )
 
 const AuthProfileUpdatePasswordLazyRoute =
@@ -352,6 +360,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProfileUpdatePasswordLazyImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/users/$id': {
+      preLoaderRoute: typeof AuthUsersIdLazyImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/users/add-user': {
       preLoaderRoute: typeof AuthUsersAddUserLazyImport
       parentRoute: typeof AuthImport
@@ -437,6 +449,7 @@ export const routeTree = rootRoute.addChildren([
     AuthProductsIdLazyRoute,
     AuthProductsAddProductLazyRoute,
     AuthProfileUpdatePasswordLazyRoute,
+    AuthUsersIdLazyRoute,
     AuthUsersAddUserLazyRoute,
     AuthCombosIndexLazyRoute,
     AuthProductsIndexLazyRoute,

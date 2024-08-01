@@ -5,13 +5,13 @@ import { productSnackbarMessages } from 'src/constants';
 import { API_KEYS } from 'src/query/keys/queryConfig';
 import { User } from '@supabase/supabase-js';
 
-const useGetUser = () => {
-  const getUser = async (): Promise<undefined | User> => {
+const useGetCurrentUser = () => {
+  const getUser = async (): Promise<User | null> => {
     const { data, error } = await supabase.auth.getSession();
 
     if (error) throw error;
 
-    return data.session?.user;
+    return data.session?.user ?? null;
   };
 
   const {
@@ -20,8 +20,8 @@ const useGetUser = () => {
     data: user,
     isError: userIsError,
   } = useQuery({
-    queryKey: [API_KEYS.FETCH_USER],
-    queryFn: () => getUser(),
+    queryKey: [API_KEYS.FETCH_CURRENT_USER],
+    queryFn: getUser,
     throwOnError: () => {
       enqueueSnackbar(productSnackbarMessages.errors.detail, {
         variant: 'error',
@@ -38,4 +38,4 @@ const useGetUser = () => {
   };
 };
 
-export default useGetUser;
+export default useGetCurrentUser;

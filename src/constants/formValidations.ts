@@ -124,3 +124,9 @@ export const userFormsValidations = {
     required: 'Debes seleccionar una tienda',
   },
 };
+
+export const roleFormsValidations = {
+  select_role: {
+    required: 'Debes seleccionar un rol',
+  },
+};

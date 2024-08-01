@@ -9,8 +9,9 @@ import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
 import { formatTimestamp } from 'src/utils';
-// import { useNavigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import useGetUsers from 'src/hooks/users/useGetUsers';
+import { User } from 'src/hooks/users/interface';
 
 export const Route = createLazyFileRoute('/_auth/users/')({
   component: Users,
@@ -59,7 +60,7 @@ const columns: ColumnDef<any, any>[] = [
 ];
 
 function Users() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const {
     page,
     handleChangePage,
@@ -73,12 +74,12 @@ function Users() {
     usersCountIsLoading,
   } = useGetUsers();
 
-  // const handleViewRow = (user: User) => {
-  //   navigate({
-  //     to: '/users/$id',
-  //     params: { id: user.id },
-  //   });
-  // };
+  const handleViewRow = (user: User) => {
+    navigate({
+      to: '/users/$id',
+      params: { id: user.id },
+    });
+  };
 
   return (
     <>
@@ -121,7 +122,7 @@ function Users() {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         recordsCount={usersCount}
         recordsCountLoading={usersCountIsLoading}
-        // handleViewRow={handleViewRow}
+        handleViewRow={handleViewRow}
         // handleEditRow={handleEditRow}
         // handleDeleteRow={handleDeleteRow}
       />

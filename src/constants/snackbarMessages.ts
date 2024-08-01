@@ -104,10 +104,27 @@ export const userSnackbarMessages = {
     count: 'Error obteniendo el conteo de usuarios',
     detail: 'Error obteniendo el detalle del usuario',
     delete: 'Error eliminando el usuario',
+    emailAlreadyExists: 'El correo ya existe',
   },
   success: {
     create: 'Usuario creado exitosamente',
     edit: 'Usuario editado exitosamente',
     delete: 'Usuario eliminado exitosamente',
+  },
+};
+
+export const roleSnackbarMessages = {
+  errors: {
+    create: 'Error creando el rol',
+    edit: 'Error editando el rol',
+    list: 'Error obteniendo el listado de roles',
+    count: 'Error obteniendo el conteo de roles',
+    detail: 'Error obteniendo el detalle del rol',
+    delete: 'Error eliminando el rol',
+  },
+  success: {
+    create: 'Rol creado exitosamente',
+    edit: 'Rol editado exitosamente',
+    delete: 'Rol eliminado exitosamente',
   },
 };

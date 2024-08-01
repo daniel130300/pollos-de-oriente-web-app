@@ -3,10 +3,10 @@ import { supabase } from 'src/supabaseClient';
 import { enqueueSnackbar } from 'notistack';
 
 interface UseGetEntityProps {
-  page: number;
+  page?: number; // Make page optional
+  rowsPerPage?: number; // Make rowsPerPage optional
   dataQueryKey: string | readonly string[];
   countQueryKey: string | readonly string[];
-  rowsPerPage: number;
   search?: string;
   searchField?: string;
   entity: string;
@@ -35,9 +35,6 @@ const useGetEntity = ({
   equalFieldSearch,
 }: UseGetEntityProps) => {
   const getEntity = async () => {
-    const start = page * rowsPerPage;
-    const end = start + rowsPerPage - 1;
-
     let query = supabase
       .from(entity)
       .select(selectStatement)
@@ -51,7 +48,14 @@ const useGetEntity = ({
       query = query.ilike(searchField, `%${search}%`);
     }
 
-    query = query.order('created_at', { ascending: false }).range(start, end);
+    // Apply range only if rowsPerPage is provided
+    if (page && rowsPerPage) {
+      const start = page * rowsPerPage;
+      const end = start + rowsPerPage - 1;
+      query = query.order('created_at', { ascending: false }).range(start, end);
+    } else {
+      query = query.order('created_at', { ascending: false });
+    }
 
     const { data } = await query.throwOnError();
 

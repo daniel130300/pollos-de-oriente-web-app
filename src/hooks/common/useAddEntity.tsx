@@ -10,7 +10,8 @@ const useAddEntity = <T extends FormikValues>(options: {
   mutationFn: (values: T) => Promise<any>;
   onSuccessPath: string;
   successMessage: string;
-  errorMessage: string;
+  errorMessage?: string;
+  onError?: (error: Error | any) => void; // Add optional onError function
 }) => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -21,8 +22,12 @@ const useAddEntity = <T extends FormikValues>(options: {
       enqueueSnackbar(options.successMessage, { variant: 'success' });
       navigate({ to: options.onSuccessPath });
     },
-    onError: () => {
-      enqueueSnackbar(options.errorMessage, { variant: 'error' });
+    onError: error => {
+      if (options.onError) {
+        options.onError(error);
+      } else {
+        enqueueSnackbar(options.errorMessage, { variant: 'error' });
+      }
     },
   });
 

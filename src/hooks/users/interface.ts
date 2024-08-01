@@ -5,4 +5,5 @@ export interface User {
   last_name: string;
   phone_number: string;
   establishment_id: string;
+  role_id: string;
 }

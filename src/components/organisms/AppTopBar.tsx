@@ -12,7 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import { profileTopBarRoutes } from 'src/constants/routes';
 import useLogout from 'src/hooks/auth/useLogout';
-import useGetUser from 'src/hooks/auth/useGetUser';
+import useGetCurrentUser from 'src/hooks/auth/useGetCurrentUser';
 
 interface AppTopBarProps {
   isClosing: boolean;
@@ -27,7 +27,7 @@ export const AppTopBar: React.FC<AppTopBarProps> = ({
 }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { mutateAsync } = useLogout();
-  const { user } = useGetUser();
+  const { user } = useGetCurrentUser();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);

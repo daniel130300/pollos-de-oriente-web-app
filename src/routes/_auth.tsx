@@ -7,7 +7,9 @@ export const Route = createFileRoute('/_auth')({
   beforeLoad: async () => {
     const sessionPromise = new Promise<Session | null>(resolve => {
       supabase.auth.onAuthStateChange((_, session) => {
-        resolve(session);
+        if (session?.user) {
+          resolve(session);
+        }
       });
     });
 
