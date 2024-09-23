@@ -21,9 +21,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   ...rest
 }) => {
   const formikError = formik?.errors?.[id];
-  const inputError = formik
-    ? formik.touched?.[id] && Boolean(formikError)
-    : error;
+  const inputError = formik ? Boolean(formikError) : error;
   const inputHelperText =
     formikError !== undefined ? String(formikError) : helperText;
   const handleChange = formik ? formik.handleChange : onChange;

@@ -1,26 +1,31 @@
 import { productFormsValidations } from 'src/constants/formValidations';
-import useGetProducts from '../products/useGetProducts';
 import * as yup from 'yup';
-import { Dispatch, useState } from 'react';
+import { Dispatch, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { EditableProduct } from '../products/interface';
+import useGetProducts from '../products/useGetProducts';
+import { EditableComboProduct } from './interface';
 
-const useEditProductToAddToStoreInventory = ({
+const useEditComboProduct = ({
   index,
   productsList,
   product,
   setProducts,
 }: {
   index: number;
-  productsList: EditableProduct[];
-  product: EditableProduct;
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  productsList: EditableComboProduct[];
+  product: EditableComboProduct;
+  setProducts: Dispatch<React.SetStateAction<EditableComboProduct[]>>;
 }) => {
-  const [search, setSearch] = useState(product.name);
   const {
     products: autoCompleteProducts,
     productsIsLoading: autoCompleteProductsLoading,
-  } = useGetProducts({ page: 0, rowsPerPage: 10, search });
+    search,
+    setSearch,
+  } = useGetProducts();
+
+  useEffect(() => {
+    setSearch(product.name);
+  }, [product]);
 
   const productSchema = yup.object().shape({
     id: yup.string().required(),
@@ -30,11 +35,6 @@ const useEditProductToAddToStoreInventory = ({
       .typeError(productFormsValidations.quantity.typeError)
       .required(productFormsValidations.quantity.required)
       .min(0, productFormsValidations.quantity.min(0)),
-    sale_price: yup
-      .number()
-      .typeError(productFormsValidations.sale_price.typeError)
-      .required(productFormsValidations.sale_price.required)
-      .min(0, productFormsValidations.sale_price.min(0)),
   });
 
   const formik = useFormik({
@@ -42,13 +42,15 @@ const useEditProductToAddToStoreInventory = ({
       id: '',
       name: '',
       quantity: '',
-      sale_price: '',
       editable: false,
     },
     validationSchema: productSchema,
     onSubmit: values => {
-      const { id, name, quantity, sale_price } = values;
-      const idExists = productsList.some(product => product.id === id);
+      const { id, name, quantity } = values;
+      const idExists =
+        productsList.filter(
+          (product, idx) => idx !== index && product.id === id,
+        ).length > 0;
       let indexToRemove = -1;
 
       if (idExists) {
@@ -59,7 +61,6 @@ const useEditProductToAddToStoreInventory = ({
               ...product,
               name,
               quantity,
-              sale_price,
               editable: false,
             };
           } else {
@@ -76,7 +77,6 @@ const useEditProductToAddToStoreInventory = ({
               id,
               name,
               quantity,
-              sale_price,
               editable: false,
             };
           } else {
@@ -116,7 +116,6 @@ const useEditProductToAddToStoreInventory = ({
           id: productToEdit.id,
           name: productToEdit.name,
           quantity: productToEdit.quantity,
-          sale_price: productToEdit.sale_price,
           editable: true,
         });
         setSearch(productToEdit.name);
@@ -136,4 +135,4 @@ const useEditProductToAddToStoreInventory = ({
   };
 };
 
-export default useEditProductToAddToStoreInventory;
+export default useEditComboProduct;

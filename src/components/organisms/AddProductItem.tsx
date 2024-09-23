@@ -1,19 +1,26 @@
-import { Dispatch } from 'react';
 import AutoCompleteSelect from '../molecules/AutoCompleteSelect';
 import InputField from '../atoms/InputField';
 import Button from '@mui/material/Button';
 import { productFormsValidations } from 'src/constants';
-import { Box } from '@mui/material';
-import useAddProductToStoreInventory from 'src/hooks/stores/useAddProductToStoreInventory';
-import { EditableProduct } from 'src/hooks/products/interface';
+import { apiItems } from 'src/constants/selectItems';
+import useAddProductDetail from 'src/hooks/products/useAddProductDetail';
+import useAddComboProduct from 'src/hooks/combos/useAddComboProduct';
+import { EditableProductDetail } from 'src/hooks/products/interface';
+import { EditableComboProduct } from 'src/hooks/combos/interface';
+
+interface AddProductItemProps {
+  productsList: EditableProductDetail[] | EditableComboProduct[];
+  setProducts:
+    | React.Dispatch<React.SetStateAction<EditableProductDetail[]>>
+    | React.Dispatch<React.SetStateAction<EditableComboProduct[]>>;
+  isCombo: boolean;
+}
 
 export const AddProductItem = ({
   productsList,
   setProducts,
-}: {
-  productsList: EditableProduct[];
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
-}) => {
+  isCombo,
+}: AddProductItemProps) => {
   const {
     search,
     autoCompleteProducts,
@@ -21,38 +28,41 @@ export const AddProductItem = ({
     formik,
     productSelectError,
     setSearch,
-  } = useAddProductToStoreInventory({ productsList, setProducts });
+  } = isCombo
+    ? useAddComboProduct({
+        productsList: productsList as EditableComboProduct[],
+        setProducts: setProducts as React.Dispatch<
+          React.SetStateAction<EditableComboProduct[]>
+        >,
+      })
+    : useAddProductDetail({
+        productsList: productsList as EditableProductDetail[],
+        setProducts: setProducts as React.Dispatch<
+          React.SetStateAction<EditableProductDetail[]>
+        >,
+      });
 
   return (
     <>
-      <Box>
-        <AutoCompleteSelect
-          id="id"
-          name="id"
-          label="Producto"
-          options={autoCompleteProducts}
-          onSelectChange={option => {
-            formik.setFieldValue('id', option.id);
-            formik.setFieldValue('name', option.name);
-          }}
-          inputValue={search}
-          setInputValue={setSearch}
-          loading={autoCompleteProductsLoading}
-          error={productSelectError}
-          errorMessage={productFormsValidations.select_product.required}
-        />
-      </Box>
-      <InputField
-        id="quantity"
-        name="quantity"
-        label="Cantidad"
-        type="number"
-        formik={formik}
+      <AutoCompleteSelect
+        id="id"
+        name="id"
+        label="Producto"
+        items={apiItems(autoCompleteProducts)}
+        onSelectChange={option => {
+          formik.setFieldValue('id', option.value);
+          formik.setFieldValue('name', option.label);
+        }}
+        inputValue={search}
+        setInputValue={setSearch}
+        loading={autoCompleteProductsLoading}
+        error={productSelectError}
+        errorMessage={productFormsValidations.select_product.required}
       />
       <InputField
-        id="sale_price"
-        name="sale_price"
-        label="Precio de venta"
+        id={isCombo ? 'quantity' : 'arithmetic_quantity'}
+        name={isCombo ? 'quantity' : 'arithmetic_quantity'}
+        label="Cantidad"
         type="number"
         formik={formik}
       />

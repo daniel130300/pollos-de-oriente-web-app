@@ -1,23 +1,20 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { ColumnDef } from '@tanstack/react-table';
-import usePagination from 'src/hooks/common/usePagination';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
 import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
-import { formatTimestamp, formatBooleanToStringLabel } from 'src/utils';
+import { formatTimestamp, translateBooleanToString } from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
 import useGetStores from 'src/hooks/stores/useGetStores';
+import { Store } from 'src/hooks/stores/interface';
 import useDeleteStore from 'src/hooks/stores/useDeleteStore';
-import Loader from 'src/components/atoms/Loader';
-import { useModalStore } from 'src/zustand/useModalStore';
 
-export const Route = createLazyFileRoute('/_auth/stores/')({
+export const Route = createLazyFileRoute('/_auth/establishments/stores/')({
   component: Stores,
 });
 
@@ -33,10 +30,17 @@ const columns: ColumnDef<any, any>[] = [
     cell: store => <span>{store.row.original.name}</span>,
   },
   {
-    accessorKey: 'is_main',
-    header: 'Principal',
+    accessorKey: 'has_delivery',
+    header: 'Tiene Delivery?',
     cell: store => (
-      <span>{formatBooleanToStringLabel(store.row.original.is_main)}</span>
+      <span>{translateBooleanToString(store.row.original.has_delivery)}</span>
+    ),
+  },
+  {
+    accessorKey: 'has_pos',
+    header: 'Tiene POS?',
+    cell: store => (
+      <span>{translateBooleanToString(store.row.original.has_pos)}</span>
     ),
   },
   {
@@ -57,55 +61,37 @@ const columns: ColumnDef<any, any>[] = [
 
 function Stores() {
   const navigate = useNavigate();
-  const { page, handleChangePage, rowsPerPage, handleChangeRowsPerPage } =
-    usePagination();
-  const { handleOpen, handleClose } = useModalStore();
-  const [search, setSearch] = useState('');
-  const { stores, storesIsLoading, storesCount, storesCountIsLoading } =
-    useGetStores({ page, rowsPerPage, search });
-  const { mutate, isLoading, storeToDelete, setStoreToDelete } =
-    useDeleteStore();
+  const {
+    page,
+    handleChangePage,
+    rowsPerPage,
+    handleChangeRowsPerPage,
+    search,
+    setSearch,
+    stores,
+    storesIsLoading,
+    storesCount,
+    storesCountIsLoading,
+  } = useGetStores();
+  const { setStoreToDelete } = useDeleteStore();
 
-  const handleViewRow = (store: any) => {
-    navigate({ to: '/stores/$id', params: { id: store.id } });
+  const handleViewRow = (store: Store) => {
+    navigate({
+      to: '/establishments/stores/$id',
+      params: { id: store.id },
+    });
   };
 
-  const handleEditRow = (store: any) => {
-    navigate({ to: '/stores/$id/edit', params: { id: store.id } });
+  const handleEditRow = (store: Store) => {
+    navigate({
+      to: '/establishments/stores/$id/edit',
+      params: { id: store.id },
+    });
   };
 
-  const handleDelete = (store: any) => {
-    mutate(store);
-  };
-
-  const handleDeleteRow = (store: any) => {
+  const handleDeleteRow = (store: Store) => {
     setStoreToDelete(store);
   };
-
-  useEffect(() => {
-    if (!storeToDelete) return;
-
-    handleOpen({
-      title: 'Eliminar Tienda',
-      description: `¿Estas seguro que deseas eliminar la siguiente tienda: ${storeToDelete.name}?`,
-      buttons: (
-        <>
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <Stack direction="row" spacing={1}>
-              <Button onClick={() => handleClose()} color="action">
-                Cancelar
-              </Button>
-              <Button onClick={() => handleDelete(storeToDelete)} color="error">
-                Eliminar
-              </Button>
-            </Stack>
-          )}
-        </>
-      ),
-    });
-  }, [isLoading, storeToDelete]);
 
   return (
     <>
@@ -131,7 +117,7 @@ function Stores() {
             endIcon={<AddCircleIcon />}
             sx={{ mx: 'auto', mb: 2 }}
             component={Link}
-            to="/stores/add-store"
+            to="/establishments/stores/add-store"
           >
             Agregar Tienda
           </Button>

@@ -10,20 +10,27 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import useEditProductToAddToStoreInventory from 'src/hooks/stores/useEditProductToAddToStoreInventory';
+import useEditDetailProduct from 'src/hooks/products/useEditDetailProduct';
 import { productFormsValidations } from 'src/constants';
-import { EditableProduct } from 'src/hooks/products/interface';
+import { EditableProductDetail } from 'src/hooks/products/interface';
+import { apiItems } from 'src/constants/selectItems';
+import { EditableComboProduct } from 'src/hooks/combos/interface';
+import useEditComboProduct from 'src/hooks/combos/useEditComboProduct';
 
 export const EditProductItem = ({
   index,
   product,
   productsList,
   setProducts,
+  isCombo,
 }: {
   index: number;
-  product: EditableProduct;
-  productsList: EditableProduct[];
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  product: EditableProductDetail | EditableComboProduct;
+  productsList: EditableProductDetail[] | EditableComboProduct[];
+  setProducts:
+    | Dispatch<React.SetStateAction<EditableProductDetail[]>>
+    | Dispatch<React.SetStateAction<EditableComboProduct[]>>;
+  isCombo: boolean;
 }) => {
   const {
     search,
@@ -34,12 +41,23 @@ export const EditProductItem = ({
     setSearch,
     handleDeleteProduct,
     toggleProductEditable,
-  } = useEditProductToAddToStoreInventory({
-    index,
-    productsList,
-    product,
-    setProducts,
-  });
+  } = isCombo
+    ? useEditComboProduct({
+        index,
+        productsList: productsList as EditableComboProduct[],
+        setProducts: setProducts as Dispatch<
+          React.SetStateAction<EditableComboProduct[]>
+        >,
+        product: product as EditableComboProduct,
+      })
+    : useEditDetailProduct({
+        index,
+        productsList: productsList as EditableProductDetail[],
+        setProducts: setProducts as Dispatch<
+          React.SetStateAction<EditableProductDetail[]>
+        >,
+        product: product as EditableProductDetail,
+      });
 
   return (
     <ListItem key={product.id}>
@@ -49,12 +67,11 @@ export const EditProductItem = ({
             id="id"
             name="id"
             label="Producto"
-            options={autoCompleteProducts}
+            items={apiItems(autoCompleteProducts)}
             onSelectChange={option => {
-              formik.setFieldValue('id', option.id);
-              formik.setFieldValue('name', option.name);
+              formik.setFieldValue('id', option.value);
+              formik.setFieldValue('name', option.label);
             }}
-            selectValue={product.id}
             inputValue={search}
             setInputValue={setSearch}
             loading={autoCompleteProductsLoading}
@@ -62,28 +79,22 @@ export const EditProductItem = ({
             errorMessage={productFormsValidations.select_product.required}
           />
           <InputField
-            id="quantity"
-            name="quantity"
+            id={isCombo ? 'quantity' : 'arithmetic_quantity'}
+            name={isCombo ? 'quantity' : 'arithmetic_quantity'}
             label="Cantidad"
-            type="number"
-            formik={formik}
-          />
-          <InputField
-            id="sale_price"
-            name="sale_price"
-            label="Precio"
             type="number"
             formik={formik}
           />
         </Stack>
       ) : (
         <ListItemText
-          primary={`Nombre: ${product.name}, Cantidad: ${product.quantity}, Precio: ${product.sale_price}`}
+          primary={`Nombre: ${product.name}, Cantidad: ${isCombo ? (product as EditableComboProduct).quantity : (product as EditableProductDetail).arithmetic_quantity}`}
+          disableTypography
         />
       )}
       <ListItemSecondaryAction>
         {product.editable ? (
-          <Stack direction="row" spacing={2}>
+          <Stack direction="row" spacing={1}>
             <Tooltip title="Confirmar" sx={{ cursor: 'pointer' }}>
               <CheckCircleIcon
                 onClick={() => formik.handleSubmit()}

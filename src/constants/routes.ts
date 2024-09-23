@@ -5,11 +5,53 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 
 export const sideBarRoutes = [
-  { title: 'Productos', href: '/products', icon: InventoryIcon },
-  { title: 'Establecimientos', href: '/establishments', icon: StoreIcon },
-  { title: 'Combos', href: '/combos', icon: FastfoodIcon },
-  { title: 'Ventas', href: '/sales', icon: AttachMoneyIcon },
-  { title: 'Compras', href: '/purchases', icon: ReceiptIcon },
+  {
+    title: 'Productos',
+    href: '/products',
+    icon: InventoryIcon,
+    subMenu: [],
+  },
+  {
+    title: 'Establecimientos',
+    href: '/establishments',
+    icon: StoreIcon,
+    subMenu: [
+      {
+        title: 'Tiendas',
+        href: '/stores',
+        icon: null,
+      },
+      {
+        title: 'Bodegas',
+        href: '/warehouses',
+        icon: null,
+      },
+    ],
+  },
+  {
+    title: 'Combos',
+    href: '/combos',
+    icon: FastfoodIcon,
+    subMenu: [],
+  },
+  {
+    title: 'Ventas',
+    href: '/sales',
+    icon: AttachMoneyIcon,
+    subMenu: [],
+  },
+  {
+    title: 'Gastos',
+    href: '/expenses',
+    icon: ReceiptIcon,
+    subMenu: [
+      {
+        title: 'Categorías',
+        href: '/categories',
+        icon: null,
+      },
+    ],
+  },
 ];
 
 export const profileTopBarRoutes = ({

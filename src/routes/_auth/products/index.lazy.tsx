@@ -1,22 +1,22 @@
-import { useEffect } from 'react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { ColumnDef } from '@tanstack/react-table';
-import usePagination from 'src/hooks/common/usePagination';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
 import Button from 'src/components/atoms/Button';
 import { InputField } from 'src/components/atoms/InputField';
 import TableUI from 'src/components/atoms/TableUI';
-import { formatTimestamp, parseToCurrency } from 'src/utils';
+import {
+  formatTimestamp,
+  translateEstablishment,
+  translateProductInventorySubtraction,
+} from 'src/utils';
 import { useNavigate } from '@tanstack/react-router';
-import { useModalStore } from 'src/zustand/useModalStore';
 import useDeleteProduct from 'src/hooks/products/useDeleteProduct';
-import Loader from 'src/components/atoms/Loader';
 import useGetProducts from 'src/hooks/products/useGetProducts';
+import { Product } from 'src/hooks/products/interface';
 
 export const Route = createLazyFileRoute('/_auth/products/')({
   component: Products,
@@ -29,27 +29,40 @@ const columns: ColumnDef<any, any>[] = [
     cell: product => <span>{product.row.original.id}</span>,
   },
   {
+    accessorKey: 'search_id',
+    header: 'Id de Busqueda',
+    cell: product => <span>{product.row.original.search_id}</span>,
+  },
+  {
     accessorKey: 'name',
     header: 'Nombre',
     cell: product => <span>{product.row.original.name}</span>,
   },
   {
-    accessorKey: 'unity',
-    header: 'Unidad',
-    cell: product => <span>{product.row.original.unity}</span>,
-  },
-  {
-    accessorKey: 'sale_price',
-    header: 'Precio de Venta',
+    accessorKey: 'inventory_subtraction',
+    header: 'Se resta de manera',
     cell: product => (
-      <span>{parseToCurrency(product.row.original.sale_price)}</span>
+      <span>
+        {translateProductInventorySubtraction(
+          product.row.original.inventory_subtraction,
+        )}
+      </span>
     ),
   },
   {
-    accessorKey: 'purchase_price',
-    header: 'Precio de Compra',
+    accessorKey: 'can_be_purchased_only',
+    header: 'Solo se puede comprar en',
     cell: product => (
-      <span>{parseToCurrency(product.row.original.purchase_price)}</span>
+      <span>
+        {translateEstablishment(product.row.original.can_be_purchased_only)}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'expense_category',
+    header: 'Se ingresa como',
+    cell: product => (
+      <span>{product.row.original.expense_categories.name}</span>
     ),
   },
   {
@@ -70,63 +83,31 @@ const columns: ColumnDef<any, any>[] = [
 
 function Products() {
   const navigate = useNavigate();
-  const { page, handleChangePage, rowsPerPage, handleChangeRowsPerPage } =
-    usePagination();
-  const { handleOpen, handleClose } = useModalStore();
-  const [search, setSearch] = useState('');
-  const { products, productsIsLoading, productsCount, productsCountIsLoading } =
-    useGetProducts({ page, rowsPerPage, search });
+  const { setProductToDelete } = useDeleteProduct();
   const {
-    mutate,
-    isLoading,
-    deleteImageIsLoading,
-    productToDelete,
-    setProductToDelete,
-  } = useDeleteProduct();
+    page,
+    handleChangePage,
+    rowsPerPage,
+    handleChangeRowsPerPage,
+    search,
+    setSearch,
+    products,
+    productsIsLoading,
+    productsCount,
+    productsCountIsLoading,
+  } = useGetProducts();
 
-  const handleViewRow = (product: any) => {
+  const handleViewRow = (product: Product) => {
     navigate({ to: '/products/$id', params: { id: product.id } });
   };
 
-  const handleEditRow = (product: any) => {
+  const handleEditRow = (product: Product) => {
     navigate({ to: '/products/$id/edit', params: { id: product.id } });
   };
 
-  const handleDelete = (product: any) => {
-    mutate(product);
-  };
-
-  const handleDeleteRow = (product: any) => {
+  const handleDeleteRow = (product: Product) => {
     setProductToDelete(product);
   };
-
-  useEffect(() => {
-    if (!productToDelete) return;
-
-    handleOpen({
-      title: 'Eliminar Producto',
-      description: `¿Estas seguro que deseas eliminar el siguiente producto: ${productToDelete.name}?`,
-      buttons: (
-        <>
-          {isLoading || deleteImageIsLoading ? (
-            <Loader />
-          ) : (
-            <Stack direction="row" spacing={1}>
-              <Button onClick={() => handleClose()} color="action">
-                Cancelar
-              </Button>
-              <Button
-                onClick={() => handleDelete(productToDelete)}
-                color="error"
-              >
-                Eliminar
-              </Button>
-            </Stack>
-          )}
-        </>
-      ),
-    });
-  }, [isLoading, deleteImageIsLoading, productToDelete]);
 
   return (
     <>

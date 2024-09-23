@@ -1,57 +1,52 @@
-import { Dispatch, useState } from 'react';
-import useGetProducts from '../products/useGetProducts';
+import { Dispatch } from 'react';
+import useGetProducts from './useGetProducts';
 import * as yup from 'yup';
 import { productFormsValidations } from 'src/constants';
 import { useFormik } from 'formik';
-import { EditableProduct } from '../products/interface';
+import { EditableProductDetail } from './interface';
 
-const useAddProductToStoreInventory = ({
+const useAddProductDetail = ({
   productsList,
   setProducts,
 }: {
-  productsList: EditableProduct[];
-  setProducts: Dispatch<React.SetStateAction<EditableProduct[]>>;
+  productsList: EditableProductDetail[];
+  setProducts: Dispatch<React.SetStateAction<EditableProductDetail[]>>;
 }) => {
-  const [search, setSearch] = useState('');
   const {
+    search,
+    setSearch,
     products: autoCompleteProducts,
     productsIsLoading: autoCompleteProductsLoading,
-  } = useGetProducts({ page: 0, rowsPerPage: 10, search });
+  } = useGetProducts();
 
   const productSchema = yup.object().shape({
     id: yup.string().required(),
     name: yup.string().required(),
-    quantity: yup
+    arithmetic_quantity: yup
       .number()
       .typeError(productFormsValidations.quantity.typeError)
       .required(productFormsValidations.quantity.required)
       .min(0, productFormsValidations.quantity.min(0)),
-    sale_price: yup
-      .number()
-      .typeError(productFormsValidations.sale_price.typeError)
-      .required(productFormsValidations.sale_price.required)
-      .min(0, productFormsValidations.sale_price.min(0)),
   });
 
   const formik = useFormik({
     initialValues: {
       id: '',
       name: '',
-      quantity: '',
-      sale_price: '',
+      arithmetic_quantity: '',
       editable: false,
     },
     validationSchema: productSchema,
     onSubmit: async values => {
-      const { id, quantity, sale_price } = values;
+      const { id, arithmetic_quantity } = values;
       const existingProductIndex = productsList.findIndex(
         product => product.id === id,
       );
 
       if (existingProductIndex !== -1) {
         const updatedProducts = [...productsList];
-        updatedProducts[existingProductIndex].quantity += quantity;
-        updatedProducts[existingProductIndex].sale_price = sale_price;
+        updatedProducts[existingProductIndex].arithmetic_quantity +=
+          arithmetic_quantity;
         setProducts(updatedProducts);
       } else {
         setProducts(previousProducts => [...previousProducts, values]);
@@ -74,4 +69,4 @@ const useAddProductToStoreInventory = ({
   };
 };
 
-export default useAddProductToStoreInventory;
+export default useAddProductDetail;
